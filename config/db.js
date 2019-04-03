@@ -1,7 +1,8 @@
 import Sequelize from 'sequelize';
+import db from './dbConfig.json';
 
-const connect =new Sequelize('C1ehp7mXWV', 'C1ehp7mXWV', '8cVwGWKcFm', {
-	host: 'remotemysql.com',
+const connect =new Sequelize(`${db.user}`, `${db.user}`, `${db.psswd}`, {
+	host: `${db.host}`,
 	dialect: 'mysql',
 	operatorsAliases: false,
 	port: 3306,

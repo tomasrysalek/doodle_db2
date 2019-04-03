@@ -1,5 +1,5 @@
 import express from 'express';
-import connect from './config/db';
+import connect from './config/db'; 
 
 
 const app = express();
@@ -18,6 +18,3 @@ app.listen(port, () => {
     console.log(`Woohooooo`)
 });
 
-app.get('/test',(req,res)=>{
-    res.send(req.body.email)
-});
