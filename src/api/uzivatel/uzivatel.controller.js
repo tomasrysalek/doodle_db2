@@ -19,6 +19,7 @@ function signToken (user) {
     }, `${secret.secret}`);
 }
 router.post('/signup',(req,res)=>{
+    //Vyresit pokud jiz ucet s danym emailem existuje
     const user =
     User.build({ //Vytvoreni noveho uzivatel
         Email: req.body.email, 
