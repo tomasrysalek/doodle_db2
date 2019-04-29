@@ -9,20 +9,13 @@ import { compose} from 'redux';
 import * as actions from '../actions';
 
 class Registrace extends Component{
-    state = {
-        psswd: '',
-        confirmPassword: ''
-    }  
-    
 
     constructor(props){
         super(props)
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-   
     async onSubmit(data){
-        console.log('data',data);
         await this.props.signUp(data);
     }
 
@@ -35,7 +28,7 @@ class Registrace extends Component{
                         <fieldset>
                         <Field
                                 name="email"
-                                type="text"
+                                type="email"
                                 id="email"
                                 autocomplete="username"
                                 label="Zadejte váš mail:"
@@ -51,7 +44,7 @@ class Registrace extends Component{
                                 autocomplete="current-password"
                                 id="psswd"
                                 label="Zadejte vaše heslo:"
-                                placeholder="Mojeheslo1"
+                                placeholder="Heslo"
                                 component={MujInput}/>
                         </fieldset>
                     </div>
@@ -61,9 +54,9 @@ class Registrace extends Component{
                                 name="passwordsame"
                                 type="password"
                                 autocomplete="current-password"
-                                id="psswd"
+                                id="psswd_again"
                                 label="Zadejte vaše heslo:"
-                                placeholder="Mojeheslo1"
+                                placeholder="Heslo znovu"
                                 component={MujInput}/>
                         </fieldset>
                     </div>

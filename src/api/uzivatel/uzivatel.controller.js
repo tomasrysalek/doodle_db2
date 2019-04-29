@@ -35,7 +35,7 @@ router.post('/signup',(req,res)=>{
             //Generovani tokenu
             const token = signToken(newUser);
             //Odeslani tokenu clientovi
-            return res.status(200).json({token:token, message: 'user created'});
+            res.status(200).json({token:token, message: 'user created'});
         }
 
     })
