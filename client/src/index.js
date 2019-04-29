@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { createStore} from 'redux';
+import { createStore, applyMiddleware} from 'redux';
 import { Provider } from 'react-redux';
+import reduxThunk from 'redux-thunk';
 
 import App from './componenty/App';
 import * as serviceWorker from './serviceWorker';
@@ -17,7 +18,7 @@ import reducer from './reducers/index';
 
 ReactDOM.render(
     // vytvoreni uschovny dat
-    <Provider store={createStore(reducer)}>
+    <Provider store={createStore(reducer,{},applyMiddleware(reduxThunk))}>
         {/*pridani routeru starajiciho se o odkazovani mezi strankama*/ }
         <BrowserRouter>
             {/*pridani paklikace*/ }
