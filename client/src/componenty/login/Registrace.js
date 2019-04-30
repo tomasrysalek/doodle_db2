@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import { reduxForm, Field} from 'redux-form';
-import { Navbar,   Nav } from 'react-bootstrap';
-import MujInput from './MujInput'
-import TextField from '@material-ui/core/TextField';
-import MaterialForm from 'react-material-ui-form';
+import { Nav } from 'react-bootstrap';
 import { connect} from 'react-redux';
 import { compose} from 'redux';
-import * as actions from '../actions';
+
+import MujInput from '../mojeComponenty/MujInput'
+import * as actions from '../../actions';
 
 class Registrace extends Component{
 
@@ -16,6 +15,7 @@ class Registrace extends Component{
     }
 
     async onSubmit(data){
+        console.log('data',data);
         await this.props.signUp(data);
     }
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
 
-import ContentBox from './HomeContent/ContentBox';
-import Content from './HomeContent/Content'
+import ContentBox from './ContentBox';
+import Content from '../content/Content'
 
 
 export default () => {

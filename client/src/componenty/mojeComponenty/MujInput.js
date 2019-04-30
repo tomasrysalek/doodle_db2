@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 
+
 export default class MujInput extends Component{
     render(){
         const { input:{ value,onChange}} =this.props;
@@ -9,6 +10,7 @@ export default class MujInput extends Component{
                     <label htmlFor={this.props.id} > { this.props.label}</label>
                 </div>
                 <div>
+                    
                     <input
                         name={ this.props.name}
                         id={this.props.id}
