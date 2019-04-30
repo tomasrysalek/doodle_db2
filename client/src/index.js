@@ -15,10 +15,16 @@ import Registrace from './componenty/login/Registrace';
 import Skupiny from './componenty/doodle/Skupiny';
 import reducer from './reducers/index';
 
+const jwtToken = localStorage.getItem('JWT_TOKEN');
 
 ReactDOM.render(
     // vytvoreni uschovny dat
-    <Provider store={createStore(reducer,{},applyMiddleware(reduxThunk))}>
+    <Provider store={createStore(reducer,{
+        auth:{
+            token: jwtToken,
+            isAuthenticated: jwtToken ? true : false
+        }
+        },applyMiddleware(reduxThunk))}>
         {/*pridani routeru starajiciho se o odkazovani mezi strankama*/ }
         <BrowserRouter>
             {/*pridani paklikace*/ }

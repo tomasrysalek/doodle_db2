@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {AUTH_PRIHLASEN , AUTH_ERROR} from './type'
+import {AUTH_PRIHLASEN , AUTH_ERROR , AUTH_ODHLASEN} from './type'
 
 
 export const signUp = data => {
@@ -20,5 +20,16 @@ export const signUp = data => {
             })
             console.log('err', err)
         }
+    }
+}
+
+export const signOut = ()=>{
+    return dispatch => {
+        localStorage.removeItem('JWT_TOKEN');
+
+        dispatch({
+            type: AUTH_ODHLASEN,
+            payload: ''
+        })
     }
 }
