@@ -4,8 +4,8 @@ import { Nav } from 'react-bootstrap';
 import { connect} from 'react-redux';
 import { compose} from 'redux';
 
-import MujInput from './MujInput'
-import * as actions from '../actions';
+import MujInput from '../mojeComponenty/MujInput'
+import * as actions from '../../actions';
 
 class Prihlaseni extends Component{
     constructor(props){

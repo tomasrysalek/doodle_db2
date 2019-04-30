@@ -7,12 +7,12 @@ import reduxThunk from 'redux-thunk';
 
 import App from './componenty/App';
 import * as serviceWorker from './serviceWorker';
-import Home from './componenty/Home';
-import Kalendar from './componenty/Kalendar';
-import Odhlaseni from './componenty/Odhlaseni';
-import Prihlaseni from './componenty/Prihlaseni';
-import Registrace from './componenty/Registrace';
-import Skupiny from './componenty/Skupiny';
+import Home from './componenty/home/Home';
+import Kalendar from './componenty/doodle/Kalendar';
+import Odhlaseni from './componenty/login/Odhlaseni';
+import Prihlaseni from './componenty/login/Prihlaseni';
+import Registrace from './componenty/login/Registrace';
+import Skupiny from './componenty/doodle/Skupiny';
 import reducer from './reducers/index';
 
 
