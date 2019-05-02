@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import { reduxForm, Field} from 'redux-form';
-import MujInput from './MujInput'
 import { Nav } from 'react-bootstrap';
+import { connect} from 'react-redux';
+import { compose} from 'redux';
+
+import MujInput from '../mojeComponenty/MujInput'
+import * as actions from '../../actions';
 
 class Prihlaseni extends Component{
-    onSubmit(data){
+    constructor(props){
+        super(props)
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+    async onSubmit(data){
         console.log('data',data);
+        await this.props.signUp(data);
     }
     render(){
         const { handleSubmit } =this.props;
@@ -48,4 +57,7 @@ class Prihlaseni extends Component{
     }
 };
 
-export default reduxForm( {form: 'prihlaseni'})(Prihlaseni);
+export default compose(
+    connect(null,actions),
+    reduxForm( {form: 'prihlaseni'})
+)(Prihlaseni);

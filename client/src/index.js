@@ -1,23 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { createStore} from 'redux';
+import { createStore, applyMiddleware} from 'redux';
 import { Provider } from 'react-redux';
+import reduxThunk from 'redux-thunk';
 
 import App from './componenty/App';
 import * as serviceWorker from './serviceWorker';
-import Home from './componenty/Home';
-import Kalendar from './componenty/Kalendar';
-import Odhlaseni from './componenty/Odhlaseni';
-import Prihlaseni from './componenty/Prihlaseni';
-import Registrace from './componenty/Registrace';
-import Skupiny from './componenty/Skupiny';
+import Home from './componenty/home/Home';
+import Kalendar from './componenty/doodle/Kalendar';
+import Odhlaseni from './componenty/login/Odhlaseni';
+import Prihlaseni from './componenty/login/Prihlaseni';
+import Registrace from './componenty/login/Registrace';
+import Skupiny from './componenty/doodle/Skupiny';
 import reducer from './reducers/index';
 
+const jwtToken = localStorage.getItem('JWT_TOKEN');
 
 ReactDOM.render(
     // vytvoreni uschovny dat
-    <Provider store={createStore(reducer)}>
+    <Provider store={createStore(reducer,{
+        auth:{
+            token: jwtToken,
+            isAuthenticated: jwtToken ? true : false
+        }
+        },applyMiddleware(reduxThunk))}>
         {/*pridani routeru starajiciho se o odkazovani mezi strankama*/ }
         <BrowserRouter>
             {/*pridani paklikace*/ }

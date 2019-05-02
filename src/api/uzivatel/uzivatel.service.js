@@ -5,24 +5,27 @@ function signin(req,res) {
 
 }
 
-function signUp(req,res){
-    const user =
-    User.build({
-        Email: req.body.email, 
-        Heslo: req.body.newpassword
+
+
+function signup (req,res){
+    const user = User.findOne({where:{Email: req.body.email}}).then(user =>{
+        if(user){
+            return res.json({message: 'user already exists'})
+        }
+        else{
+            const newUser = User.build({ //Vytvoreni noveho uzivatel
+                Email: req.body.email, 
+                Heslo: req.body.psswd
+            })
+            .save() //Ulozit do databaze
+        
+            //Generovani tokenu
+            const token = signToken(newUser);
+            //Odeslani tokenu clientovi
+            return res.status(200).json({token:token, message: 'user created'});
+        }
+
     })
-    .save()
-    .then()
-    .catch(error => console.error(error)
-    );
-    const token = JWT.sign({
-        iss: 'doodle',
-        sub: user.UzivatelID, // Podle ceho se bude rozpoznavat
-        iat: new Date().getTime(),
-        exp: new Date().setDate(new Date().getDate() + 1)
-    }, 'doodle_auth');
+} 
 
-    res.status(200).json({token: token});
-}
-
-export default signUp;
+export default signup;
