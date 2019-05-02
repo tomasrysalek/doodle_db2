@@ -1,5 +1,4 @@
 import passport from 'passport';
-import secret from './secret.json';
 import User from '../src/api/uzivatel/uzivatel.model'
 import localStrategy from 'passport-local'
 const ExtractJwt  = require('passport-jwt').ExtractJwt
