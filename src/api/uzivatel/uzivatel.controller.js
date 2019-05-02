@@ -41,5 +41,4 @@ router.post('/signup',(req,res)=>{
 router.route('/secret').get(passport.authenticate('jwt',{session: false}),()=>{
     console.log('no idea')
 });
-
 export default router;

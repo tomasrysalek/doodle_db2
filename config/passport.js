@@ -8,17 +8,18 @@ const JwtStrategy = require('passport-jwt').Strategy
  * Spravit !!!!
  */
 passport.use(new JwtStrategy({
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
-    secretOrKey: `${secret.secret}`,
-    
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'), //'authorization' nazev header pri dotazu 
+    secretOrKey: 'doodle_auth',
 },async(payLoad,done) => {
     try{
-        const user = await User.findByPk({where: {UzivatelID: payLoad.sub}});
+        const user = User.findByPk(payLoad.sub);
         if(!user){
+            console.log('not found')
             return done(null,false);
         }
         done(null,user)
     }catch(error){
+        console.log('ooops')
         done(error,false);
     }
 }))
