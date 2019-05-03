@@ -1,6 +1,7 @@
 import passport from 'passport';
 import User from '../src/api/uzivatel/uzivatel.model'
 import localStrategy from 'passport-local'
+import secret from './secret.json'
 const ExtractJwt  = require('passport-jwt').ExtractJwt
 const JwtStrategy = require('passport-jwt').Strategy
 
@@ -18,7 +19,7 @@ async function validPass(user,psswd){
  */
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //'authorization' nazev header pri dotazu 
-    secretOrKey: 'doodle_auth',
+    secretOrKey: `${secret.secret}`,
 },async (payLoad,done) => {
     try{
         const user = User.findOne({where:{Email: payLoad.sub}}).then(foundUser =>{

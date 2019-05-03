@@ -13,7 +13,7 @@ router.post('/signin',userService.signin);
 router.post('/test',userService.test)
 //Secret Endpoint pouze test pro autentifikaci pomoci JWT FUNKCNI
 router.get('/secret',passport.authenticate('jwt',{session:false}),(req,res)=>{
-     console.log(req.user)
+     console.log(req.user.UzivatelID)
 })
 
 export default router;

@@ -16,7 +16,8 @@ async function validPass(user,psswd){
 
 function signToken (user) {
     return JWT.sign({
-        iss: 'doodle',
+        alg: HSA256,
+        iss: 'doodle_web_api',
         sub: user.Email, // Podle ceho se bude rozpoznavat
         exp: Math.floor(Date.now() / 1000) + (60 * 60), //Funkcni na jednu hodinu
     }, `${secret.secret}`);

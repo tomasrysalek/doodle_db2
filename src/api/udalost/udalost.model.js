@@ -1,6 +1,9 @@
 import connect from '../../../config/db';
 import Sequelize from 'sequelize';
 import Uzivatel from '../uzivatel/uzivatel.model'
+import Skupina from '../skupina/skupina.model'
+import Typupozorneni from '../typupozorneni/typupozorneni.model'
+import Adresa from '../adresa/adresa.model'
 const udalost = connect.define('udalost',{
     UdalostID:{
         type: Sequelize.INTEGER,
@@ -13,16 +16,19 @@ const udalost = connect.define('udalost',{
         allowNull: false
     },
     Datum:{
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue:new Date()
     },
     Nazev:{
         type: Sequelize.STRING(50)
     },
     Popis:{
-        type: Sequelize.STRING(120)
+        type: Sequelize.STRING(120),
+        defaultValue: ''
     },
     Upozorneni:{
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     },
     UzivatelID:{
         type: Sequelize.INTEGER,
@@ -43,6 +49,8 @@ const udalost = connect.define('udalost',{
     },
     TypupozorneniID:{
         type: Sequelize.INTEGER,
+        allowNull:true,
+        defaultValue: null,
         references:{
             model: Typupozorneni,
             key: 'TypupozorneniID'
@@ -50,6 +58,7 @@ const udalost = connect.define('udalost',{
     },
     PSC:{
         type: Sequelize.STRING(6),
+        allowNull: true,
         references:{
             model:Adresa,
             key:'PSC'
