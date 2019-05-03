@@ -11,12 +11,12 @@ export const signUp = data => {
             console.log('datafromserver',res.data)
             const serverToken = res.data;
             console.log('serverToken',serverToken)
-            if(serverToken.message=== "user already exists"){
-                console.log('uzivatel uz asi existuje')
+            if(serverToken.message=== "email"){
+                alert('Email jiz existuje')
                 dispatch({
                     type: AUTH_ERROR,
                     payload: res.data.message
-                })
+            })
             }else(
                 dispatch({
                     type: AUTH_PRIHLASEN,
@@ -24,7 +24,6 @@ export const signUp = data => {
                 })
                 
             )
-            
             
             localStorage.setItem('JWT_TOKEN',res.data.token);
             console.log('token',res.data.token)

@@ -1,7 +1,8 @@
 import connect from '../../../config/db';
 import Sequelize from 'sequelize';
+import bcrypt from 'bcryptjs';
 
-const user = connect.define('user',{
+const User = connect.define('user',{
     Email:{
         type: Sequelize.STRING(50),
         allowNull:false
@@ -10,7 +11,7 @@ const user = connect.define('user',{
      * Vyresit hashovani hesla!!!!!
      */
     Heslo:{
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(250),
         allowNull:false
     },
     UzivatelID:{
@@ -22,7 +23,26 @@ const user = connect.define('user',{
 },{
     freezeTableName:true,
     timestamps:false,
-    tableName:'Uzivatel'
+    tableName:'Uzivatel',
+    /**
+     * Pred ulozenim uzivatel do databaze hashovat heslo
+     */
+    hooks:{
+        beforeSave: async (user,options,next) => {
+            try {
+                //Generovani SALT
+                const salt = await bcrypt.genSalt(10);
+                //Generovani hashovaneho hesla
+                const hashed = await bcrypt.hash(user.Heslo,salt);
+                //Ulozeni hashovaneho hesla
+                user.Heslo = hashed;
+                next();
+            }catch(err){
+                //next(err)
+            }
+        }
+    }
 });
 
-export default user;
+
+export default User;
