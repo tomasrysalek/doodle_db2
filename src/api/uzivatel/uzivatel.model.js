@@ -25,7 +25,7 @@ const User = connect.define('user',{
     timestamps:false,
     tableName:'Uzivatel',
     /**
-     * Pred ulozenim uzivatel do databaze hashovat heslo
+     * Pred ulozenim uzivatele do databaze hashovat heslo
      */
     hooks:{
         beforeSave: async (user,options,next) => {

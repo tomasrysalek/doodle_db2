@@ -16,7 +16,6 @@ async function validPass(user,psswd){
 
 function signToken (user) {
     return JWT.sign({
-        alg: HSA256,
         iss: 'doodle_web_api',
         sub: user.Email, // Podle ceho se bude rozpoznavat
         exp: Math.floor(Date.now() / 1000) + (60 * 60), //Funkcni na jednu hodinu
@@ -25,8 +24,8 @@ function signToken (user) {
 
 //Registrace service
 function signup (req,res){
-    const user1 = User.findOne({where:{Email: req.body.email}}).then(user =>{
-        if(user){
+    const user1 = User.findOne({where:{Email: req.body.email}}).then(foundUser =>{
+        if(foundUser){
             return res.json({message: 'email'})
         }
         else{
@@ -76,12 +75,12 @@ async function signin (req,res,err,done){
 }
 
 function test(req,res){
-    const user = User.findOne({where:{Email: req.body.email}}).then(user =>{
-        const token = signToken(user.UzivatelID);
+    const user = User.findOne({where:{Email: req.body.email}}).then(foundUser =>{
+        const token = signToken(foundUser.UzivatelID);
         const de = JWT.decode(token);
         console.log('token',token);
         console.log('detoken',de);
-        console.log(user.UzivatelID)
+        console.log(foundUser.UzivatelID)
     });
 
 }
