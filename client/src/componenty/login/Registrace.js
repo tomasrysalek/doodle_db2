@@ -17,9 +17,14 @@ class Registrace extends Component{
     async onSubmit(data){
         console.log('data',data);
         await this.props.signUp(data);
+        if(this.props.isAuth){
+            this.props.history.push('/kalendar');
+        }
     }
 
+
     render(){
+        console.log('sss',this.props.isAuth);
         const { handleSubmit  } =this.props;
         return(
             <div className="d-flex justify-content-center">
@@ -66,14 +71,26 @@ class Registrace extends Component{
                     <div className="registraceLink">
                         <Nav.Link href="/prihlaseni">prihlaseni</Nav.Link>
                     </div>
+                    <div>
+                        <p>
+                            {this.props.errMsg}
+                        </p>
+                    </div>
                 </form>
             </div>
         );
     }
 };
 
+function mapStateProps(state){
+    return{
+        errMsg: state.auth.errorMessage,
+        isAuth: state.auth.isAuthenticated
+    }
+}
+
 export default compose(
-    connect(null,actions),
+    connect(mapStateProps,actions),
     reduxForm( {form: 'registrace'})
 )(Registrace);
 

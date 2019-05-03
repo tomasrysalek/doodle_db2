@@ -15,7 +15,12 @@ class Prihlaseni extends Component{
     async onSubmit(data){
         console.log('data',data);
         await this.props.signUp(data);
+        if(this.props.isAuth){
+            this.props.history.push('/kalendar');
+        }
     }
+
+
     render(){
         const { handleSubmit } =this.props;
         return(
@@ -51,13 +56,25 @@ class Prihlaseni extends Component{
                     <div className="prihlaseniLink">
                         <Nav.Link href="/registrace">Registrace</Nav.Link>
                     </div>
+                    <div>
+                        <p>
+                            {this.props.errMsg}
+                        </p>
+                    </div>
                 </form>
             </div>
         );
     }
 };
 
+function mapStateProps(state){
+    return{
+        errMsg: state.auth.errorMessage,
+        isAuth: state.auth.isAuthenticated
+    }
+}
+
 export default compose(
-    connect(null,actions),
+    connect(mapStateProps,actions),
     reduxForm( {form: 'prihlaseni'})
 )(Prihlaseni);
