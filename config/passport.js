@@ -14,21 +14,20 @@ async function validPass(user,psswd){
 }
 
 /**
- * Spravit !!!!
+ * Finally Working
  */
 passport.use(new JwtStrategy({
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'), //'authorization' nazev header pri dotazu 
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //'authorization' nazev header pri dotazu 
     secretOrKey: 'doodle_auth',
-},async(payLoad,done) => {
+},async (payLoad,done) => {
     try{
-        const user = User.findByPk(payLoad.sub);
-        if(!user){
-            console.log('not found')
-            return done(null,false);
-        }
-        done(null,user)
+        const user = User.findOne({where:{Email: payLoad.sub}}).then(foundUser =>{
+            if(!foundUser){
+                return done(null,false)
+            }
+            done(null,foundUser);
+        });
     }catch(error){
-        console.log('ooops')
         done(error,false);
     }
 }))
@@ -38,13 +37,13 @@ passport.use(new localStrategy({
     usernameField: 'Email'
 }, async(email,password,done)=>{
     try{
-        const user = User.findOne({where: {Email: email}});
-
-        if(!user){
+        const user = User.findOne({where: {Email: email}}).then( async foundUser => {
+            
+        if(!foundUser){
             return done(null,false);
         }
         
-        const match = await validPass(user,password);
+        const match = await validPass(foundUser,password);
     
         if(!match){
             return done(null,false);
@@ -53,6 +52,8 @@ passport.use(new localStrategy({
             return user;
             // done(null,user);
         }
+        });
+
     }
     catch(err){
         done(err,false);

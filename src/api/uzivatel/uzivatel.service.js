@@ -17,57 +17,72 @@ async function validPass(user,psswd){
 function signToken (user) {
     return JWT.sign({
         iss: 'doodle',
-        sub: user.UzivatelID, // Podle ceho se bude rozpoznavat
-        iat: new Date().getDate(),
-        exp: new Date().setDate(new Date().getDate() + 1)
+        sub: user.Email, // Podle ceho se bude rozpoznavat
+        exp: Math.floor(Date.now() / 1000) + (60 * 60), //Funkcni na jednu hodinu
     }, `${secret.secret}`);
 }
 
 //Registrace service
-function signup (req,res,err){
-    const user = User.findOne({where:{Email: req.body.email}}).then(user =>{
+function signup (req,res){
+    const user1 = User.findOne({where:{Email: req.body.email}}).then(user =>{
         if(user){
-            return res.json({message: 'email already exists'})
+            return res.json({message: 'email'})
         }
         else{
             const newUser = User.build({ //Vytvoreni noveho uzivatel
                 Email: req.body.email, 
                 Heslo: req.body.psswd
-            })
-            .save() //Ulozit do databaze
+            }) //Ulozit do databaze
             
-            //Generovani tokenu
-            const token = signToken(newUser);
-            //Odeslani tokenu clientovi
-            return res.status(200).json({token:token, message: 'user created'});
-        }
 
-    })
-} 
+            /**
+             * Generovani tokenu musi byt pred .save() po .save() se instance smaze
+             */
+            const token = signToken(newUser);
+            //Generovani tokenu
+            newUser.save()
+            //Odeslani tokenu clientovi
+            return res.status(200).json({token: token, message: 'user created'});
+        }
+    })}
 /**
  * Login service
  * !!CANT POST!!
  * !!OPRAVIT!!
  */
-async function login (req,res,err,done){
-    const user = User.findOne({where:{Email: req.body.email}})
-    try{
-        if(!user){
-            return done(null,false)
+async function signin (req,res,err,done){
+    const user = User.findOne({where:{Email: req.body.email}}).then(foundUser=>{
+        try{
+            if(!foundUser){
+                return done(null,false)
+            }
+    
+            const psswdMatch = validPass(foundUser,req.body.psswd)
+    
+            if(!psswdMatch){
+                return done(null,false);
+            }
+            else{
+                const token = signToken(foundUser);
+                return res.json({token:token});
+            }
         }
+        catch(err){
+            done(err,false);
+        }
+    })
 
-        const psswdMatch = await validPass(user,req.body.psswd)
-
-        if(!psswdMatch){
-            return done(null,false);
-        }
-        else{
-            return user;
-        }
-    }
-    catch(err){
-        done(err,false);
-    }
 }
 
-export default {signup,login};
+function test(req,res){
+    const user = User.findOne({where:{Email: req.body.email}}).then(user =>{
+        const token = signToken(user.UzivatelID);
+        const de = JWT.decode(token);
+        console.log('token',token);
+        console.log('detoken',de);
+        console.log(user.UzivatelID)
+    });
+
+}
+
+export default {signup,signin,test};

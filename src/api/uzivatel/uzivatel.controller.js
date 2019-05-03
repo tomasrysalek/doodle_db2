@@ -1,6 +1,4 @@
 import express from 'express';
-import User from './uzivatel.model';
-import JWT from 'jsonwebtoken';
 import passport from 'passport';
 import passConf from '../../../config/passport'
 import userService from './uzivatel.service';
@@ -11,13 +9,11 @@ const router = express.Router();
 //Registrace ENDPOINT
 router.post('/signup',userService.signup);
 //Prihlaseni ENDPOINT
-router.post('/login',userService.login);
+router.post('/signin',userService.signin);
+router.post('/test',userService.test)
+//Secret Endpoint pouze test pro autentifikaci pomoci JWT FUNKCNI
+router.get('/secret',passport.authenticate('jwt',{session:false}),(req,res)=>{
+     console.log(req.user)
+})
 
-
-/** 
-* Spravit !!!
-*/
-router.route('/secret').get(passport.authenticate('jwt',{session: false}),()=>{
-    console.log('no idea')
-});
 export default router;
