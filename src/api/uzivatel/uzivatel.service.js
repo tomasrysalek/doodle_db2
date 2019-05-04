@@ -50,39 +50,25 @@ function signup (req,res){
  * !!CANT POST!!
  * !!OPRAVIT!!
  */
-async function signin (req,res,err,done){
+function login (req,res){
     const user = User.findOne({where:{Email: req.body.email}}).then(foundUser=>{
         try{
-            if(!foundUser){
-                return done(null,false)
+            const psswdMatch = validPass(foundUser,req.body.psswd) 
+            
+            if(!foundUser || !psswdMatch){
+                return res.json({mssg:'Email or Password'})
             }
-    
-            const psswdMatch = validPass(foundUser,req.body.psswd)
-    
-            if(!psswdMatch){
-                return done(null,false);
-            }
+
             else{
                 const token = signToken(foundUser);
-                return res.json({token:token});
+                return res.status(200).json({token:token});
             }
         }
         catch(err){
-            done(err,false);
+            res.json({mssg:err})
         }
     })
-
 }
 
-function test(req,res){
-    const user = User.findOne({where:{Email: req.body.email}}).then(foundUser =>{
-        const token = signToken(foundUser.UzivatelID);
-        const de = JWT.decode(token);
-        console.log('token',token);
-        console.log('detoken',de);
-        console.log(foundUser.UzivatelID)
-    });
 
-}
-
-export default {signup,signin,test};
+export default {signup,login};

@@ -16,4 +16,4 @@ const prava = connect.define('prava',{
     tableName:'Prava',
 });
 
-export default prava;   
+export default prava;

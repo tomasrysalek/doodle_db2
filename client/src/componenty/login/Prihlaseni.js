@@ -41,7 +41,7 @@ class Prihlaseni extends Component{
                     <div>
                         <fieldset>
                             <Field
-                                name="password"
+                                name="psswd"
                                 type="password"
                                 autocomplete="current-password"
                                 id="password"

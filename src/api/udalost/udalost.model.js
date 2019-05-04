@@ -32,6 +32,7 @@ const udalost = connect.define('udalost',{
     },
     UzivatelID:{
         type: Sequelize.INTEGER,
+        defaultValue:null,
         //Vytvareni ciziho klice
         references:{
             //Tabulka
@@ -59,6 +60,7 @@ const udalost = connect.define('udalost',{
     PSC:{
         type: Sequelize.STRING(6),
         allowNull: true,
+        defaultValue:null,
         references:{
             model:Adresa,
             key:'PSC'

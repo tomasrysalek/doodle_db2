@@ -19,3 +19,5 @@ const adresa = connect.define('adresa',{
     tableName:'Adresa'
 
 })
+
+export default adresa;

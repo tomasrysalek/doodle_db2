@@ -5,7 +5,7 @@ const skupina = connect.define('skupina',{
     Nazev:{
         type: Sequelize.STRING(50)
     },
-    SKupinaID:{
+    SkupinaID:{
         type: Sequelize.INTEGER,
         primaryKey:true,
         autoIncrement:true

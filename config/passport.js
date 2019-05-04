@@ -50,7 +50,7 @@ passport.use(new localStrategy({
             return done(null,false);
         }
         else{
-            return user;
+            return foundUser;
             // done(null,user);
         }
         });

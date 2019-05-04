@@ -1,26 +1,31 @@
 import sk from './skupina.model';
 import SP from '../skupina_prava/sk_prava.model';
 import User from '../uzivatel/uzivatel.model';
+
+ function addSP(nazev,user){
+     sk.findOne({where: {Nazev: nazev}}).then(foundSK => {
+         SP.build({
+             UzivatelID: user.UzivatelID,
+             SkupinaID: foundSK.SkupinaID,
+             ID_Prava: 1
+         }).save()
+     })
+ }
 /**
- * Vytvoreni skupiny a pridani zaznamu prav do tabulkz
- * !!Dodelat pro jakoukoliv skupinu!!
+ * Vytvoreni skupiny a pridani zaznamu prav do tabulkzy
+ * 
  */
 function create(req,res){
-    const skupina = sk.findOne({where: {Nazev: req.body.nazev}}).then(skupina => {
-        if(skupina){
-            return res.json({mssg: 'Group already exists'})
+    sk.findOne({where: {Nazev: req.body.nazev}}).then(async foundSK => {
+        if(foundSK){
+            return res.json({mssg: 'Group already exists',id: foundSK.SkupinaID})
         }
         else{
-            const newSkupina = sk.build({
+           await sk.build({
                 Nazev: req.body.nazev
-            })
-            const newSP = SP.build({
-                ID_Prava: 1,
-                SkupinaID: 4,
-                UzivatelID: req.user.UzivatelID,
-            })
-            newSkupina.save();
-            newSP.save();
+            }).save()
+            addSP(req.body.nazev,req.user);
+
         }
     })
 }
