@@ -8,7 +8,6 @@ import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
 
 class Registrace extends Component{
-
     constructor(props){
         super(props)
         this.onSubmit = this.onSubmit.bind(this);
@@ -24,7 +23,8 @@ class Registrace extends Component{
 
 
     render(){
-        console.log('sss',this.props.isAuth);
+        console.log('regisauth',this.props.isAuth);
+        console.log('referrmasg',this.props.errMsg);
         const { handleSubmit  } =this.props;
         return(
             <div className="d-flex justify-content-center">

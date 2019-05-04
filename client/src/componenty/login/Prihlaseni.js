@@ -12,9 +12,10 @@ class Prihlaseni extends Component{
         super(props)
         this.onSubmit = this.onSubmit.bind(this);
     }
+
     async onSubmit(data){
         console.log('data',data);
-        await this.props.signUp(data);
+        await this.props.signIn(data);
         if(this.props.isAuth){
             this.props.history.push('/kalendar');
         }
@@ -22,6 +23,8 @@ class Prihlaseni extends Component{
 
 
     render(){
+        console.log('sss',this.props.isAuth);
+        console.log('sss',this.props.errMsg);
         const { handleSubmit } =this.props;
         return(
             <div className="d-flex justify-content-center">

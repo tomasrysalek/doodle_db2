@@ -3,7 +3,7 @@ import {AUTH_PRIHLASEN,AUTH_ERROR,AUTH_ODHLASEN} from '../actions/type'
 const DEDAULT_STATE = {
     isAuthenticated:false,
     token: '',
-    errorMessage: ''
+    errorMessage: '134'
 };
 
 export default (state = DEDAULT_STATE, action) => {
