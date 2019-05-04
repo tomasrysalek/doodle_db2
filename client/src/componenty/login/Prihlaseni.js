@@ -16,6 +16,7 @@ class Prihlaseni extends Component{
     async onSubmit(data){
         console.log('data',data);
         await this.props.signIn(data);
+        await this.props.getUdalosti();
         if(this.props.isAuth){
             this.props.history.push('/kalendar');
         }
@@ -23,8 +24,9 @@ class Prihlaseni extends Component{
 
 
     render(){
-        console.log('sss',this.props.isAuth);
-        console.log('sss',this.props.errMsg);
+        console.log('isauth',this.props.isAuth);
+        console.log('errmsg',this.props.errMsg);
+        console.log('token',this.props.token);
         const { handleSubmit } =this.props;
         return(
             <div className="d-flex justify-content-center">
@@ -72,6 +74,7 @@ class Prihlaseni extends Component{
 
 function mapStateProps(state){
     return{
+        errMsg: state.auth.token,
         errMsg: state.auth.errorMessage,
         isAuth: state.auth.isAuthenticated
     }

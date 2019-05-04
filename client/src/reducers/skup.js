@@ -1,16 +1,16 @@
 import {AUTH_PRIHLASEN,AUTH_ERROR,AUTH_ODHLASEN} from '../actions/type'
 const DEDAULT_STATE = {
-    udalosti: []
+    skupina: []
 };
 
 export default (state = DEDAULT_STATE, action) => {
     switch(action.type){
         case AUTH_PRIHLASEN:
-            return { ...state,udalosti:action.udalost}
+            return { ...state,skupina:action.skupiny}
         case AUTH_ERROR:
-            return { ...state,udalosti:[]}
+            return { ...state,skupina:[]}
         case AUTH_ODHLASEN:
-            return { ...state,udalosti:[]}
+            return { ...state,skupina:[]}
         default:
             return state;
     }

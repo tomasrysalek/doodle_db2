@@ -47,24 +47,25 @@ export const signIn = data => {
             const res = await axios.post('http://localhost:4433/user/login' , data)
             console.log('datafromserver',res.data)
             const serverToken = res.data;
-            console.log('serverToken',serverToken)
-            if(serverToken.mssg=== "Email or Password"){
-                alert('Email jiz existuje')
-                dispatch({
-                    type: AUTH_ERROR,
-                    payload: res.data.mssg
-            })
-            }else{
+            console.log('serverToken',serverToken.token)
+            //if(serverToken.mssg=== "Email or Password"){
+            //    alert('Email jiz existuje')
+            //    dispatch({
+            //        type: AUTH_ERROR,
+            //        payload: res.data.mssg
+            //})
+            //}else{
                 
                 dispatch({
                     type: AUTH_PRIHLASEN,
-                    payload: res.data.mssg
+                    payload: serverToken.token
                 });
-                this.getUdalosti();
-            }
+                
+            //}
             
-            localStorage.setItem('JWT_TOKEN',res.data.token);
-            console.log('token',res.data.token)
+            localStorage.setItem('JWT_TOKEN',serverToken.token);
+            console.log('token',serverToken.token)
+            //this.getUdalosti();
             
         } catch(err){
             dispatch({
@@ -82,8 +83,7 @@ export const signOut = ()=>{
 
         dispatch({
             type: AUTH_ODHLASEN,
-            payload: '',
-            udalost: {}
+            payload: ''
         })
     }
 }
@@ -93,30 +93,48 @@ export const getUdalosti = _ => {
     
     return async dispatch => {
         try {
-            const res = await axios.post('http://localhost:4433/udalost/getAll' , localStorage.getItem('JWT_TOKEN'))
+            //nefunguje nevim ako posilat token
+            //const res = await axios.get('http://localhost:4433/udalost/all' , localStorage.getItem('JWT_TOKEN'))
+            const res = await axios.get('http://localhost:4433/udalost/all')
             console.log('datafromserverKal',res.data)
             const serverKal = res.data;
             console.log('serverKal',serverKal)
            
             dispatch({
+                type: AUTH_PRIHLASEN,
                 udalost: serverKal.Udalosti
             })
                 
             
             
         } catch(err){
+
+            dispatch({
+                type: AUTH_ERROR,
+                payload: 'errGet'
+            })
             
             console.log('err', err)
         }
     }
 }
 
-export const getAdd = data => {
+export const addUdalost = data => {
 
-    return async _ => {
+    return async dispatch => {
         try {
             await axios.post('http://localhost:4433/udalost/add' , data)
-            
+            //nefunguje nevim ako posilat token + stejny problem pro pridani udalosti
+            //const res = await axios.get('http://localhost:4433/udalost/all' , localStorage.getItem('JWT_TOKEN'))
+            const res = await axios.get('http://localhost:4433/udalost/all')
+            console.log('datafromserverKal',res.data)
+            const serverKal = res.data;
+            console.log('serverKal',serverKal)
+           
+            dispatch({
+                type: AUTH_PRIHLASEN,
+                udalost: serverKal.Udalosti
+            })
             
         } catch(err){
             console.log('err', err)

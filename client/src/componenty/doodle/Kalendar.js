@@ -6,30 +6,115 @@ import { connect} from 'react-redux';
 import { compose} from 'redux';
 import axios from 'axios';
 
+import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
 import * as reducer from '../../reducers';
+import RenderUdalost from './RenderUdalost';
 class Kalendar extends Component{
     state = {
-        udalosti : []
+        udalostiState : []
     }
     constructor(props){
         super(props)
-        this.onSubmit = this.onSubmit.bind(this);
-        this.state.udalosti = this.props.kalUdalosti;
-    }
-
-    async onSubmit(data){
-        //console.log('data',data);
-        //await this.props.addUdalost(data);
+        this.onSubmitadd = this.onSubmitadd.bind(this);
+        this.onSubmitget = this.onSubmitget.bind(this);
+        
+        if(this.props.kalUdalosti === undefined){
+            this.state.udalostiState = [];
+        }else{
+            this.state.udalostiState = this.props.kalUdalosti;
+        }
+        
+        console.log('udalostiState',this.state.udalostiState);
         
     }
 
+    async onSubmitadd(data){
+        console.log('data',data);
+        await this.props.addUdalost(data);
+        
+    }
+
+    async onSubmitget(){
+        await this.props.getUdalosti();
+        if(this.props.kalUdalosti === undefined){
+            this.state.udalostiState = [];
+        }else{
+            this.state.udalostiState = this.props.kalUdalosti;
+        }
+        console.log('onSubmitPrirazeni',this.props.kalUdalosti)
+    }
+
+    
+
     render(){
-        console.log('udd',this.props.kalUdalosti);
+        
+        const { handleSubmit  } =this.props;
         return(
             <div>
-                Zacni neco delat a vytvor si svuj kalendar !!!!
+                <div>
+                    <p>Zacni neco delat a vytvor si svuj kalendar !!!!</p>
+                    <RenderUdalost item={this.state.udalostiState}/>
+                    {console.log('kalerrMsg',this.props.errMsg)}
+                    {console.log('kalisAuth',this.props.isAuth)}
+                    {console.log('kalUdalosti',this.props.kalUdalosti)}
+                </div>
+
+                <form className="getUdalosti" onSubmit={handleSubmit(this.onSubmitget)}>
+                    <button type="submit" className="btn btn-dark">Zobraz udalosti</button>
+                </form>
+                
+                
+                
+                
+                <div className="d-flex justify-content-center">
+                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitadd)}>
+                    <div className="form">
+                        
+                        <fieldset>
+                            <Field
+                                name="Nazev"
+                                type="text"
+                                id="Nazev"
+                                label="Zadejte nazev udalosti:"
+                                placeholder="Muj Nazev"
+                                component={MujInput}/>
+                        </fieldset>
+                        <fieldset>
+                            <Field
+                                name="Popis"
+                                type="text"
+                                id="Popis"
+                                label="Zadejte popis udalosti:"
+                                placeholder="Muj popis"
+                                component={MujInput}/>
+                        </fieldset>
+                        <fieldset>
+                            <Field
+                                name="Datum"
+                                type="date"
+                                id="Datum"
+                                label="Zadejte datum:"
+                                placeholder="21.2.2511"
+                                component={MujInput}/>
+                        </fieldset>
+                        <fieldset>
+                            <Field
+                                name="PSC"
+                                type="number"
+                                id="PSC"
+                                label="Zadej PSC"
+                                placeholder="12345"
+                                component={MujInput}/>
+                        </fieldset>
+                    </div>
+                    <div className="mt-2 d-flex justify-content-center">
+                        <button type="submit" className="btn btn-dark">pridej udalost</button>
+                    </div>
+                </form>
             </div>
+        </div>
+           
         );
     };
 
@@ -37,11 +122,13 @@ class Kalendar extends Component{
 
 };
 
+
+
 function mapStateProps(state){
     return{
-        //kalUdalosti: state.kal.udalosti
+        errMsg: state.auth.errorMessage,
+        isAuth: state.auth.isAuthenticated,
         kalUdalosti: state.kal.udalosti
-        //isAuth: state.auth.isAuthenticated
     }
 }
 
