@@ -19,7 +19,7 @@ class Skupiny extends Component{
         super(props)
         this.onSubmitAddUser = this.onSubmitAddUser.bind(this);
         this.onSubmitCreate = this.onSubmitCreate.bind(this);
-        
+        this.onSubmitUdalost = this.onSubmitUdalost.bind(this);
 
         this.getSkupiny = this.getSkupiny.bind(this);
         
@@ -34,15 +34,23 @@ class Skupiny extends Component{
     }
 
     async onSubmitAddUser(data){
-        console.log('dataadd',data);
-        console.log('dataaddstate',this.state);
+        //console.log('dataadd',data);
+        //console.log('dataaddstate',this.state);
         await this.props.addUserSkupina(data,this.state.skupinaJmeno);
 
         
     }
 
+    async onSubmitUdalost(data){
+       // console.log('dataadd',data);
+       // console.log('dataaddstate',this.state);
+        await this.props.addUdalost(data,this.state.skupinaJmeno);
+
+        
+    }
+
     async onSubmitCreate(dataa){
-        console.log('datacreate',dataa);
+        //console.log('datacreate',dataa);
         await this.props.createSkupinu(dataa);
         
     }
@@ -54,8 +62,8 @@ class Skupiny extends Component{
         }else{
             this.state.skupinaState = this.props.skupiny;
         }
-        console.log('skupState',this.state.skupinaState);
-        console.log('skupData', this.props.skupiny)
+      //  console.log('skupState',this.state.skupinaState);
+      //  console.log('skupData', this.props.skupiny)
     }
 
     handleOptionChange = changeEvent => {
@@ -104,25 +112,81 @@ class Skupiny extends Component{
                         }
                         </form>
                         <div className="d-flex justify-content-center">
-                                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitAddUser)}>
-                                    <div className="form">
-                                        
-                                        <fieldset>
-                                            <Field
-                                                name="email"
-                                                type="email"
-                                                id="emailADD"
-                                                label="Zadejte nazev Skupiny:"
-                                                placeholder="jkjkj@sssds.vvs"
-                                                
-                                                component={MujSkupinovyInput}/>
-                                        </fieldset>
-                                    </div>
-                                    <div className="mt-2 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-dark">pridej uzivatele</button>
-                                    </div>
-                                </form>
-                            </div>
+                            <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitAddUser)}>
+                                <div className="form">
+                                    
+                                    <fieldset>
+                                        <Field
+                                            name="email"
+                                            type="email"
+                                            id="emailADD"
+                                            label="Zadejte nazev Skupiny:"
+                                            placeholder="jkjkj@sssds.vvs"
+                                            
+                                            component={MujSkupinovyInput}/>
+                                    </fieldset>
+                                </div>
+                                <div className="mt-2 d-flex justify-content-center">
+                                    <button type="submit" className="btn btn-dark">pridej uzivatele</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div className="d-flex justify-content-center">
+                            <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitUdalost)}>
+                                <div className="form">
+                                    
+                                    <fieldset>
+                                        <Field
+                                            name="nazev"
+                                            type="text"
+                                            id="Nazev"
+                                            label="Zadejte nazev udalosti:"
+                                            placeholder="Muj Nazev"
+                                            component={MujInput}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <Field
+                                            name="popis"
+                                            type="text"
+                                            id="Popis"
+                                            label="Zadejte popis udalosti:"
+                                            placeholder="Muj popis"
+                                            component={MujInput}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <Field
+                                            name="datum"
+                                            type="datetime-local"
+                                            id="Datum"
+                                            label="Zadejte datum:"
+                                            placeholder="21.2.2511"
+                                            component={MujInput}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <Field
+                                            name="adresa"
+                                            type="text"
+                                            id="adresa"
+                                            label="Zadejte adresa:"
+                                            placeholder="Mesto Ulice"
+                                            component={MujInput}/>
+                                    </fieldset>
+                                    <fieldset>
+                                        <Field
+                                            name="psc"
+                                            type="number"
+                                            id="PSC"
+                                            label="Zadej PSC"
+                                            placeholder="12345"
+                                            component={MujInput}/>
+                                    </fieldset>
+                                </div>
+                                <div className="mt-2 d-flex justify-content-center">
+                                    <button type="submit" className="btn btn-dark">pridej udalost skupiny</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     

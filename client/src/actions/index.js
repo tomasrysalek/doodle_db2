@@ -116,7 +116,16 @@ export const getUdalosti = _ => {
     }
 }
 
-export const addUdalost = data => {
+export const addUdalost = (metadata,jmenoskupiny) => {
+    const data = {
+        nazev: metadata.nazev,
+        popis: metadata.popis,
+        datum: metadata.datum,
+        adresa: metadata.adresa,
+        psc: metadata.psc,
+        skupina : jmenoskupiny
+    }
+    console.log('addudalostSkupiny',data)
 
     return async dispatch => {
         try {
