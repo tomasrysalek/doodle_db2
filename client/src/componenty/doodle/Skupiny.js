@@ -4,6 +4,7 @@ import { Nav } from 'react-bootstrap';
 import { connect} from 'react-redux';
 import { compose} from 'redux';
 
+import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
 
 class Skupiny extends Component{
@@ -24,7 +25,7 @@ class Skupiny extends Component{
             this.state.skupinaState = this.props.skupiny;
         }
         
-        console.log('udalostiState',this.state.skupinaState);
+        console.log('skupState',this.state.skupinaState);
         
     }
 
@@ -41,15 +42,48 @@ class Skupiny extends Component{
     }
     async getSkupiny(){
         
-        await this.props.getUdalosti();
-        
+        await this.props.getSkupina();
+        if(this.props.skupiny === undefined){
+            this.state.skupinaState = [];
+        }else{
+            this.state.skupinaState = this.props.skupiny;
+        }
+        console.log('skupState',this.state.skupinaState);
+        console.log('skupData', this.props.skupiny)
     }
 
 
     render(){
+        const { handleSubmit  } =this.props;
         return(
             <div>
+                <div>
+
+                <form className="getUdalosti" onSubmit={handleSubmit(this.getSkupiny)}>
+                    <button type="submit" className="btn btn-dark">Zobraz skupiny</button>
+                </form>
                 Najdi si kamarády a udělejte skupinu !!!!
+                </div>
+                <div className="d-flex justify-content-center">
+                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitCreate)}>
+                        <div className="form">
+                            
+                            <fieldset>
+                                <Field
+                                    name="nazev"
+                                    type="text"
+                                    id="Nazev"
+                                    label="Zadejte nazev Skupiny:"
+                                    placeholder="Muj Nazev"
+                                    component={MujInput}/>
+                            </fieldset>
+                        </div>
+                        <div className="mt-2 d-flex justify-content-center">
+                            <button type="submit" className="btn btn-dark">vytvor skupinu</button>
+                        </div>
+                    </form>
+                </div>
+                
             </div>
         );
     }

@@ -145,13 +145,13 @@ export const createSkupinu = data => {
             
             //nefunguje nevim ako posilat token + stejny problem pro pridani skupin
             const res = await axios.post('http://localhost:4433/skupina/create' , data,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
-
-            const ress = await axios.post('http://localhost:4433/skupina/get' , data)
+            console.log('datafromserverskupCreate',res.data)
+            const ress = await axios.get('http://localhost:4433/skupina/getsk' , {headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
             //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
  
             dispatch({
                 type: AUTH_PRIHLASEN,
-                skupiny: ress.data.Udalosti,
+                skupiny: ress.data.skupiny,
                 errSkupMsg :res.data.mssg
             })
             
@@ -168,12 +168,12 @@ export const addUserSkupina = data => {
             const res = await axios.post('http://localhost:4433/skupina/adduser' , data)
             //nefunguje nevim ako posilat token + stejny problem pro pridani skupin      
 
-            const ress = await axios.post('http://localhost:4433/skupina/get' , data)
+            const ress = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
             //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
            
             dispatch({
                 type: AUTH_PRIHLASEN,
-                skupiny: ress.data.Udalosti,
+                skupiny: ress.data.skupiny,
                 errSkupMsg :res.data.mssg
             })
             
@@ -187,13 +187,16 @@ export const getSkupina = _ => {
 
     return async dispatch => {
         try {
-            const res = await axios.post('http://localhost:4433/skupina/get' , localStorage.getItem('JWT_TOKEN'))
+            const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
             //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
         
+            console.log('datafromserverskup',res.data)
+            const serverSkup = res.data;
+            console.log('serverSkup',serverSkup.skupiny)
 
             dispatch({
                 type: AUTH_PRIHLASEN,
-                skupiny: res.data.Udalosti,
+                skupiny: res.data.skupiny,
                 errSkupMsg :res.data.mssg
             })
             
