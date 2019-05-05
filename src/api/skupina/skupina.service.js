@@ -36,11 +36,7 @@ function create(req,res){
 function adduser(req,res){
     const user = User.findOne({where:{Email:req.body.email}}).then(foundUser => {
         if(foundUser){
-            const newSP = SP.build({
-                ID_Prava: 2,
-                SkupinaID: 4,
-                UzivatelID: foundUser.UzivatelID,
-            }).save()
+            addSP(req.body.skupina,foundUser)
         }else{
             res.json({mssg:'user does not exist'});
         }
@@ -60,4 +56,10 @@ function getAll(req,res){
 
 }
 
-export default {create,adduser,getAll};
+function getUdalosti(req,res){
+    sk.findAll({where:{Nazev:req.body.skupina}, raw:true}).then(foundUdalosti =>{
+        res.json({udalost: foundUdalosti})
+    })
+}
+
+export default {create,adduser,getAll,getUdalosti};
