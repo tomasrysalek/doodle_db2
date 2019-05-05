@@ -161,10 +161,19 @@ export const createSkupinu = data => {
     }
 }
 
-export const addUserSkupina = data => {
+export const addUserSkupina = (metadata,jmenoskupiny) => {
 
     return async dispatch => {
         try {
+            console.log('adduresSkupinydatadss',metadata)
+            console.log('adduresSkupinydatassd',jmenoskupiny)
+
+            const data = {
+                email: metadata.email,
+                skupina : jmenoskupiny
+            }
+            console.log('dataADDSkupina',data)
+            
             const res = await axios.post('http://localhost:4433/skupina/adduser' , data)
             //nefunguje nevim ako posilat token + stejny problem pro pridani skupin      
 
