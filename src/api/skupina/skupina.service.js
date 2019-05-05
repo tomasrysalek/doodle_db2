@@ -53,11 +53,11 @@ function getAll(req,res){
         for(var i = 0; i < foundSP.length; i++){
             skID.push(foundSP[i].SkupinaID)
         }
+        sk.findAll({where:{SkupinaID: skID }, raw:true}).then(foundSK=>{
+            return res.json({skupiny:foundSK})
+        })
     })
-    console.log(skID);
-    sk.findAll({where:{SkupinaID:[skID]}}).then(foundSK=>{
-        return res.json({skupiny:foundSK})
-    })
+
 }
 
 export default {create,adduser,getAll};
