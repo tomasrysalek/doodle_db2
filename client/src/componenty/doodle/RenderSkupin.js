@@ -10,7 +10,7 @@ export default function RenderUdalost(props) {
     if(skupConst !== []){
         return(
             
-            <div>
+            <div className="skupiny">
                 
             {
                 skupConst.map(item => 

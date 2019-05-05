@@ -6,7 +6,7 @@ export default function RenderUdalost(props) {
     console.log('list',udalostiConst)
     if(udalostiConst !== []){
         return(
-            <div>
+            <div className="udalosti">
             {
                 udalostiConst.map(item => 
                 (<div key={item.UdalostID} className="udalosti">
