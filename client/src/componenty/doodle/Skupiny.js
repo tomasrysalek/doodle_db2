@@ -90,9 +90,8 @@ class Skupiny extends Component{
                                     <input
                                     type="radio"
                                     name="check"
-                                    
                                     key={item.SkupinaID}
-                                    checked={this.state.skupinaJmeno}
+                                    checked={this.state.skupinaJmeno === item.Nazev}
                                     onChange={this.handleOptionChange}
                                     onClick={this.handleClick}
                                     value={item.Nazev}
