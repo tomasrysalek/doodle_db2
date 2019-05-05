@@ -92,7 +92,7 @@ class Kalendar extends Component{
                         <fieldset>
                             <Field
                                 name="datum"
-                                type="date"
+                                type="datetime-local"
                                 id="Datum"
                                 label="Zadejte datum:"
                                 placeholder="21.2.2511"

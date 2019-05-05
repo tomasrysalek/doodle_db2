@@ -6,6 +6,7 @@ import { compose} from 'redux';
 
 import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
+import RenderSkupin from './RenderSkupin';
 
 class Skupiny extends Component{
 
@@ -58,7 +59,11 @@ class Skupiny extends Component{
         return(
             <div>
                 <div>
-
+                <div className="d-flex justify-content-center">
+                    
+                    <RenderSkupin item={this.state.skupinaState}/>
+                    
+                </div>
                 <form className="getUdalosti" onSubmit={handleSubmit(this.getSkupiny)}>
                     <button type="submit" className="btn btn-dark">Zobraz skupiny</button>
                 </form>
