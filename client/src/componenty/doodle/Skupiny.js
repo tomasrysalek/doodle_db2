@@ -36,7 +36,7 @@ class Skupiny extends Component{
     async onSubmitAddUser(data){
         console.log('dataadd',data);
         console.log('dataaddstate',this.state);
-        await this.props.addUserSkupina(data);
+        await this.props.addUserSkupina(data,this.state.skupinaJmeno);
 
         
     }
@@ -63,7 +63,7 @@ class Skupiny extends Component{
         this.setState({
             skupinaJmeno: changeEvent.target.value
         });
-        console.log(this.state.skupinaJmeno)
+        
       };
     
 
