@@ -5,6 +5,7 @@ import { connect} from 'react-redux';
 import { compose} from 'redux';
 
 import MujInput from '../mojeComponenty/MujInput';
+import MujSkupinovyInput from '../mojeComponenty/MujSkupinovyInput';
 import * as actions from '../../actions';
 import RenderSkupin from './RenderSkupin';
 
@@ -32,7 +33,7 @@ class Skupiny extends Component{
 
     async onSubmitAddUser(data){
         console.log('dataadd',data);
-        await this.props.addUserSkupina(data);
+        //await this.props.addUserSkupina(data);
         
     }
 
@@ -56,7 +57,7 @@ class Skupiny extends Component{
 
     render(){
         const { handleSubmit  } =this.props;
-        
+        console.log('nazevSkupi',this.props)
         return(
             <div>
                 <div>
@@ -76,16 +77,17 @@ class Skupiny extends Component{
                                         
                                         <fieldset>
                                             <Field
-                                                name="nazev"
-                                                type="text"
-                                                id="Nazev"
+                                                name={item.Nazev}
+                                                type="email"
+                                                id={item.SkupinaID}
                                                 label="Zadejte nazev Skupiny:"
                                                 placeholder="Muj Nazev"
-                                                component={MujInput}/>
+                                                nazevSkupiny={item.Nazev}
+                                                component={MujSkupinovyInput}/>
                                         </fieldset>
                                     </div>
                                     <div className="mt-2 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-dark">vytvor skupinu</button>
+                                        <button type="submit" className="btn btn-dark">pridej uzivatele</button>
                                     </div>
                                 </form>
                             </div>
