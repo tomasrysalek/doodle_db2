@@ -97,9 +97,10 @@ export const getUdalosti = _ => {
             //nefunguje nevim ako posilat token
             //const res = await axios.get('http://localhost:4433/udalost/all' , localStorage.getItem('JWT_TOKEN'))
             const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
-            console.log('datafromserverKal',res.data)
+            console.log('datafromserverKal',res)
             const serverKal = res.data;
             console.log('serverKal',serverKal)
+            console.log('serverKalUdalost',serverKal.Udalosti)
            
             dispatch({
                 type: AUTH_PRIHLASEN,

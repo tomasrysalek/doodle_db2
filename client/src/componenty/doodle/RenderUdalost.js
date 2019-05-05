@@ -9,11 +9,12 @@ export default function RenderUdalost(props) {
             <div>
             {
                 udalostiConst.map(item => 
-                (<div key={item.UzivatelID} className="udalosti">
-                <p>{item.Nazev}</p>
-                <p>{item.Popis}</p>
-                <p>{item.Datum}</p>
-                <p>{item.PSC}</p>
+                (<div key={item.UdalostID} className="udalosti">
+
+                <p>Nazev udalosti: {item.Nazev}</p>
+                <p>Popis udalosti: {item.Popis}</p>
+                <p>Datum události: {item.Datum}</p>
+                <p>PSC: {item.PSC}</p>
                 </div>))
             }
             </div>

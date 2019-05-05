@@ -30,7 +30,7 @@ function add(req,res){
 
 function getAll(req,res){
     Udalost.findAll({where:{UzivatelID: req.user.UzivatelID},raw:true}).then(found =>{
-        return res.json([{Udalosti: found}]);
+        return res.json({Udalosti: found});
     })
 }
 
