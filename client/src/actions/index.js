@@ -48,20 +48,20 @@ export const signIn = data => {
             console.log('datafromserver',res.data)
             const serverToken = res.data;
             console.log('serverToken',serverToken.token)
-            //if(serverToken.mssg=== "Email or Password"){
-            //    alert('Email jiz existuje')
-            //    dispatch({
-            //        type: AUTH_ERROR,
-            //        payload: res.data.mssg
-            //})
-            //}else{
-                
+            if(serverToken.mssg=== "Email or Password"){
+                alert('Email jiz existuje')
+                dispatch({
+                    type: AUTH_ERROR,
+                    payload: res.data.mssg
+            })
+            }else{
+              
                 dispatch({
                     type: AUTH_PRIHLASEN,
                     payload: serverToken.token
                 });
                 
-            //}
+            }
             
             localStorage.setItem('JWT_TOKEN',serverToken.token);
             console.log('token',serverToken.token)
@@ -108,11 +108,6 @@ export const getUdalosti = _ => {
             
             
         } catch(err){
-
-            dispatch({
-                type: AUTH_ERROR,
-                payload: 'errGet'
-            })
             
             console.log('err', err)
         }
@@ -134,6 +129,71 @@ export const addUdalost = data => {
             dispatch({
                 type: AUTH_PRIHLASEN,
                 udalost: serverKal.Udalosti
+            })
+            
+        } catch(err){
+            console.log('err', err)
+        }
+    }
+}
+
+export const createSkupinu = data => {
+
+    return async dispatch => {
+        try {
+            
+            //nefunguje nevim ako posilat token + stejny problem pro pridani skupin
+            const res = await axios.post('http://localhost:4433/skupina/create' , data)
+
+            const ress = await axios.post('http://localhost:4433/skupina/get' , data)
+            //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
+ 
+            dispatch({
+                type: AUTH_PRIHLASEN,
+                skupiny: ress.data.Udalosti,
+                errSkupMsg :res.data.mssg
+            })
+            
+        } catch(err){
+            console.log('err', err)
+        }
+    }
+}
+
+export const addUserSkupina = data => {
+
+    return async dispatch => {
+        try {
+            const res = await axios.post('http://localhost:4433/skupina/adduser' , data)
+            //nefunguje nevim ako posilat token + stejny problem pro pridani skupin      
+
+            const ress = await axios.post('http://localhost:4433/skupina/get' , data)
+            //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
+           
+            dispatch({
+                type: AUTH_PRIHLASEN,
+                skupiny: ress.data.Udalosti,
+                errSkupMsg :res.data.mssg
+            })
+            
+        } catch(err){
+            console.log('err', err)
+        }
+    }
+}
+
+export const getSkupina = _ => {
+
+    return async dispatch => {
+        try {
+            const res = await axios.post('http://localhost:4433/skupina/get' , localStorage.getItem('JWT_TOKEN'))
+            //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
+        
+
+            dispatch({
+                type: AUTH_PRIHLASEN,
+                skupiny: res.data.Udalosti,
+                errSkupMsg :res.data.mssg
             })
             
         } catch(err){

@@ -74,7 +74,7 @@ class Prihlaseni extends Component{
 
 function mapStateProps(state){
     return{
-        errMsg: state.auth.token,
+        token: state.auth.token,
         errMsg: state.auth.errorMessage,
         isAuth: state.auth.isAuthenticated
     }

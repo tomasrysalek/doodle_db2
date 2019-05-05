@@ -8,7 +8,8 @@ export default function RenderUdalost(props) {
         return(
             <div>
             {
-                udalostiConst.map(item => (<div key={item.UzivatelID}>
+                udalostiConst.map(item => 
+                (<div key={item.UzivatelID} className="udalosti">
                 <p>{item.Nazev}</p>
                 <p>{item.Popis}</p>
                 <p>{item.Datum}</p>
