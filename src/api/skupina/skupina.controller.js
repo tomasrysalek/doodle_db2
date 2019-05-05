@@ -7,5 +7,5 @@ const router = express.Router();
 router.post('/create',passport.authenticate('jwt',{session:false}),skupinaService.create);
 //Pridej noveho clena skupiny
 router.post('/adduser',skupinaService.adduser);
-
+router.get('/getsk',passport.authenticate('jwt',{session:false}),skupinaService.getAll);
 export default router;

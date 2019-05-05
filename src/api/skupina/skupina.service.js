@@ -47,4 +47,17 @@ function adduser(req,res){
     })
 }
 
-export default {create,adduser};
+function getAll(req,res){
+    const skID= [];
+    SP.findAll({where:{UzivatelID: req.user.UzivatelID}}).then(foundSP =>{
+        for(var i = 0; i < foundSP.length; i++){
+            skID.push(foundSP[i].SkupinaID)
+        }
+    })
+    console.log(skID);
+    sk.findAll({where:{SkupinaID:[skID]}}).then(foundSK=>{
+        return res.json({skupiny:foundSK})
+    })
+}
+
+export default {create,adduser,getAll};

@@ -73,7 +73,7 @@ class Kalendar extends Component{
                         
                         <fieldset>
                             <Field
-                                name="Nazev"
+                                name="nazev"
                                 type="text"
                                 id="Nazev"
                                 label="Zadejte nazev udalosti:"
@@ -82,7 +82,7 @@ class Kalendar extends Component{
                         </fieldset>
                         <fieldset>
                             <Field
-                                name="Popis"
+                                name="popis"
                                 type="text"
                                 id="Popis"
                                 label="Zadejte popis udalosti:"
@@ -91,7 +91,7 @@ class Kalendar extends Component{
                         </fieldset>
                         <fieldset>
                             <Field
-                                name="Datum"
+                                name="datum"
                                 type="date"
                                 id="Datum"
                                 label="Zadejte datum:"
@@ -100,7 +100,16 @@ class Kalendar extends Component{
                         </fieldset>
                         <fieldset>
                             <Field
-                                name="PSC"
+                                name="adresa"
+                                type="text"
+                                id="adresa"
+                                label="Zadejte adresa:"
+                                placeholder="Mesto Ulice"
+                                component={MujInput}/>
+                        </fieldset>
+                        <fieldset>
+                            <Field
+                                name="psc"
                                 type="number"
                                 id="PSC"
                                 label="Zadej PSC"

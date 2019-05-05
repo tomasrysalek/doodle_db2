@@ -64,6 +64,7 @@ export const signIn = data => {
             }
             
             localStorage.setItem('JWT_TOKEN',serverToken.token);
+            
             console.log('token',serverToken.token)
             //this.getUdalosti();
             
@@ -95,7 +96,7 @@ export const getUdalosti = _ => {
         try {
             //nefunguje nevim ako posilat token
             //const res = await axios.get('http://localhost:4433/udalost/all' , localStorage.getItem('JWT_TOKEN'))
-            const res = await axios.get('http://localhost:4433/udalost/all')
+            const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
             console.log('datafromserverKal',res.data)
             const serverKal = res.data;
             console.log('serverKal',serverKal)
@@ -118,10 +119,9 @@ export const addUdalost = data => {
 
     return async dispatch => {
         try {
-            await axios.post('http://localhost:4433/udalost/add' , data)
-            //nefunguje nevim ako posilat token + stejny problem pro pridani udalosti
-            //const res = await axios.get('http://localhost:4433/udalost/all' , localStorage.getItem('JWT_TOKEN'))
-            const res = await axios.get('http://localhost:4433/udalost/all')
+            //Pridani tokenu
+            await axios.post('http://localhost:4433/udalost/add' , data,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+            const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
             console.log('datafromserverKal',res.data)
             const serverKal = res.data;
             console.log('serverKal',serverKal)
@@ -143,7 +143,7 @@ export const createSkupinu = data => {
         try {
             
             //nefunguje nevim ako posilat token + stejny problem pro pridani skupin
-            const res = await axios.post('http://localhost:4433/skupina/create' , data)
+            const res = await axios.post('http://localhost:4433/skupina/create' , data,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
 
             const ress = await axios.post('http://localhost:4433/skupina/get' , data)
             //nutnost ziskat info o vsech skupinach ve kterych je dany uzivatel
