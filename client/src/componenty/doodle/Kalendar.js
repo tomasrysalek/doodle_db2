@@ -51,9 +51,9 @@ class Kalendar extends Component{
         
         const { handleSubmit  } =this.props;
         return(
-            <div>
-                <div>
-                    <p>Zacni neco delat a vytvor si svuj kalendar !!!!</p>
+            <div className="d-flex justify-content-center">
+                <div className="udalostiKal">
+                    
                     <RenderUdalost item={this.state.udalostiState}/>
                     {console.log('kalerrMsg',this.props.errMsg)}
                     {console.log('kalisAuth',this.props.isAuth)}
@@ -67,7 +67,7 @@ class Kalendar extends Component{
                 
                 
                 
-                <div className="d-flex justify-content-center">
+                <div className="d-flex formKal">
                 <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitadd)}>
                     <div className="form">
                         

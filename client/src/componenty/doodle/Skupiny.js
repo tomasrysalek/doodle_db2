@@ -129,7 +129,7 @@ class Skupiny extends Component{
                             <form>
                             {
                                 this.state.skupinaState.map(item => 
-                                (<div key={item.SkupinaID} className="udalosti">
+                                (<div key={item.SkupinaID} className="skupiny">
 
                                 <p>Nazev Skupiny: {item.Nazev}</p>
 
@@ -151,121 +151,123 @@ class Skupiny extends Component{
                                 </div>))
                             }
                             </form>
-
-                            <form className="getUdalosti" onSubmit={handleSubmit(this.getSkupiny)}>
-                                <button type="submit" className="btn btn-dark">Zobraz skupiny</button>
-                            </form>
-                            <form className="getUdalosti" onSubmit={handleSubmit(this.ukazVytvoreniSkupiny)}>
-                                <button type="submit" className="btn btn-dark">Zobraz formulař pro vytvoření skupiny</button>
-                            </form>
-                            <form className="getUdalosti" onSubmit={handleSubmit(this.ukazVytvoreniUdalost)}>
-                                <button type="submit" className="btn btn-dark">Zobraz formulař pro vytvoření udalosti skupiny</button>
-                            </form>
-                            <form className="getUdalosti" onSubmit={handleSubmit(this.ukazPridaniUvivatele)}>
-                                <button type="submit" className="btn btn-dark">Zobraz formulař pro přidání člena do skupiny</button>
-                            </form>
-
-                            {this.state.pridaniUzivatele ?
-                            <div className="d-flex justify-content-center">
-                                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitAddUser)}>
-                                    <div className="form">
-                                        
-                                        <fieldset>
-                                            <Field
-                                                name="email"
-                                                type="email"
-                                                id="emailADD"
-                                                label="Zadejte email Uzivatele:"
-                                                placeholder="jkjkj@sssds.vvs"
-                                                
-                                                component={MujSkupinovyInput}/>
-                                        </fieldset>
-                                    </div>
-                                    <div className="mt-2 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-dark">pridej uzivatele</button>
-                                    </div>
+                            <div className="btnSkupiny">
+                                <form className="getSkupiny" onSubmit={handleSubmit(this.getSkupiny)}>
+                                    <button type="submit" className="btn btn-dark">Zobraz skupiny</button>
+                                </form>
+                                <form className="getVytvoreniSkupiny" onSubmit={handleSubmit(this.ukazVytvoreniSkupiny)}>
+                                    <button type="submit" className="btn btn-dark">Zobraz formulař pro vytvoření skupiny</button>
+                                </form>
+                                <form className="getVytvoreniUdalost" onSubmit={handleSubmit(this.ukazVytvoreniUdalost)}>
+                                    <button type="submit" className="btn btn-dark">Zobraz formulař pro vytvoření udalosti skupiny</button>
+                                </form>
+                                <form className="getPridaniUvivatele" onSubmit={handleSubmit(this.ukazPridaniUvivatele)}>
+                                    <button type="submit" className="btn btn-dark">Zobraz formulař pro přidání člena do skupiny</button>
                                 </form>
                             </div>
-                            :null}
-                            {this.state.vytvoreniUdalosti ?
-                            <div className="d-flex justify-content-center">
-                                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitUdalost)}>
-                                    <div className="form">
-                                        
-                                        <fieldset>
-                                            <Field
-                                                name="nazev"
-                                                type="text"
-                                                id="Nazev"
-                                                label="Zadejte nazev udalosti:"
-                                                placeholder="Muj Nazev"
-                                                component={MujInput}/>
-                                        </fieldset>
-                                        <fieldset>
-                                            <Field
-                                                name="popis"
-                                                type="text"
-                                                id="Popis"
-                                                label="Zadejte popis udalosti:"
-                                                placeholder="Muj popis"
-                                                component={MujInput}/>
-                                        </fieldset>
-                                        <fieldset>
-                                            <Field
-                                                name="datum"
-                                                type="datetime-local"
-                                                id="Datum"
-                                                label="Zadejte datum:"
-                                                placeholder="21.2.2511"
-                                                component={MujInput}/>
-                                        </fieldset>
-                                        <fieldset>
-                                            <Field
-                                                name="adresa"
-                                                type="text"
-                                                id="adresa"
-                                                label="Zadejte adresa:"
-                                                placeholder="Mesto Ulice"
-                                                component={MujInput}/>
-                                        </fieldset>
-                                        <fieldset>
-                                            <Field
-                                                name="psc"
-                                                type="number"
-                                                id="PSC"
-                                                label="Zadej PSC"
-                                                placeholder="12345"
-                                                component={MujInput}/>
-                                        </fieldset>
-                                    </div>
-                                    <div className="mt-2 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-dark">pridej udalost skupiny</button>
-                                    </div>
-                                </form>
-                            </div>
-                            :null}
+                            <div className="formSkup">
+                                {this.state.pridaniUzivatele ?
+                                <div className="d-flex justify-content-center">
+                                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitAddUser)}>
+                                        <div className="form">
+                                            
+                                            <fieldset>
+                                                <Field
+                                                    name="email"
+                                                    type="email"
+                                                    id="emailADD"
+                                                    label="Zadejte email Uzivatele:"
+                                                    placeholder="jkjkj@sssds.vvs"
+                                                    
+                                                    component={MujSkupinovyInput}/>
+                                            </fieldset>
+                                        </div>
+                                        <div className="mt-2 d-flex justify-content-center">
+                                            <button type="submit" className="btn btn-dark">pridej uzivatele</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                :null}
+                                {this.state.vytvoreniUdalosti ?
+                                <div className="d-flex justify-content-center">
+                                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitUdalost)}>
+                                        <div className="form">
+                                            
+                                            <fieldset>
+                                                <Field
+                                                    name="nazev"
+                                                    type="text"
+                                                    id="Nazev"
+                                                    label="Zadejte nazev udalosti:"
+                                                    placeholder="Muj Nazev"
+                                                    component={MujInput}/>
+                                            </fieldset>
+                                            <fieldset>
+                                                <Field
+                                                    name="popis"
+                                                    type="text"
+                                                    id="Popis"
+                                                    label="Zadejte popis udalosti:"
+                                                    placeholder="Muj popis"
+                                                    component={MujInput}/>
+                                            </fieldset>
+                                            <fieldset>
+                                                <Field
+                                                    name="datum"
+                                                    type="datetime-local"
+                                                    id="Datum"
+                                                    label="Zadejte datum:"
+                                                    placeholder="21.2.2511"
+                                                    component={MujInput}/>
+                                            </fieldset>
+                                            <fieldset>
+                                                <Field
+                                                    name="adresa"
+                                                    type="text"
+                                                    id="adresa"
+                                                    label="Zadejte adresa:"
+                                                    placeholder="Mesto Ulice"
+                                                    component={MujInput}/>
+                                            </fieldset>
+                                            <fieldset>
+                                                <Field
+                                                    name="psc"
+                                                    type="number"
+                                                    id="PSC"
+                                                    label="Zadej PSC"
+                                                    placeholder="12345"
+                                                    component={MujInput}/>
+                                            </fieldset>
+                                        </div>
+                                        <div className="mt-2 d-flex justify-content-center">
+                                            <button type="submit" className="btn btn-dark">pridej udalost skupiny</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                :null}
 
-                            {this.state.vytvoreniSkupiny ?
-                            <div className="d-flex justify-content-center">
-                                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitCreate)}>
-                                    <div className="form">
-                                        
-                                        <fieldset>
-                                            <Field
-                                                name="nazev"
-                                                type="text"
-                                                id="Nazev"
-                                                label="Zadejte nazev Skupiny:"
-                                                placeholder="Muj Nazev"
-                                                component={MujInput}/>
-                                        </fieldset>
-                                    </div>
-                                    <div className="mt-2 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-dark">vytvor skupinu</button>
-                                    </div>
-                                </form>
+                                {this.state.vytvoreniSkupiny ?
+                                <div className="d-flex justify-content-center">
+                                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitCreate)}>
+                                        <div className="form">
+                                            
+                                            <fieldset>
+                                                <Field
+                                                    name="nazev"
+                                                    type="text"
+                                                    id="Nazev"
+                                                    label="Zadejte nazev Skupiny:"
+                                                    placeholder="Muj Nazev"
+                                                    component={MujInput}/>
+                                            </fieldset>
+                                        </div>
+                                        <div className="mt-2 d-flex justify-content-center">
+                                            <button type="submit" className="btn btn-dark">vytvor skupinu</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                :null}
                             </div>
-                            :null}
                         </div>
                     </div>
 

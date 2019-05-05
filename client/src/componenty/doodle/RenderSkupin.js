@@ -10,11 +10,11 @@ export default function RenderUdalost(props) {
     if(skupConst !== []){
         return(
             
-            <div className="skupiny">
+            <div className="skupinyBox">
                 
             {
                 skupConst.map(item => 
-                (<div key={item.SkupinaID} className="udalosti">
+                (<div key={item.SkupinaID} className="skupiny">
 
                 <p>Nazev Skupiny: {item.Nazev}</p>
 
