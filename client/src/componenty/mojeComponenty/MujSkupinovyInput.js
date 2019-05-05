@@ -4,8 +4,10 @@ import React, { Component} from 'react';
 export default class MujSkupinovyInput extends Component{
     render(){
         
-        
         const { input:{ value,onChange}} =this.props;
+        
+
+        //const { input:{ value,onChange}} =this.props;
         return(
             <div className="form-skupina">
                 <div>

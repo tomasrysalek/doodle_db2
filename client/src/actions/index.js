@@ -165,6 +165,8 @@ export const addUserSkupina = data => {
 
     return async dispatch => {
         try {
+            console.log('adduresSkupinydata',data)
+            /*
             const res = await axios.post('http://localhost:4433/skupina/adduser' , data)
             //nefunguje nevim ako posilat token + stejny problem pro pridani skupin      
 
@@ -176,7 +178,7 @@ export const addUserSkupina = data => {
                 skupiny: ress.data.skupiny,
                 errSkupMsg :res.data.mssg
             })
-            
+            */
         } catch(err){
             console.log('err', err)
         }
