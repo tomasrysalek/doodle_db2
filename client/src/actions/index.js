@@ -18,14 +18,14 @@ export const signUp = data => {
                     payload: res.data.message
             })
             }else(
-
+                
                 dispatch({
                     type: AUTH_PRIHLASEN,
                     payload: res.data.message
                 })
                 
             )
-            
+            localStorage.setItem('test',"ahoj z indexu");
             localStorage.setItem('JWT_TOKEN',res.data.token);
             console.log('token',res.data.token)
             

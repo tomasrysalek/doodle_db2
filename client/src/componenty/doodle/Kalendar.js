@@ -6,11 +6,32 @@ import { connect} from 'react-redux';
 import { compose} from 'redux';
 import axios from 'axios';
 
+
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+
+
+
+import '../../../node_modules/@fullcalendar/core/main.css';
+import '../../../node_modules/@fullcalendar/daygrid/main.css';
+import '../../../node_modules/@fullcalendar/timegrid/main.css';
+import '../../../node_modules/@fullcalendar/list/main.css';
+
+
+import interactionPlugin from '@fullcalendar/interaction'
+
+
 import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
 import * as reducer from '../../reducers';
 import RenderUdalost from './RenderUdalost';
+
+
 class Kalendar extends Component{
+    calendarComponentRef = React.createRef()
     state = {
         udalostiState : []
     }
@@ -19,10 +40,17 @@ class Kalendar extends Component{
         this.onSubmitadd = this.onSubmitadd.bind(this);
         this.onSubmitget = this.onSubmitget.bind(this);
         
+        
         if(this.props.kalUdalosti === undefined){
             this.state.udalostiState = [];
         }else{
-            this.state.udalostiState = this.props.kalUdalosti;
+            this.state.udalostiState = this.props.kalUdalosti.map((data) => {
+                return {
+                  id: data.UdalostID,
+                  title: data.Nazev,
+                  start:data.Datum,
+                };
+              });;
         }
         
         console.log('udalostiState',this.state.udalostiState);
@@ -40,17 +68,73 @@ class Kalendar extends Component{
         if(this.props.kalUdalosti === undefined){
             this.state.udalostiState = [];
         }else{
-            this.state.udalostiState = this.props.kalUdalosti;
+            this.state.udalostiState = this.props.kalUdalosti.map((data) => {
+                return {
+                  id: data.UdalostID,
+                  title: data.Nazev,
+                  start:data.Datum,
+                };
+              });
         }
         console.log('onSubmitPrirazeni',this.props.kalUdalosti)
     }
 
     
+//*
+render(){
+    const { handleSubmit  } =this.props;
+    return(
+        <div>
+            <div className="udalostiKal">
+                    
+                    <RenderUdalost item={this.props.kalUdalosti}/>
+                    {console.log('kalerrMsg',this.props.errMsg)}
+                    {console.log('kalisAuth',this.props.isAuth)}
+                    {console.log('kalUdalosti',this.props.kalUdalosti)}
+                </div>
+            <form className="getUdalosti" onSubmit={handleSubmit(this.onSubmitget)}>
+            <button type="submit" className="btn btn-dark">Zobraz udalosti</button>
+            </form>
+            
+            <FullCalendar 
+                defaultView="dayGridMonth"
+                header={{
+                left: 'prev,next ,today',
+                center: 'title',
+                right: 'dayGridMonth'
+                }}
+                plugins={[ dayGridPlugin, bootstrapPlugin ]}
+                themeSystem='bootstrap'
 
+                events={this.state.udalostiState}
+
+                ref={ this.calendarComponentRef }
+                eventClick={ function(info) {
+                    alert('Event: ' + info.event.title
+                    + ' time: ' + info.event.start);
+                    
+                
+                    // change the border color just for fun
+                    
+                  }
+                }
+
+                />
+            
+                
+        </div>     
+    )
+}
+    
+/*/
     render(){
         
         const { handleSubmit  } =this.props;
         return(
+            <div>
+            
+
+
             <div className="d-flex justify-content-center">
                 <div className="udalostiKal">
                     
@@ -123,13 +207,14 @@ class Kalendar extends Component{
                 </form>
             </div>
         </div>
-           
+        </div>
         );
     };
 
-
+//*/
 
 };
+
 
 
 
