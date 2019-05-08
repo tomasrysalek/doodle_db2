@@ -109,7 +109,7 @@ export default class Kalendar extends Component{
         //console.log('statedata',datas);
         await this.addUdalost(datas);
         //console.log("ahoj")
-        await this.getUdalosti();
+       // await this.getUdalosti();
         
     }
     async getUdalosti(){
