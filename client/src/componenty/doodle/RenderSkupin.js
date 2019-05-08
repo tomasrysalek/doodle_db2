@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+/*import React, {Component} from 'react';
 import { reduxForm, Field} from 'redux-form';
 
 import MujInput from '../mojeComponenty/MujInput';
@@ -51,4 +51,4 @@ export default function RenderUdalost(props) {
             </div>
         );
     }
-}
+}*/

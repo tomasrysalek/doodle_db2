@@ -1,44 +1,27 @@
-import React from 'react';
+import React from 'reactn';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { createStore, applyMiddleware} from 'redux';
-import { Provider } from 'react-redux';
-import reduxThunk from 'redux-thunk';
 
-import App from './componenty/App';
+
 import * as serviceWorker from './serviceWorker';
-import Home from './componenty/home/Home';
-import Kalendar from './componenty/doodle/Kalendar';
-import Odhlaseni from './componenty/login/Odhlaseni';
-import Prihlaseni from './componenty/login/Prihlaseni';
-import Registrace from './componenty/login/Registrace';
-import Skupiny from './componenty/doodle/Skupiny';
-import reducer from './reducers/index';
+import Test from './Test';
 
-const jwtToken = localStorage.getItem('JWT_TOKEN');
+
+import { setGlobal } from 'reactn';
+
+
+
+
+setGlobal({
+    isAuth: false,
+    token: '',
+    udalosti: [],
+    skupiny: [],
+    upUdalosti:[]
+  });
 
 ReactDOM.render(
-    // vytvoreni uschovny dat
-    <Provider store={createStore(reducer,{
-        auth:{
-            token: jwtToken,
-            isAuthenticated: jwtToken ? true : false
-        }
-        },applyMiddleware(reduxThunk))}>
-        {/*pridani routeru starajiciho se o odkazovani mezi strankama*/ }
-        <BrowserRouter>
-            {/*pridani paklikace*/ }
-            <App>
-                {/*definice indexu a kam budou odkazovat*/ }
-                <Route exact path="/" component ={Home}/>
-                <Route path="/kalendar" component ={Kalendar}/>
-                <Route path="/skupiny" component ={Skupiny}/>
-                <Route path="/prihlaseni" component ={Prihlaseni}/>
-                <Route path="/registrace" component ={Registrace}/>
-                <Route path="/odhlaseni" component ={Odhlaseni}/>
-            </App>
-        </BrowserRouter>
-    </Provider>
+    
+    <Test/>
 , document.querySelector('#root'));
 
 // If you want your app to work offline and load faster, you can change

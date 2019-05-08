@@ -1,124 +1,47 @@
-import React, {Component} from 'react';
-import { reduxForm, Field} from 'redux-form';
+import React, {Component} from 'reactn';
+import axios from 'axios';
 import { Nav } from 'react-bootstrap';
-import { connect} from 'react-redux';
-import { compose} from 'redux';
+
 
 import MujInput from '../mojeComponenty/MujInput';
 import MujSkupinovyInput from '../mojeComponenty/MujSkupinovyInput';
-import * as actions from '../../actions';
-import RenderSkupin from './RenderSkupin';
 
-class Skupiny extends Component{
 
-    state = {
-        skupinaState : [],
-        skupinaJmeno: "",
-        vytvoreniSkupiny:false,
-        vytvoreniUdalosti:false,
-        pridaniUzivatele:false
-    }
+
+export default class Skupiny extends Component{
+
+    
     constructor(props){
         super(props)
-        this.onSubmitAddUser = this.onSubmitAddUser.bind(this);
-        this.onSubmitCreate = this.onSubmitCreate.bind(this);
-        this.onSubmitUdalost = this.onSubmitUdalost.bind(this);
-
-        this.ukazPridaniUvivatele = this.ukazPridaniUvivatele.bind(this);
-        this.ukazVytvoreniUdalost = this.ukazVytvoreniUdalost.bind(this);
-        this.ukazVytvoreniSkupiny = this.ukazVytvoreniSkupiny.bind(this);
-
-        this.getSkupiny = this.getSkupiny.bind(this);
         
-        if(this.props.skupiny === undefined){
-            this.state.skupinaState = [];
-        }else{
-            this.state.skupinaState = this.props.skupiny;
-        }
-        
-        console.log('skupState',this.state.skupinaState);
-        
+        console.log("skupiny",this.global)    
     }
 
-    async onSubmitAddUser(data){
-        //console.log('dataadd',data);
-        //console.log('dataaddstate',this.state);
-        await this.props.addUserSkupina(data,this.state.skupinaJmeno);
+    async componentDidMount(){
+        const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+        console.log('datafromserverskup',res.data)
+        const serverSkup = res.data;
+        console.log('serverSkup',serverSkup.skupiny)
 
+        
+        this.setGlobal({
+            isAuth:localStorage.getItem('isAuth'),
+            token:localStorage.getItem('JWT_TOKEN'),
+            skupiny : res.data.skupiny})
         
     }
-
-    async onSubmitUdalost(data){
-       // console.log('dataadd',data);
-       // console.log('dataaddstate',this.state);
-        await this.props.addUdalost(data,this.state.skupinaJmeno);
-
-        
-    }
-
-    async onSubmitCreate(dataa){
-        //console.log('datacreate',dataa);
-        await this.props.createSkupinu(dataa);
-        
-    }
-    async getSkupiny(){
-        
-        await this.props.getSkupina();
-        if(this.props.skupiny === undefined){
-            this.state.skupinaState = [];
-        }else{
-            this.state.skupinaState = this.props.skupiny;
-        }
-      //  console.log('skupState',this.state.skupinaState);
-      //  console.log('skupData', this.props.skupiny)
-    }
-
-    handleOptionChange = changeEvent => {
-        
-        this.setState({
-            skupinaJmeno: changeEvent.target.value
-        });
-        
-      };
-
-    ukazPridaniUvivatele= () => {
-        
-        this.setState({
-        vytvoreniSkupiny:false,
-        vytvoreniUdalosti:false,
-        pridaniUzivatele:true
-        });
-        
-      };
-
-    ukazVytvoreniUdalost= () => {
-        
-        this.setState({
-        vytvoreniSkupiny:false,
-        vytvoreniUdalosti:true,
-        pridaniUzivatele:false
-        });
-        
-      };
-
-    ukazVytvoreniSkupiny= () => {
-        
-        this.setState({
-        vytvoreniSkupiny:true,
-        vytvoreniUdalosti:false,
-        pridaniUzivatele:false
-        });
-        
-      };
-      
     
 
-
     render(){
-        const { handleSubmit  } =this.props;
         
-        //console.log('nazevSkupi',this.props)
+        
+        console.log('nazevSkupi',this.global)
         return(
+
+            <div>
+            skupiny
+            </div>
+            /*
             <div>
 
                 <div>
@@ -152,23 +75,23 @@ class Skupiny extends Component{
                             }
                             </form>
                             <div className="btnSkupiny">
-                                <form className="getSkupiny" onSubmit={handleSubmit(this.getSkupiny)}>
+                                <form className="getSkupiny" onSubmit={this.getSkupiny}>
                                     <button type="submit" className="btn btn-dark">Zobraz skupiny</button>
                                 </form>
-                                <form className="getVytvoreniSkupiny" onSubmit={handleSubmit(this.ukazVytvoreniSkupiny)}>
+                                <form className="getVytvoreniSkupiny" onSubmit={this.ukazVytvoreniSkupiny}>
                                     <button type="submit" className="btn btn-dark">Zobraz formulař pro vytvoření skupiny</button>
                                 </form>
-                                <form className="getVytvoreniUdalost" onSubmit={handleSubmit(this.ukazVytvoreniUdalost)}>
+                                <form className="getVytvoreniUdalost" onSubmit={this.ukazVytvoreniUdalost}>
                                     <button type="submit" className="btn btn-dark">Zobraz formulař pro vytvoření udalosti skupiny</button>
                                 </form>
-                                <form className="getPridaniUvivatele" onSubmit={handleSubmit(this.ukazPridaniUvivatele)}>
+                                <form className="getPridaniUvivatele" onSubmit={this.ukazPridaniUvivatele}>
                                     <button type="submit" className="btn btn-dark">Zobraz formulař pro přidání člena do skupiny</button>
                                 </form>
                             </div>
                             <div className="formSkup">
                                 {this.state.pridaniUzivatele ?
                                 <div className="d-flex justify-content-center">
-                                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitAddUser)}>
+                                    <form className="border border-dark p-5 bg-blue" onSubmit={this.onSubmitAddUser}>
                                         <div className="form">
                                             
                                             <fieldset>
@@ -190,7 +113,7 @@ class Skupiny extends Component{
                                 :null}
                                 {this.state.vytvoreniUdalosti ?
                                 <div className="d-flex justify-content-center">
-                                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitUdalost)}>
+                                    <form className="border border-dark p-5 bg-blue" onSubmit={this.onSubmitUdalost}>
                                         <div className="form">
                                             
                                             <fieldset>
@@ -248,7 +171,7 @@ class Skupiny extends Component{
 
                                 {this.state.vytvoreniSkupiny ?
                                 <div className="d-flex justify-content-center">
-                                    <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitCreate)}>
+                                    <form className="border border-dark p-5 bg-blue" onSubmit={this.onSubmitCreate}>
                                         <div className="form">
                                             
                                             <fieldset>
@@ -276,21 +199,10 @@ class Skupiny extends Component{
                 
                 
             </div>
+            */
         );
     }
 };
 
 
 
-function mapStateProps(state){
-    return{
-        isAuth: state.auth.isAuthenticated,
-        skupiny: state.skup.skupina,
-        errskupiny: state.skup.errSkupMsg
-    }
-}
-
-export default compose(
-    connect(mapStateProps,actions),
-    reduxForm( {form: 'skupiny'})
-)(Skupiny);

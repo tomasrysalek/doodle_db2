@@ -1,86 +1,102 @@
-import React, {Component} from 'react';
-import { reduxForm, Field} from 'redux-form';
-import { Nav } from 'react-bootstrap';
-import { connect} from 'react-redux';
-import { compose} from 'redux';
+import React, {Component} from 'reactn';
 
+import { Nav, Form,Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom'
+import axios from 'axios';
 import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
-
-class Prihlaseni extends Component{
+import { useGlobal,setGlobal } from 'reactn';
+export default class Prihlaseni extends Component{
+    
     constructor(props){
         super(props)
-        this.onSubmit = this.onSubmit.bind(this);
+        this.state = {
+                email: '',
+                pass: '',
+                }
+        console.log("stata",this.global.isAuth)
+
+    }
+    
+    async onSubmit(data){
+        data.preventDefault();
+        
+        console.log('email',this.state)
+        const datas = this.state;
+        this.setState({
+            email: '',
+            pass: '',
+            })
+        console.log('statedata',datas)
+        await this.signIn(datas);
+        if(this.global.isAuth){
+            this.props.history.push(`/kalendar`)
+        }
+        
     }
 
-    async onSubmit(data){
-        console.log('data',data);
-        await this.props.signIn(data);
-        await this.props.getUdalosti();
-        if(this.props.isAuth){
-            this.props.history.push('/kalendar');
-        }
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.value;
+        const { name } = target;
+        await this.setState({
+          [ name ]: value,
+        });
+      }
+
+    
+    async signIn(data) {
+            try {
+                const res = await axios.post('http://localhost:4433/user/login' , data)
+                console.log('datafromserver',res.data)
+                const serverToken = res.data;
+                console.log('serverToken',serverToken.token)
+                if(serverToken.mssg=== "Email or Password"){
+                    alert('Spatne heslo nebo mail')
+                    
+                    
+                }else{   
+                   this.setGlobal({isAuth: true,token:serverToken.token});
+                   localStorage.setItem('isAuth',true);
+                   localStorage.setItem('JWT_TOKEN',serverToken.token);
+                }
+                
+            } catch(err){
+                
+                console.log('err', err)
+            }
+        
     }
 
 
     render(){
-        console.log('isauth',this.props.isAuth);
-        console.log('errmsg',this.props.errMsg);
-        console.log('token',this.props.token);
-        const { handleSubmit } =this.props;
+        
+       const {email,pass}=this.state;
         return(
+            
+            
             <div className="d-flex justify-content-center">
-                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmit)}>
-                    <div className="">
-                        <fieldset>
-                            <Field
-                                name="email"
-                                type="text"
-                                id="email"
-                                autocomplete="username"
-                                label="Zadejte váš mail:"
-                                placeholder="mujmail@maj.czc"
-                                component={MujInput}/>
-                        </fieldset>
-                    </div>
-                    <div>
-                        <fieldset>
-                            <Field
-                                name="psswd"
-                                type="password"
-                                autocomplete="current-password"
-                                id="password"
-                                label="Zadejte vaše heslo:"
-                                placeholder="Mojeheslo1"
-                                component={MujInput}/>
-                        </fieldset>
-                    </div>
-                    <div className="mt-2 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-dark">Přihlásit se</button>
-                    </div>
+                <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte váš mail:</Form.Label>
+                        <Form.Control required  name="email" type="email" placeholder="Enter email"  value={ email } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control required name="pass" type="password" placeholder="Password" value={ pass } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    
+                    <Button variant="primary" type="submit">
+                        Přihlásit se
+                    </Button >
                     <div className="prihlaseniLink">
                         <Nav.Link href="/registrace">Registrace</Nav.Link>
                     </div>
-                    <div>
-                        <p>
-                            {this.props.errMsg}
-                        </p>
-                    </div>
-                </form>
+                    
+                </Form>
             </div>
+            
         );
     }
 };
 
-function mapStateProps(state){
-    return{
-        token: state.auth.token,
-        errMsg: state.auth.errorMessage,
-        isAuth: state.auth.isAuthenticated
-    }
-}
-
-export default compose(
-    connect(mapStateProps,actions),
-    reduxForm( {form: 'prihlaseni'})
-)(Prihlaseni);

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+/*import React, {Component} from 'react';
 
 export default function RenderUdalost(props) {
     const udalostiConst = props.item; 
@@ -40,5 +40,5 @@ export default function RenderUdalost(props) {
     }*/
     
 
-    
-}
+ /*/   
+}*/

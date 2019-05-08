@@ -1,12 +1,13 @@
 
-import React, {Component} from 'react';
+import React, {Component} from 'reactn';
 import { reduxForm, Field} from 'redux-form';
-import { Nav } from 'react-bootstrap';
+import { Nav, Modal,Button } from 'react-bootstrap';
 import { connect} from 'react-redux';
 import { compose} from 'redux';
 import axios from 'axios';
+import Tooltip from 'tooltip.js';
 
-
+import Popup from "reactjs-popup";
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
@@ -21,105 +22,79 @@ import '../../../node_modules/@fullcalendar/timegrid/main.css';
 import '../../../node_modules/@fullcalendar/list/main.css';
 
 
-import interactionPlugin from '@fullcalendar/interaction'
 
-
-import MujInput from '../mojeComponenty/MujInput'
-import * as actions from '../../actions';
-import * as reducer from '../../reducers';
 import RenderUdalost from './RenderUdalost';
 
 
-class Kalendar extends Component{
+
+export default class Kalendar extends Component{
     calendarComponentRef = React.createRef()
-    state = {
-        udalostiState : []
-    }
+    
     constructor(props){
         super(props)
-        this.onSubmitadd = this.onSubmitadd.bind(this);
-        this.onSubmitget = this.onSubmitget.bind(this);
-        
-        
-        if(this.props.kalUdalosti === undefined){
-            this.state.udalostiState = [];
-        }else{
-            this.state.udalostiState = this.props.kalUdalosti.map((data) => {
-                return {
-                  id: data.UdalostID,
-                  title: data.Nazev,
-                  start:data.Datum,
-                };
-              });;
+        this.state={
+            show: false
         }
-        
-        console.log('udalostiState',this.state.udalostiState);
-        
+     
     }
+    
 
-    async onSubmitadd(data){
-        console.log('data',data);
-        await this.props.addUdalost(data);
+    async componentDidMount(){
+        const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+        console.log('datafromserverKal',res.data.Udalosti)
+        const upData = res.data.Udalosti.map((data) => {
+            return {
+              id: data.UdalostID,
+              title: data.Nazev,
+              start:data.Datum,
+              popis:data.Popis,
+              psc:data.PSC,
+            };
+          });
+        this.setGlobal({
+            isAuth:localStorage.getItem('isAuth'),
+            udalosti : res.data.Udalosti,
+            upUdalosti: upData,
+            token:localStorage.getItem('JWT_TOKEN')})
         
-    }
-
-    async onSubmitget(){
-        await this.props.getUdalosti();
-        if(this.props.kalUdalosti === undefined){
-            this.state.udalostiState = [];
-        }else{
-            this.state.udalostiState = this.props.kalUdalosti.map((data) => {
-                return {
-                  id: data.UdalostID,
-                  title: data.Nazev,
-                  start:data.Datum,
-                };
-              });
-        }
-        console.log('onSubmitPrirazeni',this.props.kalUdalosti)
     }
 
     
 //*
 render(){
-    const { handleSubmit  } =this.props;
+    
+    const udalostMount= this.global.udalosti ;
+    console.log('globaludalosti',udalostMount)
     return(
         <div>
-            <div className="udalostiKal">
-                    
-                    <RenderUdalost item={this.props.kalUdalosti}/>
-                    {console.log('kalerrMsg',this.props.errMsg)}
-                    {console.log('kalisAuth',this.props.isAuth)}
-                    {console.log('kalUdalosti',this.props.kalUdalosti)}
-                </div>
-            <form className="getUdalosti" onSubmit={handleSubmit(this.onSubmitget)}>
-            <button type="submit" className="btn btn-dark">Zobraz udalosti</button>
-            </form>
             
             <FullCalendar 
                 defaultView="dayGridMonth"
                 header={{
-                left: 'prev,next ,today',
+                left: 'prev ,today',
                 center: 'title',
-                right: 'dayGridMonth'
+                right: 'next'
                 }}
                 plugins={[ dayGridPlugin, bootstrapPlugin ]}
                 themeSystem='bootstrap'
 
-                events={this.state.udalostiState}
+                events={this.global.upUdalosti}
 
                 ref={ this.calendarComponentRef }
                 eventClick={ function(info) {
-                    alert('Event: ' + info.event.title
-                    + ' time: ' + info.event.start);
                     
-                
-                    // change the border color just for fun
+                    
+                    test(info)
+                    
                     
                   }
                 }
+                eventRender={ function(info) {
+                    
+                  }}
+            />
 
-                />
+            
             
                 
         </div>     
@@ -216,17 +191,21 @@ render(){
 };
 
 
-
-
-function mapStateProps(state){
-    return{
-        errMsg: state.auth.errorMessage,
-        isAuth: state.auth.isAuthenticated,
-        kalUdalosti: state.kal.udalosti
-    }
+function test(info) {
+    
+    console.log('info',info);
+    return(
+        
+        <Modal show={true} >
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer closeButton>
+          hoo
+        </Modal.Footer>
+      </Modal>
+        )
 }
 
-export default compose(
-    connect(mapStateProps,actions),
-    reduxForm( {form: 'kalendar'})
-)(Kalendar);
+
