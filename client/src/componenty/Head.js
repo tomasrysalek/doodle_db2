@@ -15,7 +15,11 @@ export default class Head extends Component {
         
     }
    componentDidMount(){
-    this.trueFalse();
+    this.trueFalse(this.global.isAuth,localStorage.getItem('isAuth'));
+   }
+
+   componentDidUpdate(){
+    this.trueFalse(this.global.isAuth, localStorage.getItem('isAuth'));
    }
 
     signOut(){
@@ -25,11 +29,21 @@ export default class Head extends Component {
         this.props.signOut();
     }
     
-    trueFalse(){
-        if(this.global.isAuth|| localStorage.getItem('isAuth')){
-            this.setState({isAuthState:true});
+    trueFalse(globAuth,locAuth){
+        if(globAuth|| locAuth){
+            if(this.state.isAuthState){
+                return null;
+            }else{
+                this.setState({isAuthState:true});
+            }
+            
         }else{
-            this.setState({isAuthState:false});
+            if(this.state.isAuthState){
+                this.setState({isAuthState:false});
+            }else{
+                return null;
+            }
+            
         }
     }
 
@@ -68,6 +82,3 @@ export default class Head extends Component {
         );
     };
 };
-
-
-

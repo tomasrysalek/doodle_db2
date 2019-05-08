@@ -1,6 +1,6 @@
 import React, {Component} from 'reactn';
 import axios from 'axios';
-import { Nav } from 'react-bootstrap';
+import { Nav,Form,Modal,Button } from 'react-bootstrap';
 
 
 import MujInput from '../mojeComponenty/MujInput';
@@ -13,33 +13,355 @@ export default class Skupiny extends Component{
     
     constructor(props){
         super(props)
+        this.handleShowPriUdal = this.handleShowPriUdal.bind(this);
+        this.handleShowPriUziv = this.handleShowPriUziv.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleShowVyt = this.handleShowVyt.bind(this);
         
-        console.log("skupiny",this.global)    
+        this.state={
+            showVySkup: false,
+            showPriUdalosti: false,
+            showPriUzivatele: false,
+            nazevSkup: '',
+            email: '',
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+        }
+        
+            
+    }
+
+    handleClose() {
+        this.setState({
+            nazevSkup: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+            showVySkup: false,
+            showPriUdalosti: false,
+            showPriUzivatele: false,
+            });
+    }
+    
+    handleShowVyt() {
+        this.setState({ showVySkup:true }); 
+    }
+    
+    handleShowPriUdal= async (event) => {
+        this.setState({ showPriUdalosti: true,nazevSkup:event.target.name });
+        console.log("handleShow event",this.state)
+    }
+    handleShowPriUziv= async (event) => {
+        this.setState({ showPriUzivatele: true,nazevSkup:event.target.name });
+        console.log("handleShow event",this.state)
     }
 
     async componentDidMount(){
         const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-        console.log('datafromserverskup',res.data)
-        const serverSkup = res.data;
-        console.log('serverSkup',serverSkup.skupiny)
 
-        
+  
         this.setGlobal({
             isAuth:localStorage.getItem('isAuth'),
             token:localStorage.getItem('JWT_TOKEN'),
             skupiny : res.data.skupiny})
         
     }
+
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.value;
+        const { name } = target;
+        await this.setState({
+          [ name ]: value,
+        });
+        console.log('state',this.state)
+    }
+
+    async onSubmitVytSkup(data){
+        data.preventDefault();
+        
+        console.log('email',this.state);
+        const datas = this.state;
+
+        this.setState({
+            showVySkup: false,
+            showPriUdalosti: false,
+            showPriUzivatele: false,
+            nazevSkup: '',
+            email: '',
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+            });
+        this.vytvoreniSkupiny(datas);
+        //console.log('statedata',datas);
+        //await this.addUdalost(datas);
+        //console.log("ahoj")
+        //await this.getUdalosti();
+        
+    }
+
+    
+
+    async vytvoreniSkupiny(data){
+        try {
+
+        //console.log('email',this.state);
+        const datas = {
+            
+              nazev: data.nazevSkup,
+              
+            
+          };
+        
+        console.log('datas',datas);
+        await axios.post('http://localhost:4433/skupina/create' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+        //console.log('datafromserverskupCreate',res.data)
+    } catch(err){
+            
+        console.log('err', err)
+    }
+    }
+
+    async onSubmitPridejUzivatele(data){
+        data.preventDefault();
+        
+        console.log('PridejUzivatele',this.state);
+        const datas = this.state;
+
+        this.setState({
+            showVySkup: false,
+            showPriUdalosti: false,
+            showPriUzivatele: false,
+            nazevSkup: '',
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+            });
+        this.pridaniUzivatele(datas);
+        //console.log('statedata',datas);
+        //await this.addUdalost(datas);
+        //console.log("ahoj")
+        //await this.getUdalosti();
+        
+    }
+
+    
+
+    async pridaniUzivatele(data){
+        try {
+
+        //console.log('email',this.state);
+        const datas = {
+            
+              email: data.email,
+              skupina :data.nazevSkup,
+            
+          };
+        
+        console.log('datasPRiUziv',datas);
+        const res = await axios.post('http://localhost:4433/skupina/adduser' , datas)
+        //console.log('datafromserverskupCreate',res.data)
+    } catch(err){
+            
+        console.log('err', err)
+    }
+    }
+
+    async onSubmitVytvorUdalost(data){
+        data.preventDefault();
+        
+        //console.log('email',this.state);
+        const datas = this.state;
+        this.setState({
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+            show:false
+            });
+        //console.log('statedata',datas);
+        await this.addUdalost(datas);
+        //console.log("ahoj")
+        
+        
+    }
+
+    async addUdalost(data) {
+        console.log('testadd data',data)
+        try {
+            const datas = {
+                nazev: data.nazev,
+                popis: data.popis,
+                datum: data.datum,
+                adresa: data.adresa,
+                psc: data.psc,
+                skupina : data.nazevSkup,
+            }
+            console.log('testadd datass',datas)
+            const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+            //console.log("addUdalsot res data",res.data)
+            
+            
+        } catch(err){
+            
+            console.log('err', err)
+        }
+    }
     
 
     render(){
         
-        
-        console.log('nazevSkupi',this.global)
+        const {nazevSkup,email,psc,nazev,adresa,datum,popis}=this.state;
+        //console.log('nazevSkupi',this.global)
         return(
+            <div>
+            <Button variant="primary" onClick={this.handleShowVyt} >
+                     Vytvoř Skupinu
+            </Button>
 
             <div>
-            skupiny
+                {this.global.skupiny.map(item => 
+                     (<div key={item.SkupinaID} className="skupiny">
+                     <p>Nazev Skupiny: {item.Nazev}</p>
+                         
+                     <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
+                     Pridej udalost
+                     </Button>
+
+                     <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
+                     Přidej Uživatele
+                     </Button>
+                                             
+                     
+                     
+                     
+                    </div>))}
+            </div>
+
+            <Modal show={this.state.showVySkup} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitVytSkup(e)}>
+            <Modal.Body>
+
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte nazev udalosti:</Form.Label>
+                        <Form.Control required
+                                name="nazevSkup"
+                                type="text"
+                                placeholder="Muj Nazev"  value={ nazevSkup } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    
+                    
+                    
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" type="submit">
+                Přidej událost
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
+            <Modal show={this.state.showPriUzivatele} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitPridejUzivatele(e)}>
+            <Modal.Body>
+
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte uživatele, kterého chcete přidat do skupiny:</Form.Label>
+                        <Form.Control required
+                                name="email"
+                                type="email"
+                                placeholder="Muj Nazev"  value={ email } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    
+                    
+                    
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" type="submit">
+                Přidej událost
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
+            <Modal show={this.state.showPriUdalosti} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitVytvorUdalost(e)}>
+            <Modal.Body>
+            
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte nazev udalosti:</Form.Label>
+                        <Form.Control required
+                                name="nazev"
+                                type="text"
+                                placeholder="Muj Nazev"  value={ nazev } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Zadejte popis udalosti:</Form.Label>
+                        <Form.Control required 
+                                name="popis"
+                                type="text"
+                                placeholder="Muj popis" value={ popis } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte datum:</Form.Label>
+                        <Form.Control required
+                                name="datum"
+                                type="datetime-local"
+                                placeholder="21.2.2511" value={ datum } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte adresa:</Form.Label>
+                        <Form.Control required
+                                name="adresa"
+                                type="text"
+                                placeholder="Mesto Ulice" value={ adresa } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Zadej PSC:</Form.Label>
+                        <Form.Control required
+                                name="psc"
+                                type="number"
+                                placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    
+                    
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" type="submit">
+                Přidej událost
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
             </div>
             /*
             <div>

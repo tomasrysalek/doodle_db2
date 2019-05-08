@@ -56,7 +56,9 @@ export default class Prihlaseni extends Component{
                     
                     
                 }else{   
-                   this.setGlobal({isAuth: true,token:serverToken.token});
+                   this.setGlobal({
+                       isAuth: true,
+                       token:serverToken.token});
                    localStorage.setItem('isAuth',true);
                    localStorage.setItem('JWT_TOKEN',serverToken.token);
                 }

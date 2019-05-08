@@ -35,7 +35,7 @@ export default class Kalendar extends Component{
     constructor(props){
         super(props)
         this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+        this.handleClose = this.handleClose.bind(this);
 
         this.state={
             show: false,
@@ -80,7 +80,7 @@ export default class Kalendar extends Component{
             
         } catch(err){
             
-            //console.log('err', err)
+            console.log('err', err)
         }
     }
     
@@ -96,7 +96,7 @@ export default class Kalendar extends Component{
     async onSubmit(data){
         data.preventDefault();
         
-        console.log('email',this.state);
+        //console.log('email',this.state);
         const datas = this.state;
         this.setState({
             nazev: '',
@@ -109,7 +109,7 @@ export default class Kalendar extends Component{
         //console.log('statedata',datas);
         await this.addUdalost(datas);
         //console.log("ahoj")
-       // await this.getUdalosti();
+        await this.getUdalosti();
         
     }
     async getUdalosti(){
@@ -136,15 +136,15 @@ export default class Kalendar extends Component{
         
     }
 
-    async componentDidUpdate(){
+    /*async componentDidUpdate(){
         await this.getUdalosti();
-    }
+    }*/
 
     
 //*
 render(){
     
-    const udalostMount= this.global.udalosti ;
+    const udalostMount= this.global.upUdalosti ;
     const {popis,psc,nazev,adresa,datum}=this.state;
     //console.log('globaludalosti',udalostMount)
     
@@ -165,7 +165,7 @@ render(){
                 plugins={[ dayGridPlugin, bootstrapPlugin ]}
                 themeSystem='bootstrap'
 
-                events={this.global.upUdalosti}
+                events={udalostMount}
 
                 ref={ this.calendarComponentRef }
                 eventClick={ function(info) {
