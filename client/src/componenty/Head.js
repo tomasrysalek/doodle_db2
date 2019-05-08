@@ -37,7 +37,7 @@ export default class Head extends Component {
         
         const globalIsAuth = this.state.isAuthState;
         
-        console.log('headGlobalAuth',globalIsAuth)
+        //console.log('headGlobalAuth',globalIsAuth)
         return(
                 //vytvoreni navigace a odkazu s indexy kam budou odkazovat 
                 <Navbar expand="lg">
