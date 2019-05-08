@@ -16,7 +16,8 @@ setGlobal({
     token: '',
     udalosti: [],
     skupiny: [],
-    upUdalosti:[]
+    upUdalosti:[],
+    emailUzivatele:'',
   });
 
 ReactDOM.render(

@@ -58,9 +58,11 @@ export default class Prihlaseni extends Component{
                 }else{   
                    this.setGlobal({
                        isAuth: true,
-                       token:serverToken.token});
+                       token:serverToken.token,
+                       emailUzivatele:data.email});
                    localStorage.setItem('isAuth',true);
                    localStorage.setItem('JWT_TOKEN',serverToken.token);
+                   localStorage.setItem('EmailUzivatele',data.email);
                 }
                 
             } catch(err){
