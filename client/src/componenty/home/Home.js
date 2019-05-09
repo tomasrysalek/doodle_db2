@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 
 import ContentBox from './ContentBox';
 import Content from '../content/Content'
 
 
-export default () => {
-    return(
+export default class Home extends Component {
+   
+
+    
+    render(){
+        return(
             <span>
                 <div>
                 <ContentBox
@@ -31,5 +35,5 @@ export default () => {
                  text={Content.textStable}/>
                  </div>
             </span>
-    );
-};
+            )
+        }}

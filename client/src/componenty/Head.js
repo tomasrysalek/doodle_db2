@@ -1,22 +1,63 @@
-import React, { Component } from 'react';
+import React, { Component } from 'reactn';
 import { Navbar,   Nav } from 'react-bootstrap';
-import { connect} from 'react-redux';
 
-import * as actions from '../actions';
 
-class Head extends Component {
 
+
+
+export default class Head extends Component {
+    state={
+        isAuthState:false,
+        uzivatel:''
+    }
     constructor(props){
         super(props)
         this.signOut = this.signOut.bind(this);
+        
     }
+   componentDidMount(){
+    this.trueFalse(this.global.isAuth,localStorage.getItem('isAuth'));
+   }
+
+   componentDidUpdate(){
+    this.trueFalse(this.global.isAuth, localStorage.getItem('isAuth'));
+   }
 
     signOut(){
         console.log("byl jsi odhlasen");
+        
+        localStorage.clear();
         this.props.signOut();
+    }
+    
+    trueFalse(globAuth,locAuth){
+        if(globAuth|| locAuth){
+            if(this.state.isAuthState){
+                return null;
+            }else{
+                this.setState({isAuthState:true});
+                if(localStorage.getItem('EmailUzivatele')!==null){
+                    this.setState({uzivatel:localStorage.getItem('EmailUzivatele')});
+                }else{
+                    this.setState({uzivatel:this.global.emailUzivatele})
+                }
+            }
+            
+        }else{
+            if(this.state.isAuthState){
+                this.setState({isAuthState:false,uzivatel:''});
+            }else{
+                return null;
+            }
+            
+        }
     }
 
     render(){
+        
+        const globalIsAuth = this.state.isAuthState;
+        const uzivatel = this.state.uzivatel;
+        //console.log('headGlobalAuth',globalIsAuth)
         return(
                 //vytvoreni navigace a odkazu s indexy kam budou odkazovat 
                 <Navbar expand="lg">
@@ -24,7 +65,7 @@ class Head extends Component {
                     <Navbar.Toggle/>
                     <Navbar.Collapse id="mynavbar-nav">
                     <Nav className='ml-auto' className="mynav">
-                    {this.props.isAuth ?
+                    {globalIsAuth  ?
                         [<Nav.Item key="kalendar"><Nav.Link href="/kalendar" >Kalendář</Nav.Link></Nav.Item>,
                         <Nav.Item key="skupiny"><Nav.Link href="/skupiny" >Přátelé a skupiny</Nav.Link></Nav.Item>
                         ]: null    }
@@ -32,13 +73,14 @@ class Head extends Component {
                     
                     </Nav>
                     <Nav className='ml-auto'>
-                    {!this.props.isAuth ?
+                    {!globalIsAuth ?
                     [<Nav.Item key="prihlaseni"><Nav.Link href="/prihlaseni">Přihlášení</Nav.Link></Nav.Item>,
                     <Nav.Item key="registrace"><Nav.Link href="/registrace">Registrace</Nav.Link></Nav.Item>
                         ]: null    }
-                    {this.props.isAuth ?
+                    {globalIsAuth ?[
+                    <Nav.Item key="uzivatel"><Nav.Link href="/uzivatel">{uzivatel}</Nav.Link></Nav.Item>,
                     <Nav.Item key="odhlaseni"><Nav.Link href="/odhlaseni" onClick={this.signOut}>Odhlášení</Nav.Link></Nav.Item>
-                        : null    }
+                        ]: null    }
                     </Nav>
                     </Navbar.Collapse>
 
@@ -47,11 +89,3 @@ class Head extends Component {
         );
     };
 };
-
-function mapStateProps(state){
-    return{
-        isAuth: state.auth.isAuthenticated
-    }
-}
-
-export default connect(mapStateProps,actions)(Head)

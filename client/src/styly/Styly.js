@@ -49,7 +49,7 @@ const Styles = styled.div`
 }
 
 .content img{
-    border-radius: 50%;
+   
     width: 30em;
     height: 10em;
 }
@@ -66,6 +66,24 @@ const Styles = styled.div`
     color:white;
 }
 
+.skupiny{
+    margin: 1px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
+
+.btnSkupiny .btn{
+    margin:2px;
+    
+}
+
+.udalosti{
+    margin: 1px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
 
 `;
 

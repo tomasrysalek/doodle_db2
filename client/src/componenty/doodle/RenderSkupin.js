@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+/*import React, {Component} from 'react';
 import { reduxForm, Field} from 'redux-form';
 
 import MujInput from '../mojeComponenty/MujInput';
@@ -10,11 +10,11 @@ export default function RenderUdalost(props) {
     if(skupConst !== []){
         return(
             
-            <div>
+            <div className="skupinyBox">
                 
             {
                 skupConst.map(item => 
-                (<div key={item.SkupinaID} className="udalosti">
+                (<div key={item.SkupinaID} className="skupiny">
 
                 <p>Nazev Skupiny: {item.Nazev}</p>
 
@@ -51,4 +51,4 @@ export default function RenderUdalost(props) {
             </div>
         );
     }
-}
+}*/

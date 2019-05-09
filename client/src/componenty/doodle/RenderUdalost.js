@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+/*import React, {Component} from 'react';
 
 export default function RenderUdalost(props) {
     const udalostiConst = props.item; 
@@ -6,7 +6,7 @@ export default function RenderUdalost(props) {
     console.log('list',udalostiConst)
     if(udalostiConst !== []){
         return(
-            <div>
+            <div className="udalostiBox">
             {
                 udalostiConst.map(item => 
                 (<div key={item.UdalostID} className="udalosti">
@@ -40,5 +40,5 @@ export default function RenderUdalost(props) {
     }*/
     
 
-    
-}
+ /*/   
+}*/

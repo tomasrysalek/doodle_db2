@@ -2,9 +2,9 @@ import save from '../img/save.png'
 import fast from '../img/fast.png'
 import stable from '../img/stable.jpg'
 
-const textSave ="text012";
-const textFast ="text087";
-const textStable ="text0tzhsdgrs";
+const textSave ="Spolehlivý web využívající sql databázi.";
+const textFast ="Rychlý kvůli využití React technologie";
+const textStable ="Stabilní díky propojení React technologie s technologií Node";
 
 const imgSave = save;
 const imgFast = fast;

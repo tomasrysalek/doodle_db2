@@ -1,59 +1,259 @@
 
-import React, {Component} from 'react';
+import React, {Component} from 'reactn';
 import { reduxForm, Field} from 'redux-form';
-import { Nav } from 'react-bootstrap';
+import { Nav, Form,Modal,Button } from 'react-bootstrap';
+
+
 import { connect} from 'react-redux';
 import { compose} from 'redux';
 import axios from 'axios';
+import Tooltip from 'tooltip.js';
 
-import MujInput from '../mojeComponenty/MujInput'
-import * as actions from '../../actions';
-import * as reducer from '../../reducers';
+import Popup from "reactjs-popup";
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+
+
+
+import '../../../node_modules/@fullcalendar/core/main.css';
+import '../../../node_modules/@fullcalendar/daygrid/main.css';
+import '../../../node_modules/@fullcalendar/timegrid/main.css';
+import '../../../node_modules/@fullcalendar/list/main.css';
+
+
+
 import RenderUdalost from './RenderUdalost';
-class Kalendar extends Component{
-    state = {
-        udalostiState : []
-    }
+
+
+
+export default class Kalendar extends Component{
+    calendarComponentRef = React.createRef()
+    
     constructor(props){
         super(props)
-        this.onSubmitadd = this.onSubmitadd.bind(this);
-        this.onSubmitget = this.onSubmitget.bind(this);
-        
-        if(this.props.kalUdalosti === undefined){
-            this.state.udalostiState = [];
-        }else{
-            this.state.udalostiState = this.props.kalUdalosti;
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+
+        this.state={
+            show: false,
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
         }
+     
+    }
+    handleClose() {
+        this.setState({
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+            show:false
+            });
+    }
+    
+    handleShow() {
+        this.setState({ show: true });
+    }
+
+    async addUdalost(data) {
+        console.log('testadd data',data)
+        try {
+            const datas = {
+                nazev: data.nazev,
+                popis: data.popis,
+                datum: data.datum,
+                adresa: data.adresa,
+                psc: data.psc,
+                skupina :null,
+            }
+            //console.log('testadd datass',datas)
+            const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+            //console.log("addUdalsot res data",res.data)
+            
+            
+        } catch(err){
+            
+            console.log('err', err)
+        }
+    }
+    
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.value;
+        const { name } = target;
+        await this.setState({
+          [ name ]: value,
+        });
+    }
+
+    async onSubmit(data){
+        data.preventDefault();
         
-        console.log('udalostiState',this.state.udalostiState);
+        //console.log('email',this.state);
+        const datas = this.state;
+        this.setState({
+            nazev: '',
+            popis: '',
+            adresa: '',
+            psc: '',
+            datum:'',
+            show:false
+            });
+        //console.log('statedata',datas);
+        await this.addUdalost(datas);
+        //console.log("ahoj")
+        await this.getUdalosti();
+        
+    }
+    async getUdalosti(){
+        const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+        //console.log('datafromserverKal',res.data.Udalosti)
+        const upData = res.data.Udalosti.map((data) => {
+            return {
+              id: data.UdalostID,
+              title: data.Nazev,
+              start:data.Datum,
+              popis:data.Popis,
+              psc:data.PSC,
+            };
+          });
+        this.setGlobal({
+            isAuth:localStorage.getItem('isAuth'),
+            udalosti : res.data.Udalosti,
+            upUdalosti: upData,
+            token:localStorage.getItem('JWT_TOKEN')})
+    }
+
+    async componentDidMount(){
+        await this.getUdalosti();
         
     }
 
-    async onSubmitadd(data){
-        console.log('data',data);
-        await this.props.addUdalost(data);
-        
-    }
-
-    async onSubmitget(){
-        await this.props.getUdalosti();
-        if(this.props.kalUdalosti === undefined){
-            this.state.udalostiState = [];
-        }else{
-            this.state.udalostiState = this.props.kalUdalosti;
-        }
-        console.log('onSubmitPrirazeni',this.props.kalUdalosti)
-    }
+    /*async componentDidUpdate(){
+        await this.getUdalosti();
+    }*/
 
     
+//*
+render(){
+    
+    const udalostMount= this.global.upUdalosti ;
+    const {popis,psc,nazev,adresa,datum}=this.state;
+    //console.log('globaludalosti',udalostMount)
+    
+    return(
+        <div>
 
+            <Button variant="primary" onClick={this.handleShow}>
+            Pridej udalost
+            </Button>
+            
+            <FullCalendar 
+                defaultView="dayGridMonth"
+                header={{
+                left: 'prev ,today',
+                center: 'title',
+                right: 'next'
+                }}
+                plugins={[ dayGridPlugin, bootstrapPlugin ]}
+                themeSystem='bootstrap'
+
+                events={udalostMount}
+
+                ref={ this.calendarComponentRef }
+                eventClick={ function(info) {
+                    
+                    
+                    test(info)
+                    
+                    
+                  }
+                }
+                eventRender={ function(info) {
+                    
+                  }}
+            />
+
+            <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
+            <Modal.Body>
+            
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte nazev udalosti:</Form.Label>
+                        <Form.Control required
+                                name="nazev"
+                                type="text"
+                                placeholder="Muj Nazev"  value={ nazev } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Zadejte popis udalosti:</Form.Label>
+                        <Form.Control required 
+                                name="popis"
+                                type="text"
+                                placeholder="Muj popis" value={ popis } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte datum:</Form.Label>
+                        <Form.Control required
+                                name="datum"
+                                type="datetime-local"
+                                placeholder="21.2.2511" value={ datum } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte adresa:</Form.Label>
+                        <Form.Control required
+                                name="adresa"
+                                type="text"
+                                placeholder="Mesto Ulice" value={ adresa } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Zadej PSC:</Form.Label>
+                        <Form.Control required
+                                name="psc"
+                                type="number"
+                                placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    
+                    
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" type="submit">
+                Přidej událost
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+            
+                
+        </div>     
+    )
+}
+    
+/*/
     render(){
         
         const { handleSubmit  } =this.props;
         return(
             <div>
-                <div>
-                    <p>Zacni neco delat a vytvor si svuj kalendar !!!!</p>
+            
+
+
+            <div className="d-flex justify-content-center">
+                <div className="udalostiKal">
+                    
                     <RenderUdalost item={this.state.udalostiState}/>
                     {console.log('kalerrMsg',this.props.errMsg)}
                     {console.log('kalisAuth',this.props.isAuth)}
@@ -67,7 +267,7 @@ class Kalendar extends Component{
                 
                 
                 
-                <div className="d-flex justify-content-center">
+                <div className="d-flex formKal">
                 <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitadd)}>
                     <div className="form">
                         
@@ -123,25 +323,30 @@ class Kalendar extends Component{
                 </form>
             </div>
         </div>
-           
+        </div>
         );
     };
 
-
+//*/
 
 };
 
 
-
-function mapStateProps(state){
-    return{
-        errMsg: state.auth.errorMessage,
-        isAuth: state.auth.isAuthenticated,
-        kalUdalosti: state.kal.udalosti
-    }
+function test(info) {
+    
+    console.log('info',info);
+    return(
+        
+        <Modal show={true} >
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer closeButton>
+          hoo
+        </Modal.Footer>
+      </Modal>
+        )
 }
 
-export default compose(
-    connect(mapStateProps,actions),
-    reduxForm( {form: 'kalendar'})
-)(Kalendar);
+

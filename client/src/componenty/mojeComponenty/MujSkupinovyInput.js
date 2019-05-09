@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+/*import React, { Component} from 'react';
 
 
 export default class MujSkupinovyInput extends Component{
@@ -30,4 +30,4 @@ export default class MujSkupinovyInput extends Component{
             </div>
         );
     }
-};
+};*/

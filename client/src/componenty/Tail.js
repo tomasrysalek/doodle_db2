@@ -8,7 +8,7 @@ export default class Tail extends Component {
         return(
                 <div className="tail">
                     <p className="text-secondary d-flex justify-content-center ">
-                        Tento projekt vznikl v letním semestru v roce 2019 na Univerzitě Hradec Králové za účelem vytřískat co nejvíce kreditů.
+                        Tento projekt vzniká v letním semestru v roce 2019 na Univerzitě Hradec Králové jako projekt na Databáze 2 a Tnpw 2.
                     </p>
                 </div>
         );

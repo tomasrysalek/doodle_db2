@@ -1,5 +1,6 @@
-import axios from 'axios';
+/*import axios from 'axios';
 import {AUTH_PRIHLASEN , AUTH_ERROR , AUTH_ODHLASEN} from './type'
+import { getGlobal, setGlobal } from 'reactn';
 
 
 export const signUp = data => {
@@ -18,14 +19,29 @@ export const signUp = data => {
                     payload: res.data.message
             })
             }else(
-
+                
                 dispatch({
                     type: AUTH_PRIHLASEN,
                     payload: res.data.message
                 })
                 
             )
-            
+            setGlobal({udalosti : res.data.Udalosti})
+        
+            if(getGlobal().udalosti !== undefined){
+                
+                const pom = getGlobal().udalosti.map((data) => {
+                    return {
+                      id: data.UdalostID,
+                      title: data.Nazev,
+                      start:data.Datum,
+                      popis:data.Popis,
+                      psc:data.PSC,
+                    };
+                  });
+                  setGlobal({udalosti : pom})
+            }
+            localStorage.setItem('test',"ahoj z indexu");
             localStorage.setItem('JWT_TOKEN',res.data.token);
             console.log('token',res.data.token)
             
@@ -61,6 +77,21 @@ export const signIn = data => {
                     payload: serverToken.token
                 });
                 
+            }
+            setGlobal({udalosti : res.data.Udalosti})
+        
+            if(getGlobal().udalosti !== undefined){
+                
+                const pom = getGlobal().udalosti.map((data) => {
+                    return {
+                      id: data.UdalostID,
+                      title: data.Nazev,
+                      start:data.Datum,
+                      popis:data.Popis,
+                      psc:data.PSC,
+                    };
+                  });
+                  setGlobal({udalosti : pom})
             }
             
             localStorage.setItem('JWT_TOKEN',serverToken.token);
@@ -101,7 +132,22 @@ export const getUdalosti = _ => {
             const serverKal = res.data;
             console.log('serverKal',serverKal)
             console.log('serverKalUdalost',serverKal.Udalosti)
-           
+            setGlobal({udalosti : res.data.Udalosti})
+        
+            if(getGlobal().udalosti !== undefined){
+                
+                const pom = getGlobal().udalosti.map((data) => {
+                    return {
+                      id: data.UdalostID,
+                      title: data.Nazev,
+                      start:data.Datum,
+                      popis:data.Popis,
+                      psc:data.PSC,
+                    };
+                  });
+                  setGlobal({udalosti : pom})
+            }
+            
             dispatch({
                 type: AUTH_PRIHLASEN,
                 udalost: serverKal.Udalosti
@@ -222,4 +268,4 @@ export const getSkupina = _ => {
             console.log('err', err)
         }
     }
-}
+}*/
