@@ -14,7 +14,7 @@ export default class Registrace extends Component{
         super(props)
         this.state = {
             email: '',
-            pass: '',
+            psswd: '',
             passScnd: '',
             username:'',
             }
@@ -24,11 +24,11 @@ export default class Registrace extends Component{
         data.preventDefault();
         
         console.log('email',this.state)
-        if(this.state.pass===this.state.passScnd){
+        if(this.state.psswd===this.state.passScnd){
             const datas = this.state;
             this.setState({
                 email: '',
-                pass: '',
+                psswd: '',
                 passScnd: '',
                 username:'',
                 })
@@ -82,7 +82,7 @@ export default class Registrace extends Component{
 
     render(){
        
-        const {email,pass,passScnd,username}=this.state;
+        const {email,psswd,passScnd,username}=this.state;
         return(
             <div>
                <div className="d-flex justify-content-center">
@@ -97,7 +97,7 @@ export default class Registrace extends Component{
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control required name="pass" type="password" placeholder="Password" value={ pass } onChange={ (e) => this.handleChange(e) }/>
+                        <Form.Control required name="psswd" type="password" placeholder="Password" value={ psswd } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
