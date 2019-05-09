@@ -123,6 +123,9 @@ export default class Kalendar extends Component{
         
     }
     async getUdalosti(){
+        try{
+
+        
         const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
         //console.log('datafromserverKal',res.data.Udalosti)
         const upData = res.data.Udalosti.map((data) => {
@@ -140,6 +143,9 @@ export default class Kalendar extends Component{
             udalosti : res.data.Udalosti,
             upUdalosti: upData,
             token:localStorage.getItem('JWT_TOKEN')})
+        }catch(err){
+            console.log('err',err)
+        }
     }
 
     async componentDidMount(){

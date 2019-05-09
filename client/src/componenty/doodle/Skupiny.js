@@ -17,12 +17,15 @@ export default class Skupiny extends Component{
         this.handleShowPriUziv = this.handleShowPriUziv.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleShowVyt = this.handleShowVyt.bind(this);
+        this.handleSmazSkup = this.handleSmazSkup.bind(this);
         
         this.state={
             showVySkup: false,
             showPriUdalosti: false,
             showPriUzivatele: false,
+            showClenySkup:false,
             nazevSkup: '',
+            smazPls:'',
             email: '',
             nazev: '',
             popis: '',
@@ -37,10 +40,14 @@ export default class Skupiny extends Component{
     handleClose() {
         this.setState({
             nazevSkup: '',
+            smazPls:'',
+            email: '',
+            nazev: '',
             popis: '',
             adresa: '',
             psc: '',
             datum:'',
+            showClenySkup:false,
             showVySkup: false,
             showPriUdalosti: false,
             showPriUzivatele: false,
@@ -59,28 +66,78 @@ export default class Skupiny extends Component{
         this.setState({ showPriUzivatele: true,nazevSkup:event.target.name });
         console.log("handleShow event",this.state)
     }
+    handleSmazSkup= async (event) => {
+        await this.setState({ smazPls:event.target.name });
+        console.log("handleSmazSkup",this.state)
+        this.smazaniSkupiny(this.state)
+
+    }
+
+    async smazaniSkupiny(data){
+        try {
+
+        //console.log('email',this.state);
+        const datas = {
+            
+              skupina: data.smazPls,
+              
+            
+          };
+        
+        console.log('datas smaz',datas);
+        await axios.delete('http://localhost:4433/skupina/delete' , datas)
+        //console.log('datafromserverskupCreate',res.data)
+    } catch(err){
+            
+        console.log('err', err)
+    }
+    }
+
+    async getSkupiny(){
+        try{
+
+        
+            const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+            console.log('skupuiny',res.data)
+      
+            this.setGlobal({
+                isAuth:localStorage.getItem('isAuth'),
+                token:localStorage.getItem('JWT_TOKEN'),
+                skupiny : res.data.skupiny})
+        }catch(err){
+            console.log('err',err)
+        }
+    }
+
+    async getUdalosSkup(){
+        try{
+
+        
+            const res = await axios.get('http://localhost:4433/skupina/getAll' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+            console.log('skupuiny',res.data)
+      
+            this.setGlobal({
+                isAuth:localStorage.getItem('isAuth'),
+                token:localStorage.getItem('JWT_TOKEN'),
+                skupiny : res.data.skupiny})
+        }catch(err){
+            console.log('err',err)
+        }
+    }
 
     async componentDidMount(){
-        const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-        console.log('skupuiny',res.data)
-  
-        this.setGlobal({
-            isAuth:localStorage.getItem('isAuth'),
-            token:localStorage.getItem('JWT_TOKEN'),
-            skupiny : res.data.skupiny})
+        await this.getSkupiny();
         
     }
 
     async componentDidUpdate(prevProps, prevState){
 
-        if (prevState.showVySkup !==this.state.showVySkup || prevState.showPriUdalosti !==this.state.showPriUdalosti || prevState.showPriUzivatele !==this.state.showPriUzivatele){
-            const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-
-            console.log('update time')
-        this.setGlobal({
-            isAuth:localStorage.getItem('isAuth'),
-            token:localStorage.getItem('JWT_TOKEN'),
-            skupiny : res.data.skupiny})
+        if (prevState.showVySkup !==this.state.showVySkup
+             || prevState.showPriUdalosti !==this.state.showPriUdalosti
+             || prevState.showPriUzivatele !==this.state.showPriUzivatele
+             || prevState.showClenySkup !==this.state.showClenySkup){
+            
+                await this.getSkupiny();
             
         }
        
@@ -252,6 +309,8 @@ export default class Skupiny extends Component{
                         <th>Nazev Skupiny</th>
                         <th>Pridej Udalost</th>
                         <th>Pridej Uzivatele</th>
+                        {false?<th>Zobraz udalosti skupiny</th>:null}
+                        <th>Smaž Skupinu</th>
                         
                         </tr>
                     </thead>
@@ -267,6 +326,15 @@ export default class Skupiny extends Component{
                         </td><td>
                         <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
                         Přidej Uživatele
+                        </Button>
+                        </td>
+                        {false? <td>
+                        <Button variant="primary" onClick={this.sss} name={item.Nazev}>
+                        Zobraz udalosti skupiny
+                        </Button>
+                        </td> :null}<td>
+                        <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
+                        Smaž Skupinu
                         </Button>
                         </td>
                         
