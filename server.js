@@ -16,6 +16,7 @@ connect
   .catch(err => {
     console.error('Unable to connect to the database:', err);
   });
+  
   app.use(cors());
   app.use(bodyParser.json());
   app.use('/udalost',udalostRouter);

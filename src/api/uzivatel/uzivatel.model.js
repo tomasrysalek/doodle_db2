@@ -14,6 +14,10 @@ const User = connect.define('user',{
         type: Sequelize.STRING(250),
         allowNull:false
     },
+    Username:{
+        type: Sequelize.STRING(30),
+        allowNull:false
+    },
     UzivatelID:{
         type: Sequelize.INTEGER,
         primaryKey: true,

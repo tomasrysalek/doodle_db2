@@ -5,11 +5,9 @@ import userService from './uzivatel.service';
 
 const router = express.Router();
 
-
-//Registrace ENDPOINT
+//ENDPOINT pro prihlaseni
 router.post('/login',userService.login);
+//ENDPOINT pro registrace
 router.post('/signup',userService.signup);
-//Prihlaseni ENDPOINT
-//Secret Endpoint pouze test pro autentifikaci pomoci JWT FUNKCNI
-
+// router.put('/chemail',passport.authenticate('jwt',{session:false}),userService.changeEmail)
 export default router;
