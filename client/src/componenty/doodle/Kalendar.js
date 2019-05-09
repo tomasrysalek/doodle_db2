@@ -136,9 +136,10 @@ export default class Kalendar extends Component{
         
     }
 
-    /*async componentDidUpdate(){
-        await this.getUdalosti();
-    }*/
+    async componentDidUpdate(prevProps){
+        console.log('didUP',prevProps)
+       // await this.getUdalosti();
+    }
 
     
 //*

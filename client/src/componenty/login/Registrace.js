@@ -16,6 +16,7 @@ export default class Registrace extends Component{
             email: '',
             pass: '',
             passScnd: '',
+            username:'',
             }
     }
 
@@ -29,6 +30,7 @@ export default class Registrace extends Component{
                 email: '',
                 pass: '',
                 passScnd: '',
+                username:'',
                 })
             console.log('statedata',datas)
             await this.signUp(datas);
@@ -80,7 +82,7 @@ export default class Registrace extends Component{
 
     render(){
        
-        const {email,pass,passScnd}=this.state;
+        const {email,pass,passScnd,username}=this.state;
         return(
             <div>
                <div className="d-flex justify-content-center">
@@ -88,6 +90,10 @@ export default class Registrace extends Component{
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Zadejte váš mail:</Form.Label>
                         <Form.Control required  name="email" type="email" placeholder="Enter email"  value={ email } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Zadejte váš mail:</Form.Label>
+                        <Form.Control required  name="username" type="text" placeholder="Enter email"  value={ username } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
