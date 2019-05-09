@@ -1,6 +1,6 @@
 import React, {Component} from 'reactn';
 import axios from 'axios';
-import { Nav,Form,Modal,Button } from 'react-bootstrap';
+import { Nav,Form,Modal,Button,Table } from 'react-bootstrap';
 
 
 import MujInput from '../mojeComponenty/MujInput';
@@ -70,6 +70,22 @@ export default class Skupiny extends Component{
             skupiny : res.data.skupiny})
         
     }
+
+    async componentDidUpdate(prevProps, prevState){
+
+        if (prevState.showVySkup !==this.state.showVySkup || prevState.showPriUdalosti !==this.state.showPriUdalosti || prevState.showPriUzivatele !==this.state.showPriUzivatele){
+            const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+
+            console.log('update time')
+        this.setGlobal({
+            isAuth:localStorage.getItem('isAuth'),
+            token:localStorage.getItem('JWT_TOKEN'),
+            skupiny : res.data.skupiny})
+            
+        }
+       
+    }
+    
 
     handleChange = async (event) => {
         const { target } = event;
@@ -230,22 +246,33 @@ export default class Skupiny extends Component{
             </Button>
 
             <div>
-                {this.global.skupiny.map(item => 
-                     (<div key={item.SkupinaID} className="skupiny">
-                     <p>Nazev Skupiny: {item.Nazev}</p>
-                         
-                     <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
-                     Pridej udalost
-                     </Button>
-
-                     <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
-                     Přidej Uživatele
-                     </Button>
-                                             
-                     
-                     
-                     
-                    </div>))}
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                        <th>Nazev Skupiny</th>
+                        <th>Pridej Udalost</th>
+                        <th>Pridej Uzivatele</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.global.skupiny.map(item => 
+                        (<tr key={item.SkupinaID} className="skupiny">
+                        <td>
+                        <p>{item.Nazev}</p>
+                        </td><td>
+                        <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
+                        Pridej udalost
+                        </Button>
+                        </td><td>
+                        <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
+                        Přidej Uživatele
+                        </Button>
+                        </td>
+                        
+                        </tr>))}
+                    </tbody>
+                </Table>   
             </div>
 
             <Modal show={this.state.showVySkup} onHide={this.handleClose}>
