@@ -62,7 +62,7 @@ export default class Skupiny extends Component{
 
     async componentDidMount(){
         const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-
+        console.log('skupuiny',res.data)
   
         this.setGlobal({
             isAuth:localStorage.getItem('isAuth'),
@@ -277,7 +277,7 @@ export default class Skupiny extends Component{
 
             <Modal show={this.state.showVySkup} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitVytSkup(e)}>
             <Modal.Body>
@@ -289,9 +289,7 @@ export default class Skupiny extends Component{
                                 type="text"
                                 placeholder="Muj Nazev"  value={ nazevSkup } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
-                    
-                    
-                    
+         
                 </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary"  onClick={this.handleClose}>
@@ -306,7 +304,7 @@ export default class Skupiny extends Component{
 
             <Modal show={this.state.showPriUzivatele} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitPridejUzivatele(e)}>
             <Modal.Body>
@@ -335,7 +333,7 @@ export default class Skupiny extends Component{
 
             <Modal show={this.state.showPriUdalosti} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitVytvorUdalost(e)}>
             <Modal.Body>

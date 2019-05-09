@@ -32,7 +32,7 @@ render(){
                     <Route path="/prihlaseni" component ={Prihlaseni}/>
                     <Route path="/registrace" component ={Registrace}/>
                     <Route path="/odhlaseni" component ={Odhlaseni}/>
-                    <Route path="/uzivatel" component ={Uzivatel}/>
+                    {/* <Route path="/uzivatel" component ={Uzivatel}/> */}
                 </App>
             </BrowserRouter>
         </div>
