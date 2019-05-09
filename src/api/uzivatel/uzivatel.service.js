@@ -35,8 +35,8 @@ function signup (req,res){
                 Heslo: req.body.psswd,
                 Username: req.body.username
             }) //Ulozit do databaze
+  
             
-
             /**
              * Generovani tokenu musi byt pred .save() po .save() se instance smaze
              */

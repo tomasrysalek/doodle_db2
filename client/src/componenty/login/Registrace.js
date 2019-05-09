@@ -92,8 +92,8 @@ export default class Registrace extends Component{
                         <Form.Control required  name="email" type="email" placeholder="Enter email"  value={ email } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Zadejte váš mail:</Form.Label>
-                        <Form.Control required  name="username" type="text" placeholder="Enter email"  value={ username } onChange={ (e) => this.handleChange(e) }/>
+                        <Form.Label>Zadejte váš username:</Form.Label>
+                        <Form.Control required  name="username" type="text" placeholder="Enter username"  value={ username } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
