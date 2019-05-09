@@ -1,7 +1,7 @@
 import sk from './skupina.model';
 import SP from '../skupina_prava/sk_prava.model';
 import User from '../uzivatel/uzivatel.model';
-
+import Udalost from '../udalost/udalost.model'
  function addSP(nazev,user){
      sk.findOne({where: {Nazev: nazev}}).then(foundSK => {
          SP.build({
@@ -12,7 +12,7 @@ import User from '../uzivatel/uzivatel.model';
      })
  }
 /**
- * Vytvoreni skupiny a pridani zaznamu prav do tabulkzy
+ * Vytvoreni skupiny a pridani zaznamu prav do tabulky
  * 
  */
 function create(req,res){
@@ -30,8 +30,7 @@ function create(req,res){
     })
 }
 /**
- * Pridat uzivatele do skupiny
- * !!Dodelat pro jakoukoliv skupinu!!
+ * Pridat uzivatele do skupin
  */
 function adduser(req,res){
     const user = User.findOne({where:{Email:req.body.email}}).then(foundUser => {
@@ -57,9 +56,23 @@ function getAll(req,res){
 }
 
 function getUdalosti(req,res){
-    sk.findAll({where:{Nazev:req.body.skupina}, raw:true}).then(foundUdalosti =>{
-        res.json({udalost: foundUdalosti})
+    sk.findOne({where:{Nazev:req.body.skupina}}).then(foundSK =>{
+        Udalost.findAll({where: {SkupinaID: foundSK.SkupinaID}, raw:true}).then(foundUdalosti =>{
+            return res.json({udalost: foundUdalosti})
+        })
     })
 }
 
-export default {create,adduser,getAll,getUdalosti};
+function deleteSk(req,res){
+    sk.findOne({where:{Nazev:req.body.skupina}}).then(found => {
+        Udalost.destroy({
+            where: {SkupinaID: found.SkupinaID}
+        });
+        SP.destroy({
+            where:{SkupinaID: found.SkupinaID}
+        })
+        return found.destroy();
+    })
+}
+
+export default {create,adduser,getAll,getUdalosti,deleteSk};

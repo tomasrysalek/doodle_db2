@@ -14,6 +14,7 @@ async function validPass(user,psswd){
      }
 }
 
+
 function signToken (user) {
     return JWT.sign({
         iss: 'doodle_web_api',
@@ -31,7 +32,8 @@ function signup (req,res){
         else{
             const newUser = User.build({ //Vytvoreni noveho uzivatel
                 Email: req.body.email, 
-                Heslo: req.body.psswd
+                Heslo: req.body.psswd,
+                Username: req.body.username
             }) //Ulozit do databaze
             
 
@@ -70,5 +72,14 @@ function login (req,res){
     })
 }
 
+// function changeEmail(req,res){
+//     User.findOne({where: {Email:req.user.UzivatelID}}).then(foundUser =>{
+//         foundUser.update({
+//             Email: req.body.Email
+//         }).save()
+//     })
+// }
 
-export default {signup,login};
+
+export default {signup,
+    login};
