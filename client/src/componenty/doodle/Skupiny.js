@@ -1,6 +1,6 @@
 import React, {Component} from 'reactn';
 import axios from 'axios';
-import { Nav,Form,Modal,Button } from 'react-bootstrap';
+import { Nav,Form,Modal,Button,Table } from 'react-bootstrap';
 
 
 import MujInput from '../mojeComponenty/MujInput';
@@ -17,12 +17,15 @@ export default class Skupiny extends Component{
         this.handleShowPriUziv = this.handleShowPriUziv.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleShowVyt = this.handleShowVyt.bind(this);
+        this.handleSmazSkup = this.handleSmazSkup.bind(this);
         
         this.state={
             showVySkup: false,
             showPriUdalosti: false,
             showPriUzivatele: false,
+            showClenySkup:false,
             nazevSkup: '',
+            smazPls:'',
             email: '',
             nazev: '',
             popis: '',
@@ -37,10 +40,14 @@ export default class Skupiny extends Component{
     handleClose() {
         this.setState({
             nazevSkup: '',
+            smazPls:'',
+            email: '',
+            nazev: '',
             popis: '',
             adresa: '',
             psc: '',
             datum:'',
+            showClenySkup:false,
             showVySkup: false,
             showPriUdalosti: false,
             showPriUzivatele: false,
@@ -59,17 +66,83 @@ export default class Skupiny extends Component{
         this.setState({ showPriUzivatele: true,nazevSkup:event.target.name });
         console.log("handleShow event",this.state)
     }
+    handleSmazSkup= async (event) => {
+        await this.setState({ smazPls:event.target.name });
+        console.log("handleSmazSkup",this.state)
+        this.smazaniSkupiny(this.state)
+
+    }
+
+    async smazaniSkupiny(data){
+        try {
+
+        //console.log('email',this.state);
+        const datas = {
+            
+              skupina: data.smazPls,
+              
+            
+          };
+        
+        console.log('datas smaz',datas);
+        await axios.delete('http://localhost:4433/skupina/delete' , datas)
+        //console.log('datafromserverskupCreate',res.data)
+    } catch(err){
+            
+        console.log('err', err)
+    }
+    }
+
+    async getSkupiny(){
+        try{
+
+        
+            const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+            console.log('skupuiny',res.data)
+      
+            this.setGlobal({
+                isAuth:localStorage.getItem('isAuth'),
+                token:localStorage.getItem('JWT_TOKEN'),
+                skupiny : res.data.skupiny})
+        }catch(err){
+            console.log('err',err)
+        }
+    }
+
+    async getUdalosSkup(){
+        try{
+
+        
+            const res = await axios.get('http://localhost:4433/skupina/getAll' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+            console.log('skupuiny',res.data)
+      
+            this.setGlobal({
+                isAuth:localStorage.getItem('isAuth'),
+                token:localStorage.getItem('JWT_TOKEN'),
+                skupiny : res.data.skupiny})
+        }catch(err){
+            console.log('err',err)
+        }
+    }
 
     async componentDidMount(){
-        const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-
-  
-        this.setGlobal({
-            isAuth:localStorage.getItem('isAuth'),
-            token:localStorage.getItem('JWT_TOKEN'),
-            skupiny : res.data.skupiny})
+        await this.getSkupiny();
         
     }
+
+    async componentDidUpdate(prevProps, prevState){
+
+        if (prevState.showVySkup !==this.state.showVySkup
+             || prevState.showPriUdalosti !==this.state.showPriUdalosti
+             || prevState.showPriUzivatele !==this.state.showPriUzivatele
+             || prevState.showClenySkup !==this.state.showClenySkup){
+            
+                await this.getSkupiny();
+            
+        }
+       
+    }
+    
 
     handleChange = async (event) => {
         const { target } = event;
@@ -230,27 +303,49 @@ export default class Skupiny extends Component{
             </Button>
 
             <div>
-                {this.global.skupiny.map(item => 
-                     (<div key={item.SkupinaID} className="skupiny">
-                     <p>Nazev Skupiny: {item.Nazev}</p>
-                         
-                     <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
-                     Pridej udalost
-                     </Button>
-
-                     <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
-                     Přidej Uživatele
-                     </Button>
-                                             
-                     
-                     
-                     
-                    </div>))}
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                        <th>Nazev Skupiny</th>
+                        <th>Pridej Udalost</th>
+                        <th>Pridej Uzivatele</th>
+                        {false?<th>Zobraz udalosti skupiny</th>:null}
+                        <th>Smaž Skupinu</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.global.skupiny.map(item => 
+                        (<tr key={item.SkupinaID} className="skupiny">
+                        <td>
+                        <p>{item.Nazev}</p>
+                        </td><td>
+                        <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
+                        Pridej udalost
+                        </Button>
+                        </td><td>
+                        <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
+                        Přidej Uživatele
+                        </Button>
+                        </td>
+                        {false? <td>
+                        <Button variant="primary" onClick={this.sss} name={item.Nazev}>
+                        Zobraz udalosti skupiny
+                        </Button>
+                        </td> :null}<td>
+                        <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
+                        Smaž Skupinu
+                        </Button>
+                        </td>
+                        
+                        </tr>))}
+                    </tbody>
+                </Table>   
             </div>
 
             <Modal show={this.state.showVySkup} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitVytSkup(e)}>
             <Modal.Body>
@@ -262,9 +357,7 @@ export default class Skupiny extends Component{
                                 type="text"
                                 placeholder="Muj Nazev"  value={ nazevSkup } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
-                    
-                    
-                    
+         
                 </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary"  onClick={this.handleClose}>
@@ -279,7 +372,7 @@ export default class Skupiny extends Component{
 
             <Modal show={this.state.showPriUzivatele} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitPridejUzivatele(e)}>
             <Modal.Body>
@@ -308,7 +401,7 @@ export default class Skupiny extends Component{
 
             <Modal show={this.state.showPriUdalosti} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitVytvorUdalost(e)}>
             <Modal.Body>

@@ -38,7 +38,12 @@ export default class Kalendar extends Component{
         this.handleClose = this.handleClose.bind(this);
 
         this.state={
+            showUdalost:false,
             show: false,
+            infoTitle: '',
+            infoPopis:'',
+            infoPsc:'',
+            infoCas:'',
             nazev: '',
             popis: '',
             adresa: '',
@@ -49,12 +54,17 @@ export default class Kalendar extends Component{
     }
     handleClose() {
         this.setState({
+            showUdalost:false,
+            show: false,
+            infoTitle: '',
+            infoPopis:'',
+            infoPsc:'',
+            infoCas:'',
             nazev: '',
             popis: '',
             adresa: '',
             psc: '',
             datum:'',
-            show:false
             });
     }
     
@@ -113,6 +123,9 @@ export default class Kalendar extends Component{
         
     }
     async getUdalosti(){
+        try{
+
+        
         const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
         //console.log('datafromserverKal',res.data.Udalosti)
         const upData = res.data.Udalosti.map((data) => {
@@ -120,6 +133,7 @@ export default class Kalendar extends Component{
               id: data.UdalostID,
               title: data.Nazev,
               start:data.Datum,
+              datum:data.Datum,
               popis:data.Popis,
               psc:data.PSC,
             };
@@ -129,6 +143,9 @@ export default class Kalendar extends Component{
             udalosti : res.data.Udalosti,
             upUdalosti: upData,
             token:localStorage.getItem('JWT_TOKEN')})
+        }catch(err){
+            console.log('err',err)
+        }
     }
 
     async componentDidMount(){
@@ -136,18 +153,25 @@ export default class Kalendar extends Component{
         
     }
 
-    /*async componentDidUpdate(){
-        await this.getUdalosti();
-    }*/
+    componentDidUpdate(prevProps, prevState){
+
+        if (prevState.show !==this.state.show){
+            this.getUdalosti();
+            
+        }
+       
+    }
 
     
 //*
 render(){
     
     const udalostMount= this.global.upUdalosti ;
-    const {popis,psc,nazev,adresa,datum}=this.state;
+    const {popis,psc,nazev,adresa,datum,infoCas,infoPopis,infoPsc,infoTitle}=this.state;
+    //const {info} =this.state.event
     //console.log('globaludalosti',udalostMount)
-    
+    console.log('stateShow',this.state.showUdalost)
+    //console.log('stateShow',this.state.info)
     return(
         <div>
 
@@ -168,10 +192,21 @@ render(){
                 events={udalostMount}
 
                 ref={ this.calendarComponentRef }
-                eventClick={ function(info) {
+                eventClick={ (info) =>{
+                    console.log('stateShow',info)
+                    console.log('statetime',info.view.activeStart)
+                    const eventtst = new Date(info.event._def.extendedProps.datum);
+
+                    var datetst = JSON.stringify(eventtst)
+                    datetst = datetst.slice(1,11)
+                    this.setState({
+                        showUdalost: true,
+                        infoTitle: info.event._def.title,
+                        infoPopis: info.event._def.extendedProps.popis,
+                        infoPsc: info.event._def.extendedProps.psc,
+                        infoCas: datetst,
+                    })
                     
-                    
-                    test(info)
                     
                     
                   }
@@ -183,7 +218,7 @@ render(){
 
             <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
             <Modal.Body>
@@ -236,6 +271,28 @@ render(){
             </Modal.Footer>
             </Form>
             </Modal>
+
+
+            <Modal show={this.state.showUdalost} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Udalost</Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue">
+                <Modal.Body>
+                  <p>Název události: {infoTitle}</p>
+                  <p>Popis události: {infoPopis}</p>
+                  <p>Cas události: {infoCas}</p>
+                  <p>Místo události: {infoPsc}</p>
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
             
                 
         </div>     
@@ -334,7 +391,7 @@ render(){
 
 function test(info) {
     
-    console.log('info',info);
+    console.log('info',info.event._def);
     return(
         
         <Modal show={true} >
