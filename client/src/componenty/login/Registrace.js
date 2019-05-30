@@ -3,7 +3,7 @@ import React, {Component} from 'reactn';
 
 import { Nav, Form,Button } from 'react-bootstrap';
 import axios from 'axios';
-
+import GoogleLogin from 'react-google-login';
 
 import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
@@ -12,6 +12,7 @@ import * as actions from '../../actions';
 export default class Registrace extends Component{
     constructor(props){
         super(props)
+        this.responseGoogle = this.responseGoogle.bind(this);
         this.state = {
             email: '',
             psswd: '',
@@ -76,9 +77,12 @@ export default class Registrace extends Component{
           console.log('err', err)
       }
 
-}
+    }
   
+    responseGoogle(res){
+        console.log('res google',res)
 
+    }
 
     render(){
        
@@ -86,33 +90,42 @@ export default class Registrace extends Component{
         return(
             <div>
                <div className="d-flex justify-content-center">
-                <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Zadejte váš mail:</Form.Label>
-                        <Form.Control required  name="email" type="email" placeholder="Enter email"  value={ email } onChange={ (e) => this.handleChange(e) }/>
-                    </Form.Group>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Zadejte váš username:</Form.Label>
-                        <Form.Control required  name="username" type="text" placeholder="Enter username"  value={ username } onChange={ (e) => this.handleChange(e) }/>
-                    </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control required name="psswd" type="password" placeholder="Password" value={ psswd } onChange={ (e) => this.handleChange(e) }/>
-                    </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control required name="passScnd" type="password" placeholder="Password" value={ passScnd } onChange={ (e) => this.handleChange(e) }/>
-                    </Form.Group>
-                    
-                    <Button variant="primary" type="submit">
-                        Přihlásit se
-                    </Button >
-                    <div className="prihlaseniLink">
-                        <Nav.Link href="/registrace">Registrace</Nav.Link>
-                    </div>
-                    
-                </Form>
-            </div>
+                    <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Zadejte váš mail:</Form.Label>
+                            <Form.Control required  name="email" type="email" placeholder="Enter email"  value={ email } onChange={ (e) => this.handleChange(e) }/>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Zadejte váš username:</Form.Label>
+                            <Form.Control required  name="username" type="text" placeholder="Enter username"  value={ username } onChange={ (e) => this.handleChange(e) }/>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control required name="psswd" type="password" placeholder="Password" value={ psswd } onChange={ (e) => this.handleChange(e) }/>
+                        </Form.Group>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control required name="passScnd" type="password" placeholder="Password" value={ passScnd } onChange={ (e) => this.handleChange(e) }/>
+                        </Form.Group>
+                        
+                        <Button variant="primary" type="submit">
+                            Přihlásit se
+                        </Button >
+                        <div className="prihlaseniLink">
+                            <Nav.Link href="/registrace">Registrace</Nav.Link>
+                        </div>
+                        
+                    </Form>
+                </div>
+                <div>
+                <GoogleLogin
+                    clientId="dopln svoje ID lol"
+                    buttonText="Login"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.responseGoogle}
+                    cookiePolicy={'single_host_origin'}
+                />
+                </div>
             </div>
             /*
             <div className="d-flex justify-content-center">
