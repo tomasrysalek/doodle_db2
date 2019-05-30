@@ -18,7 +18,8 @@ export default class Skupiny extends Component{
         this.handleClose = this.handleClose.bind(this);
         this.handleShowVyt = this.handleShowVyt.bind(this);
         this.handleSmazSkup = this.handleSmazSkup.bind(this);
-        
+        this.handleChat = this.handleChat.bind(this);
+
         this.state={
             showVySkup: false,
             showPriUdalosti: false,
@@ -71,6 +72,20 @@ export default class Skupiny extends Component{
         console.log("handleSmazSkup",this.state)
         this.smazaniSkupiny(this.state)
 
+    }
+
+    handleChat= async (event) => {
+        const data = {
+            name:localStorage.getItem('EmailUzivatele') ,
+            room:event.target.name,
+            tokem: localStorage.getItem('JWT_TOKEN')
+        }
+        
+        //TODO redirect
+        
+
+        console.log('data chat',data)     
+        
     }
 
     async smazaniSkupiny(data){
@@ -309,9 +324,8 @@ export default class Skupiny extends Component{
                         <th>Nazev Skupiny</th>
                         <th>Pridej Udalost</th>
                         <th>Pridej Uzivatele</th>
-                        {false?<th>Zobraz udalosti skupiny</th>:null}
                         <th>Smaž Skupinu</th>
-                        
+                        <th>Chat skupiny</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -328,13 +342,13 @@ export default class Skupiny extends Component{
                         Přidej Uživatele
                         </Button>
                         </td>
-                        {false? <td>
-                        <Button variant="primary" onClick={this.sss} name={item.Nazev}>
-                        Zobraz udalosti skupiny
-                        </Button>
-                        </td> :null}<td>
+                        <td>
                         <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
                         Smaž Skupinu
+                        </Button>
+                        </td><td>
+                        <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
+                        Skupinový chat
                         </Button>
                         </td>
                         
