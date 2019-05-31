@@ -80,12 +80,13 @@ export default class Skupiny extends Component{
             room:event.target.name,
             tokem: localStorage.getItem('JWT_TOKEN')
         }
-        
+        //Zatim jediny reseni, ktery funguje
+        window.open("http://www.localhost:4433?name="+data.name+"&room="+data.room)
         //TODO redirect
-        this.props.history.push({
-            pathname:"/chat",
-            Header:data,
-           });
+        // this.props.history.push({
+        //     pathname:"http://www.localhost:4433",
+        //     Header:data,
+        //    });
         
 
         console.log('data chat',data)     
@@ -350,12 +351,12 @@ export default class Skupiny extends Component{
                         <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
                         Smaž Skupinu
                         </Button>
-                        </td><td>
+                        </td>
+                        <td>
                         <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
                         Skupinový chat
                         </Button>
                         </td>
-                        
                         </tr>))}
                     </tbody>
                 </Table>   

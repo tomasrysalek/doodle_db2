@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import skupinaRouter from './src/api/skupina/skupina.controller';
 import udalostRouter from './src/api/udalost/udalost.controller';
+import chat from './src/api/chat/chat.service'
 const app = express();
 const port = process.env.PORT || 4433;
 app.set('view engine','ejs')
@@ -31,25 +32,34 @@ const server = app.listen(port)
 const io = require("socket.io")(server)
 
 app.get('/',(req,res) => {
-  console.log('room:', req.headers.room)
-  console.log('name:', req.headers.name)
-  // res.render('index',{room: req.body.room})
+  res.render('index',{room: req.query.room})
   io.on('connection',(socket) => {
 
     socket.removeAllListeners()
-    socket.join(req.headers.room)    
+    socket.join(req.query.room) 
+    /**
+     * Zatím nefunguje, zobrazení historie zpráv
+     */
+    // Chat.findAll({where: {Skupina: req.query.room},raw:true}).then(allMessage => {
+    //   allMessage.forEach(element => {
+    //     io.to(req.query.room).emit('new_message', {message : element.Message, username : element.Uzivatel});
+    //   });
+    // })
+
     //Set username
-    socket.username = req.headers.name
+    socket.username = req.query.name
   
-      //listen on new_message
-      socket.on('new_message', (data) => {
-          //broadcast the new message
-          io.to(req.headers.room).emit('new_message', {message : data.message, username : socket.username});
-      })
+    //listen on new_message
+    socket.on('new_message', (data) => {
+      //broadcast the new message
+      io.to(req.query.room).emit('new_message', {message : data.message, username : socket.username});
+      //Ulozeni zpravy do databaze
+      chat.save(data.message,socket.username,req.query.room)
+    })
 
       //listen on typing
       socket.on('typing', (data) => {
-        socket.to(req.headers.room).broadcast.emit('typing', {username : socket.username})
+        socket.to(req.query.room).broadcast.emit('typing', {username : socket.username})
       })
   })
 })

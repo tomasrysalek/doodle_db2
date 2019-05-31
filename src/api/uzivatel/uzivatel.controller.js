@@ -9,5 +9,5 @@ const router = express.Router();
 router.post('/login',userService.login);
 //ENDPOINT pro registrace
 router.post('/signup',userService.signup);
-// router.put('/chemail',passport.authenticate('jwt',{session:false}),userService.changeEmail)
+router.post('/googleauth',userService.googleLogin);
 export default router;

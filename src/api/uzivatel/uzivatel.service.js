@@ -63,6 +63,7 @@ function login (req,res){
 
             else{
                 const token = signToken(foundUser);
+                console.log(foundUser)
                 return res.status(200).json({token:token});
             }
         }
@@ -72,14 +73,28 @@ function login (req,res){
     })
 }
 
-// function changeEmail(req,res){
-//     User.findOne({where: {Email:req.user.UzivatelID}}).then(foundUser =>{
-//         foundUser.update({
-//             Email: req.body.Email
-//         }).save()
-//     })
-// }
-
+function googleLogin(req,res){
+    User.findOne({where:{Email:res.body.WE.profileObj.email}}).then(foundUser =>{
+        if(!foundUser){
+            const newUser = User.build({ //Vytvoreni noveho uzivatel
+                Email: res.body.WE.profileObj.email, 
+                Heslo: res.body.WE.profileObj.googleId,
+                Username: res.body.WE.profileObj.name
+            })
+            const token = signToken(newUser);
+            //Generovani tokenu
+            newUser.save()
+            //Odeslani tokenu clientovi
+            return res.status(200).json({token: token, message: 'user created'});
+        }
+        else{
+            const token = signToken(foundUser);
+            console.log(foundUser)
+            return res.status(200).json({token:token});
+        }
+    })
+}
 
 export default {signup,
-    login};
+                login,
+                googleLogin};

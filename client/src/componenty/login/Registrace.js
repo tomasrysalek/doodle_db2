@@ -81,7 +81,6 @@ export default class Registrace extends Component{
   
     responseGoogle(res){
         console.log('res google',res)
-
     }
 
     render(){
@@ -119,7 +118,7 @@ export default class Registrace extends Component{
                 </div>
                 <div>
                 <GoogleLogin
-                    clientId="dopln svoje ID lol"
+                    clientId="142150448088-l06fe1kenh32iurkqvtk3kthbpnhrhjp.apps.googleusercontent.com"
                     buttonText="Login"
                     onSuccess={this.responseGoogle}
                     onFailure={this.responseGoogle}
