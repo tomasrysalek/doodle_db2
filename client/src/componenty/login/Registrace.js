@@ -79,8 +79,31 @@ export default class Registrace extends Component{
 
     }
   
-    responseGoogle(res){
-        console.log('res google',res)
+    async responseGoogle(ress){
+        console.log('res google',ress)
+        try {
+            const res = await axios.post('http://localhost:4433/user/googleauth' , ress)
+            /*
+            console.log('datafromserver',res.data)
+            const serverToken = res.data;
+            console.log('serverToken',serverToken.token)
+            
+            this.setGlobal({isAuth: true,
+                token:serverToken.token,
+                emailUzivatele:serverToken.email});
+            localStorage.setItem('isAuth',true);
+            localStorage.setItem('JWT_TOKEN',serverToken.token);
+            localStorage.setItem('EmailUzivatele',serverToken.email);
+                    */
+           
+              
+              
+              
+          } catch(err){
+              
+              console.log('err', err)
+          }
+
     }
 
     render(){

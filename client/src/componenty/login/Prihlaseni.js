@@ -6,10 +6,12 @@ import axios from 'axios';
 import MujInput from '../mojeComponenty/MujInput'
 import * as actions from '../../actions';
 import { useGlobal,setGlobal } from 'reactn';
+import GoogleLogin from 'react-google-login';
 export default class Prihlaseni extends Component{
     
     constructor(props){
         super(props)
+        this.responseGoogle = this.responseGoogle.bind(this);
         this.state = {
                 email: '',
                 pass: '',
@@ -43,6 +45,33 @@ export default class Prihlaseni extends Component{
           [ name ]: value,
         });
       }
+
+    async responseGoogle(ress){
+        console.log('res google',ress)
+        try {
+            const res = await axios.post('http://localhost:4433/user/googleauth' , ress)
+            /*
+            console.log('datafromserver',res.data)
+            const serverToken = res.data;
+            console.log('serverToken',serverToken.token)
+            
+            this.setGlobal({isAuth: true,
+                token:serverToken.token,
+                emailUzivatele:serverToken.email});
+            localStorage.setItem('isAuth',true);
+            localStorage.setItem('JWT_TOKEN',serverToken.token);
+            localStorage.setItem('EmailUzivatele',serverToken.email);
+                    
+           */
+              
+              
+              
+          } catch(err){
+              
+              console.log('err', err)
+          }
+
+    }
 
     
     async signIn(data) {
@@ -98,6 +127,15 @@ export default class Prihlaseni extends Component{
                     </div>
                     
                 </Form>
+                <div>
+                <GoogleLogin
+                    clientId="142150448088-l06fe1kenh32iurkqvtk3kthbpnhrhjp.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.responseGoogle}
+                    cookiePolicy={'single_host_origin'}
+                />
+                </div>
             </div>
             
         );
