@@ -82,6 +82,10 @@ export default class Skupiny extends Component{
         }
         
         //TODO redirect
+        this.props.history.push({
+            pathname:"/chat",
+            Header:data,
+           });
         
 
         console.log('data chat',data)     
