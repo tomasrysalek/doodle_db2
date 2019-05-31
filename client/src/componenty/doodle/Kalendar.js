@@ -15,7 +15,7 @@ import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
-
+import Linkify from 'react-linkify';
 
 
 import '../../../node_modules/@fullcalendar/core/main.css';
@@ -280,7 +280,7 @@ render(){
             <Form className="border border-dark p-5 bg-blue">
                 <Modal.Body>
                   <p>Název události: {infoTitle}</p>
-                  <p>Popis události: {infoPopis}</p>
+                  <p><Linkify>Popis události: {infoPopis}</Linkify></p>
                   <p>Cas události: {infoCas}</p>
                   <p>Místo události: {infoPsc}</p>
                 </Modal.Body>
