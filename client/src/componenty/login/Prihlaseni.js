@@ -57,11 +57,13 @@ export default class Prihlaseni extends Component{
             
             this.setGlobal({isAuth: true,
                 token:serverToken.token,
-                emailUzivatele:serverToken.email});
+                emailUzivatele:serverToken.username});
             localStorage.setItem('isAuth',true);
             localStorage.setItem('JWT_TOKEN',serverToken.token);
-            localStorage.setItem('EmailUzivatele',serverToken.email);
-
+            localStorage.setItem('EmailUzivatele',serverToken.username);
+            if(this.global.isAuth){
+                this.props.history.push(`/kalendar`)
+            }    
           } catch(err){  
             console.log('err', err)
           }
@@ -83,10 +85,10 @@ export default class Prihlaseni extends Component{
                    this.setGlobal({
                        isAuth: true,
                        token:serverToken.token,
-                       emailUzivatele:data.email});
+                       emailUzivatele:serverToken.username});
                    localStorage.setItem('isAuth',true);
                    localStorage.setItem('JWT_TOKEN',serverToken.token);
-                   localStorage.setItem('EmailUzivatele',data.email);
+                   localStorage.setItem('EmailUzivatele',serverToken.username);
                 }
                 
             } catch(err){

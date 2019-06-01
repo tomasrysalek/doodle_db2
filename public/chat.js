@@ -10,7 +10,12 @@ $(function(){
 
  //Emit message
  send_message.click(function(){
-     socket.emit('new_message', {message : message.val()})
+     if(message.val().trim() === ""){
+
+     }
+     else{
+        socket.emit('new_message', {message : message.val()})
+     }
  })
 
 

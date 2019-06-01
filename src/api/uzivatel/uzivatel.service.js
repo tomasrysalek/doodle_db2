@@ -44,13 +44,11 @@ function signup (req,res){
             //Generovani tokenu
             newUser.save()
             //Odeslani tokenu clientovi
-            return res.status(200).json({token: token, message: 'user created'});
+            return res.status(200).json({token: token, message: 'user created',username:foundUser.Username});
         }
     })}
 /**
  * Login service
- * !!CANT POST!!
- * !!OPRAVIT!!
  */
 function login (req,res){
     const user = User.findOne({where:{Email: req.body.email}}).then(foundUser=>{
@@ -64,8 +62,8 @@ function login (req,res){
             else{
                 const token = signToken(foundUser);
                 console.log(foundUser)
-                return res.status(200).json({token:token});
-            }
+                return res.status(200).json({token:token,username:foundUser.Username});
+            }   
         }
         catch(err){
             res.json({mssg:err})

@@ -24,7 +24,6 @@ export default class Registrace extends Component{
     async onSubmit(data){
         data.preventDefault();
         
-        console.log('email',this.state)
         if(this.state.psswd===this.state.passScnd){
             const datas = this.state;
             this.setState({
@@ -33,7 +32,6 @@ export default class Registrace extends Component{
                 passScnd: '',
                 username:'',
                 })
-            console.log('statedata',datas)
             await this.signUp(datas);
             if(this.global.isAuth){
                 this.props.history.push(`/kalendar`)
@@ -54,48 +52,41 @@ export default class Registrace extends Component{
     async signUp(data) {
       try {
         const res = await axios.post('http://localhost:4433/user/signup' , data)
-        console.log('datafromserver',res.data)
           const serverToken = res.data;
-          console.log('serverToken',serverToken.token)
         if(serverToken.message=== "email"){
             alert('Email jiz existuje')
                 
             }else{
                 this.setGlobal({isAuth: true,
                     token:serverToken.token,
-                    emailUzivatele:data.email});
+                    emailUzivatele:serverToken.username});
                 localStorage.setItem('isAuth',true);
                 localStorage.setItem('JWT_TOKEN',serverToken.token);
-                localStorage.setItem('EmailUzivatele',data.email);
+                localStorage.setItem('EmailUzivatele',serverToken.username);
                 
             }
-          
-          
-          
       } catch(err){
-          
           console.log('err', err)
       }
 
     }
   
     async responseGoogle(ress){
-        console.log(ress)
         try {
             const res = await axios.post('http://localhost:4433/user/googleauth' , ress)
-            
-            console.log('datafromserver',res.data)
+
             const serverToken = res.data;
-            console.log('serverToken',serverToken.token)
             
             this.setGlobal({isAuth: true,
                 token:serverToken.token,
-                emailUzivatele:serverToken.email});
+                emailUzivatele:serverToken.username});
             localStorage.setItem('isAuth',true);
             localStorage.setItem('JWT_TOKEN',serverToken.token);
-            localStorage.setItem('EmailUzivatele',serverToken.email);  
+            localStorage.setItem('EmailUzivatele',serverToken.username);  
+            if(this.global.isAuth){
+                this.props.history.push(`/kalendar`)
+            }
           } catch(err){
-              
               console.log('err', err)
           }
 
