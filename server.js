@@ -6,6 +6,10 @@ import cors from 'cors';
 import skupinaRouter from './src/api/skupina/skupina.controller';
 import udalostRouter from './src/api/udalost/udalost.controller';
 import chat from './src/api/chat/chat.service'
+import sk from './src/api/skupina/skupina.model'
+import skus from './src/api/skupina_prava/sk_prava.model'
+import user from './src/api/uzivatel/uzivatel.model'
+import skupina from './src/api/skupina/skupina.model';
 const app = express();
 const port = process.env.PORT || 4433;
 app.set('view engine','ejs')
@@ -32,7 +36,21 @@ const server = app.listen(port)
 const io = require("socket.io")(server)
 
 app.get('/',(req,res) => {
-  res.render('index',{room: req.query.room})
+  const skID = []
+  const users = []
+  skupina.findOne({where:{Nazev: req.query.room},raw: true}).then(foundsk =>{
+    skus.findAll({where:{SkupinaID:foundsk.SkupinaID},raw: true}).then(foundIDs =>{
+      for(var i = 0; i < foundIDs.length; i++){
+        skID.push(foundIDs[i].UzivatelID)
+    }
+      user.findAll({where:{UzivatelID:skID},raw: true}).then(foundusers =>{
+        foundusers.forEach(element => {
+          users.push(element.Username)
+        });
+        res.render('index',{room: req.query.room,users:users})
+      })
+    })
+  })
   io.on('connection',(socket) => {
 
     socket.removeAllListeners()
@@ -54,7 +72,7 @@ app.get('/',(req,res) => {
       //broadcast the new message
       io.to(req.query.room).emit('new_message', {message : data.message, username : socket.username});
       //Ulozeni zpravy do databaze
-      chat.save(data.message,socket.username,req.query.room)
+      // chat.save(data.message,socket.username,req.query.room)
     })
 
       //listen on typing

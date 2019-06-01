@@ -13,15 +13,23 @@
       <h1><%= room %></h1>
     </header>
 
-    <section id="chatroom">
-      <section id="feedback"></section>
-    </section>
-    
-    <section id="input_zone"> 
-      <input id="message" class="vertical-align" type="text" />
-      <button id="send_message" class="vertical-align" type="button">Send</button>
-    </section>
-
+    <div id="main">
+      <section id="chatroom">
+        <section id="feedback"></section>
+      </section>
+      <section id="userList">
+        <h4>Uživatelé</h4>
+        <%  users.forEach(username =>{
+          %> <p id="usersName"><%=username%></p><%
+        })
+        
+        %>
+      </section>
+    </div>
+      <section id="input_zone"> 
+        <input id="message" class="vertical-align" type="text" placeholder="Vaše zpráva... "/>
+        <button id="send_message" class="vertical-align" type="button">Send</button>
+      </section>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="chat.js"></script>
   </body>

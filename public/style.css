@@ -27,27 +27,38 @@
       font-family: 'Comfortaa', sans-serif;
       margin: 0px;
   }
-  
-  div#change_username, section#input_zone {
-      border: 5px outset #8258FA;
+  h4{
+      margin-top:10px;
+      padding-bottom:5px;
+      border-bottom: 2px inset black;
   }
-  
-  div#change_username {
-      height: 3%;
-      display: inline-block;
-      background-color: #BCA9F5;
+  #main{
+      height:85%;
+      border:2px inset black;
   }
-  
+
   section#chatroom {
-      border: 5px inset #8258FA;
-      height: 85%;
+      float:left;
+      width:85%;
       overflow: auto;
+      border-right: 2px inset black;
   }
-  
+  section#userList{
+    text-align:center;
+    float:right;
+    width:15%;
+    overflow: auto;
+  }
+  p#usersName{
+    margin: auto;
+  }
   section#input_zone {
+      margin-top:5px;
       height: 7%;
       text-align: center;
       background-color: #BCA9F5;
+      border:2px  inset black;
+      border-radius:10px;
   }
   
   .vertical-align {
@@ -56,10 +67,6 @@
       -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
       transform: translateY(-50%);
-  }
-  
-  input#username {
-      font-family: 'Comfortaa', sans-serif;
   }
   
   input#message {
@@ -77,19 +84,23 @@
   }
   
   p.message {
-      margin: 0px;
-      width: 100%;
+      margin-left:5px;
+      margin-top: 5px;
+      width: 95%;
       height: 40px;
       font-size: 2vh;
       font-family: 'Comfortaa', sans-serif;
       padding: 1vh;
   }
   
+  
   .message:nth-child(even) {
       background-color: #81DAF5;
+      border-radius:25px;
   }
   
   .message:nth-child(odd) {
       background-color: #81BEF7;
+      border-radius:25px;
   }
   
