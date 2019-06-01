@@ -74,23 +74,24 @@ function login (req,res){
 }
 
 function googleLogin(req,res){
-    User.findOne({where:{Email:res.body.WE.profileObj.email}}).then(foundUser =>{
+    User.findOne({where:{Email:req.body.profileObj.email}}).then(foundUser =>{
         if(!foundUser){
             const newUser = User.build({ //Vytvoreni noveho uzivatel
-                Email: res.body.WE.profileObj.email, 
-                Heslo: res.body.WE.profileObj.googleId,
-                Username: res.body.WE.profileObj.name
+                Email: req.body.profileObj.email, 
+                Heslo: req.body.profileObj.googleId,
+                Username: req.body.profileObj.name
             })
             const token = signToken(newUser);
             //Generovani tokenu
             newUser.save()
+            console.log(token)
+            console.log(newUser)
             //Odeslani tokenu clientovi
-            return res.status(200).json({token: token, message: 'user created'});
+            return res.status(200).json({token: token, email: req.body.profileObj.email,username:req.body.profileObj.name});
         }
         else{
             const token = signToken(foundUser);
-            console.log(foundUser)
-            return res.status(200).json({token:token});
+            return res.status(200).json({token:token,email: foundUser.Email,username:foundUser.Username});
         }
     })
 }

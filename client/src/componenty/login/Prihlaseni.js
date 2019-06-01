@@ -50,7 +50,7 @@ export default class Prihlaseni extends Component{
         console.log('res google',ress)
         try {
             const res = await axios.post('http://localhost:4433/user/googleauth' , ress)
-            /*
+            
             console.log('datafromserver',res.data)
             const serverToken = res.data;
             console.log('serverToken',serverToken.token)
@@ -61,14 +61,9 @@ export default class Prihlaseni extends Component{
             localStorage.setItem('isAuth',true);
             localStorage.setItem('JWT_TOKEN',serverToken.token);
             localStorage.setItem('EmailUzivatele',serverToken.email);
-                    
-           */
-              
-              
-              
-          } catch(err){
-              
-              console.log('err', err)
+
+          } catch(err){  
+            console.log('err', err)
           }
 
     }
@@ -118,23 +113,24 @@ export default class Prihlaseni extends Component{
                         <Form.Label>Password</Form.Label>
                         <Form.Control required name="pass" type="password" placeholder="Password" value={ pass } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
-                    
-                    <Button variant="primary" type="submit">
-                        Přihlásit se
-                    </Button >
-                    <div className="prihlaseniLink">
-                        <Nav.Link href="/registrace">Registrace</Nav.Link>
+                    <div align="center">
+                        <Button variant="primary" type="submit">
+                            Přihlásit se
+                        </Button >
+                        <div className="prihlaseniLink">
+                            <Nav.Link href="/registrace">Registrace</Nav.Link>
+                        </div>
+                        <GoogleLogin
+                            clientId="142150448088-l06fe1kenh32iurkqvtk3kthbpnhrhjp.apps.googleusercontent.com"
+                            buttonText="Login"
+                            onSuccess={this.responseGoogle}
+                            onFailure={this.responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
                     </div>
-                    
                 </Form>
                 <div>
-                <GoogleLogin
-                    clientId="142150448088-l06fe1kenh32iurkqvtk3kthbpnhrhjp.apps.googleusercontent.com"
-                    buttonText="Login"
-                    onSuccess={this.responseGoogle}
-                    onFailure={this.responseGoogle}
-                    cookiePolicy={'single_host_origin'}
-                />
+
                 </div>
             </div>
             

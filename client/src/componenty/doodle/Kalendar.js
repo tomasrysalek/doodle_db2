@@ -27,7 +27,9 @@ import '../../../node_modules/@fullcalendar/list/main.css';
 
 import RenderUdalost from './RenderUdalost';
 
-
+function openMaps(Adresa){
+    window.open("https://www.google.cz/maps/place/"+Adresa)
+}
 
 export default class Kalendar extends Component{
     calendarComponentRef = React.createRef()
@@ -83,11 +85,7 @@ export default class Kalendar extends Component{
                 psc: data.psc,
                 skupina :null,
             }
-            //console.log('testadd datass',datas)
-            const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
-            //console.log("addUdalsot res data",res.data)
-            
-            
+            const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})            
         } catch(err){
             
             console.log('err', err)
@@ -105,8 +103,6 @@ export default class Kalendar extends Component{
 
     async onSubmit(data){
         data.preventDefault();
-        
-        //console.log('email',this.state);
         const datas = this.state;
         this.setState({
             nazev: '',
@@ -116,18 +112,14 @@ export default class Kalendar extends Component{
             datum:'',
             show:false
             });
-        //console.log('statedata',datas);
+
         await this.addUdalost(datas);
-        //console.log("ahoj")
         await this.getUdalosti();
         
     }
     async getUdalosti(){
         try{
-
-        
         const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
-        //console.log('datafromserverKal',res.data.Udalosti)
         const upData = res.data.Udalosti.map((data) => {
             return {
               id: data.UdalostID,
@@ -135,7 +127,7 @@ export default class Kalendar extends Component{
               start:data.Datum,
               datum:data.Datum,
               popis:data.Popis,
-              psc:data.PSC,
+              psc:data.Adresa + " " + data.PSC,
             };
           });
         this.setGlobal({
@@ -161,17 +153,12 @@ export default class Kalendar extends Component{
         }
        
     }
-
     
 //*
 render(){
     
     const udalostMount= this.global.upUdalosti ;
     const {popis,psc,nazev,adresa,datum,infoCas,infoPopis,infoPsc,infoTitle}=this.state;
-    //const {info} =this.state.event
-    //console.log('globaludalosti',udalostMount)
-    console.log('stateShow',this.state.showUdalost)
-    //console.log('stateShow',this.state.info)
     return(
         <div>
 
@@ -193,8 +180,6 @@ render(){
 
                 ref={ this.calendarComponentRef }
                 eventClick={ (info) =>{
-                    console.log('stateShow',info)
-                    console.log('statetime',info.view.activeStart)
                     const eventtst = new Date(info.event._def.extendedProps.datum);
 
                     var datetst = JSON.stringify(eventtst)
@@ -206,9 +191,6 @@ render(){
                         infoPsc: info.event._def.extendedProps.psc,
                         infoCas: datetst,
                     })
-                    
-                    
-                    
                   }
                 }
                 eventRender={ function(info) {
@@ -232,7 +214,7 @@ render(){
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Zadejte popis udalosti:</Form.Label>
-                        <Form.Control required 
+                        <Form.Control  
                                 name="popis"
                                 type="text"
                                 placeholder="Muj popis" value={ popis } onChange={ (e) => this.handleChange(e) }/>
@@ -246,14 +228,14 @@ render(){
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Zadejte adresa:</Form.Label>
-                        <Form.Control required
+                        <Form.Control 
                                 name="adresa"
                                 type="text"
                                 placeholder="Mesto Ulice" value={ adresa } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Zadej PSC:</Form.Label>
-                        <Form.Control required
+                        <Form.Control 
                                 name="psc"
                                 type="number"
                                 placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>
@@ -282,7 +264,9 @@ render(){
                   <p>Název události: {infoTitle}</p>
                   <p><Linkify>Popis události: {infoPopis}</Linkify></p>
                   <p>Cas události: {infoCas}</p>
-                  <p>Místo události: {infoPsc}</p>
+                  <p>Místo události:<a href="#" onClick={()=>{
+                     openMaps(infoPsc)
+                  }}>{infoPsc}</a></p>
                 </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary"  onClick={this.handleClose}>

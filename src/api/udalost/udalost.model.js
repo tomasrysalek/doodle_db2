@@ -60,11 +60,12 @@ const udalost = connect.define('udalost',{
     PSC:{
         type: Sequelize.STRING(6),
         allowNull: true,
-        defaultValue:null,
-        references:{
-            model:Adresa,
-            key:'PSC'
-        }
+        defaultValue:null
+    },
+    Adresa:{
+        type:Sequelize.STRING(250),
+        allowNull: true,
+        defaultValue:null
     }
 },{
     freezeTableName:true,

@@ -80,10 +80,10 @@ export default class Registrace extends Component{
     }
   
     async responseGoogle(ress){
-        console.log('res google',ress)
+        console.log(ress)
         try {
             const res = await axios.post('http://localhost:4433/user/googleauth' , ress)
-            /*
+            
             console.log('datafromserver',res.data)
             const serverToken = res.data;
             console.log('serverToken',serverToken.token)
@@ -93,12 +93,7 @@ export default class Registrace extends Component{
                 emailUzivatele:serverToken.email});
             localStorage.setItem('isAuth',true);
             localStorage.setItem('JWT_TOKEN',serverToken.token);
-            localStorage.setItem('EmailUzivatele',serverToken.email);
-                    */
-           
-              
-              
-              
+            localStorage.setItem('EmailUzivatele',serverToken.email);  
           } catch(err){
               
               console.log('err', err)
@@ -111,7 +106,7 @@ export default class Registrace extends Component{
         const {email,psswd,passScnd,username}=this.state;
         return(
             <div>
-               <div className="d-flex justify-content-center">
+               <div className="d-flex justify-content-center ">
                     <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Zadejte váš mail:</Form.Label>
@@ -129,24 +124,24 @@ export default class Registrace extends Component{
                             <Form.Label>Password</Form.Label>
                             <Form.Control required name="passScnd" type="password" placeholder="Password" value={ passScnd } onChange={ (e) => this.handleChange(e) }/>
                         </Form.Group>
-                        
+                        <div align="center">
                         <Button variant="primary" type="submit">
                             Přihlásit se
                         </Button >
-                        <div className="prihlaseniLink">
-                            <Nav.Link href="/registrace">Registrace</Nav.Link>
+                        <br/>
+                        <br/>
+                        <GoogleLogin
+                            clientId="142150448088-l06fe1kenh32iurkqvtk3kthbpnhrhjp.apps.googleusercontent.com"
+                            buttonText="Login"
+                            onSuccess={this.responseGoogle}
+                            onFailure={this.responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
                         </div>
-                        
                     </Form>
                 </div>
                 <div>
-                <GoogleLogin
-                    clientId="142150448088-l06fe1kenh32iurkqvtk3kthbpnhrhjp.apps.googleusercontent.com"
-                    buttonText="Login"
-                    onSuccess={this.responseGoogle}
-                    onFailure={this.responseGoogle}
-                    cookiePolicy={'single_host_origin'}
-                />
+
                 </div>
             </div>
             /*
