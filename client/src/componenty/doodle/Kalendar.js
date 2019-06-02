@@ -1,17 +1,13 @@
 
 import React, {Component} from 'reactn';
-import { reduxForm, Field} from 'redux-form';
-import { Nav, Form,Modal,Button } from 'react-bootstrap';
+
+import { Form,Modal,Button } from 'react-bootstrap';
 
 
-import { connect} from 'react-redux';
-import { compose} from 'redux';
 import axios from 'axios';
-import Tooltip from 'tooltip.js';
 
-import Popup from "reactjs-popup";
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
+
+
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
@@ -25,7 +21,6 @@ import '../../../node_modules/@fullcalendar/list/main.css';
 
 
 
-import RenderUdalost from './RenderUdalost';
 
 function openMaps(Adresa){
     window.open("https://www.google.cz/maps/place/"+Adresa)
@@ -54,6 +49,8 @@ export default class Kalendar extends Component{
         }
      
     }
+
+    //zavřeni vyskakovaciho okna a nastaveni state do vychozi hodnoty
     handleClose() {
         this.setState({
             showUdalost:false,
@@ -70,12 +67,14 @@ export default class Kalendar extends Component{
             });
     }
     
+    //zobrazeni vyskakovaciho okna
     handleShow() {
         this.setState({ show: true });
     }
 
+    //odeslani dat na serveru a vytvoreni udalosti
     async addUdalost(data) {
-        console.log('testadd data',data)
+        
         try {
             const datas = {
                 nazev: data.nazev,
@@ -92,6 +91,7 @@ export default class Kalendar extends Component{
         }
     }
     
+    //nastaveni statu z formulare
     handleChange = async (event) => {
         const { target } = event;
         const value = target.value;
@@ -101,6 +101,7 @@ export default class Kalendar extends Component{
         });
     }
 
+    //nastaveni a odeslani dat pri potvrzeni formulare
     async onSubmit(data){
         data.preventDefault();
         const datas = this.state;
@@ -117,6 +118,8 @@ export default class Kalendar extends Component{
         await this.getUdalosti();
         
     }
+
+    //ziskani udalosti
     async getUdalosti(){
         try{
         const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
@@ -140,6 +143,7 @@ export default class Kalendar extends Component{
         }
     }
 
+    
     async componentDidMount(){
         await this.getUdalosti();
         
@@ -154,7 +158,7 @@ export default class Kalendar extends Component{
        
     }
     
-//*
+
 render(){
     
     const udalostMount= this.global.upUdalosti ;
@@ -199,7 +203,7 @@ render(){
                     
                   }}
             />
-
+            {/*pridani udalosti */}
             <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Přidej událost</Modal.Title>
@@ -256,7 +260,7 @@ render(){
             </Form>
             </Modal>
 
-
+            {/*zobrazeni podrobnosti o udalosti */}
             <Modal show={this.state.showUdalost} onHide={this.handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Udalost</Modal.Title>
@@ -285,111 +289,10 @@ render(){
     )
 }
     
-/*/
-    render(){
-        
-        const { handleSubmit  } =this.props;
-        return(
-            <div>
-            
 
-
-            <div className="d-flex justify-content-center">
-                <div className="udalostiKal">
-                    
-                    <RenderUdalost item={this.state.udalostiState}/>
-                    {console.log('kalerrMsg',this.props.errMsg)}
-                    {console.log('kalisAuth',this.props.isAuth)}
-                    {console.log('kalUdalosti',this.props.kalUdalosti)}
-                </div>
-
-                <form className="getUdalosti" onSubmit={handleSubmit(this.onSubmitget)}>
-                    <button type="submit" className="btn btn-dark">Zobraz udalosti</button>
-                </form>
-                
-                
-                
-                
-                <div className="d-flex formKal">
-                <form className="border border-dark p-5 bg-blue" onSubmit={handleSubmit(this.onSubmitadd)}>
-                    <div className="form">
-                        
-                        <fieldset>
-                            <Field
-                                name="nazev"
-                                type="text"
-                                id="Nazev"
-                                label="Zadejte nazev udalosti:"
-                                placeholder="Muj Nazev"
-                                component={MujInput}/>
-                        </fieldset>
-                        <fieldset>
-                            <Field
-                                name="popis"
-                                type="text"
-                                id="Popis"
-                                label="Zadejte popis udalosti:"
-                                placeholder="Muj popis"
-                                component={MujInput}/>
-                        </fieldset>
-                        <fieldset>
-                            <Field
-                                name="datum"
-                                type="datetime-local"
-                                id="Datum"
-                                label="Zadejte datum:"
-                                placeholder="21.2.2511"
-                                component={MujInput}/>
-                        </fieldset>
-                        <fieldset>
-                            <Field
-                                name="adresa"
-                                type="text"
-                                id="adresa"
-                                label="Zadejte adresa:"
-                                placeholder="Mesto Ulice"
-                                component={MujInput}/>
-                        </fieldset>
-                        <fieldset>
-                            <Field
-                                name="psc"
-                                type="number"
-                                id="PSC"
-                                label="Zadej PSC"
-                                placeholder="12345"
-                                component={MujInput}/>
-                        </fieldset>
-                    </div>
-                    <div className="mt-2 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-dark">pridej udalost</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        </div>
-        );
-    };
-
-//*/
 
 };
 
 
-function test(info) {
-    
-    console.log('info',info.event._def);
-    return(
-        
-        <Modal show={true} >
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer closeButton>
-          hoo
-        </Modal.Footer>
-      </Modal>
-        )
-}
 
 

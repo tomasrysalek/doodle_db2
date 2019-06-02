@@ -11,7 +11,7 @@ import Odhlaseni from './componenty/login/Odhlaseni';
 import Prihlaseni from './componenty/login/Prihlaseni';
 import Registrace from './componenty/login/Registrace';
 import Skupiny from './componenty/doodle/Skupiny';
-import Uzivatel from './componenty/home/Uzivatel';
+
 
 
 
@@ -32,7 +32,7 @@ render(){
                     <Route path="/prihlaseni" component ={Prihlaseni}/>
                     <Route path="/registrace" component ={Registrace}/>
                     <Route path="/odhlaseni" component ={Odhlaseni}/>
-                    {/* <Route path="/uzivatel" component ={Uzivatel}/> */}
+                    
                 </App>
             </BrowserRouter>
         </div>

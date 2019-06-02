@@ -12,7 +12,7 @@ import user from './src/api/uzivatel/uzivatel.model'
 import skupina from './src/api/skupina/skupina.model';
 const app = express();
 const port = process.env.PORT || 4433;
-const firebase = require("firebase/app");
+//const firebase = require("firebase/app");
 
 
 

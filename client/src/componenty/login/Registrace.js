@@ -1,12 +1,11 @@
 import React, {Component} from 'reactn';
 
 
-import { Nav, Form,Button } from 'react-bootstrap';
+import {  Form,Button } from 'react-bootstrap';
 import axios from 'axios';
 import GoogleLogin from 'react-google-login';
 
-import MujInput from '../mojeComponenty/MujInput'
-import * as actions from '../../actions';
+
 
 
 export default class Registrace extends Component{
@@ -135,60 +134,6 @@ export default class Registrace extends Component{
 
                 </div>
             </div>
-            /*
-            <div className="d-flex justify-content-center">
-                <form className="border border-dark p-5 bg-blue" onSubmit={this.onSubmit}  >
-                    <div className="mt-2">
-                        <fieldset>
-                        <Field
-                                name="email"
-                                type="email"
-                                id="email"
-                                autocomplete="username"
-                                label="Zadejte váš mail:"
-                                placeholder="mujmail@maj.czc"
-                                component={MujInput}/>
-                        </fieldset>
-                    </div>
-                    <div className="mt-2">
-                        <fieldset>
-                        <Field
-                                name="psswd"
-                                type="password"
-                                autocomplete="current-password"
-                                id="psswd"
-                                label="Zadejte vaše heslo:"
-                                placeholder="Heslo"
-                                component={MujInput}/>
-                        </fieldset>
-                    </div>
-                    <div className="mt-2">
-                        <fieldset>
-                        <Field
-                                name="passwordsame"
-                                type="password"
-                                autocomplete="current-password"
-                                id="psswd_again"
-                                label="Zadejte vaše heslo:"
-                                placeholder="Heslo znovu"
-                                component={MujInput}/>
-                        </fieldset>
-                    </div>
-                    <div className="mt-2 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-dark">Registrovat</button>
-                    </div>
-                    <div className="registraceLink">
-                        <Nav.Link href="/prihlaseni">prihlaseni</Nav.Link>
-                    </div>
-                    <div>
-                        <p>
-                            
-                        </p>
-                    </div>
-                </form>
-            </div>
-            */
         );
     }
 };
-

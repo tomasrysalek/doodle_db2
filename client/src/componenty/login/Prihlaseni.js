@@ -1,11 +1,8 @@
 import React, {Component} from 'reactn';
 
 import { Nav, Form,Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom'
 import axios from 'axios';
-import MujInput from '../mojeComponenty/MujInput'
-import * as actions from '../../actions';
-import { useGlobal,setGlobal } from 'reactn';
+
 import GoogleLogin from 'react-google-login';
 export default class Prihlaseni extends Component{
     
@@ -16,20 +13,20 @@ export default class Prihlaseni extends Component{
                 email: '',
                 pass: '',
                 }
-        console.log("stata",this.global.isAuth)
+        
 
     }
     
     async onSubmit(data){
         data.preventDefault();
         
-        console.log('email',this.state)
+        
         const datas = this.state;
         this.setState({
             email: '',
             pass: '',
             })
-        console.log('statedata',datas)
+        
         await this.signIn(datas);
         if(this.global.isAuth){
             this.props.history.push(`/kalendar`)
@@ -47,13 +44,13 @@ export default class Prihlaseni extends Component{
       }
 
     async responseGoogle(ress){
-        console.log('res google',ress)
+        
         try {
             const res = await axios.post('http://localhost:4433/user/googleauth' , ress)
             
-            console.log('datafromserver',res.data)
+            
             const serverToken = res.data;
-            console.log('serverToken',serverToken.token)
+            
             
             this.setGlobal({isAuth: true,
                 token:serverToken.token,
@@ -74,9 +71,9 @@ export default class Prihlaseni extends Component{
     async signIn(data) {
             try {
                 const res = await axios.post('http://localhost:4433/user/login' , data)
-                console.log('datafromserver',res.data)
+                
                 const serverToken = res.data;
-                console.log('serverToken',serverToken.token)
+                
                 if(serverToken.mssg=== "Email or Password"){
                     alert('Spatne heslo nebo mail')
                     
