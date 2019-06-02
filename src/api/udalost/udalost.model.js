@@ -58,7 +58,7 @@ const udalost = connect.define('udalost',{
         }
     },
     PSC:{
-        type: Sequelize.STRING(6),
+        type: Sequelize.INTEGER(5),
         allowNull: true,
         defaultValue:null
     },

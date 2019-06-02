@@ -17,18 +17,11 @@ function add(req,res){
                     Nazev: req.body.nazev,
                     Popis: req.body.popis,
                     Datum: req.body.datum,
-                    SkupinaID: foundSK.SkupinaID,
-                    }).save()
-                })
-                const udalost = Udalost.build({
-                    Nazev: req.body.nazev,
-                    Popis: req.body.popis,
-                    Datum: req.body.datum,
                     UzivatelID: req.user.UzivatelID,
                     PSC:req.body.psc,
                     Adresa:req.body.adresa
                 }).save()
-                
+                })
         }
     })
 

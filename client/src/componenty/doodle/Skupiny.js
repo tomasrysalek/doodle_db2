@@ -193,11 +193,6 @@ export default class Skupiny extends Component{
             datum:'',
             });
         this.vytvoreniSkupiny(datas);
-        //console.log('statedata',datas);
-        //await this.addUdalost(datas);
-        //console.log("ahoj")
-        //await this.getUdalosti();
-        
     }
 
     
@@ -205,7 +200,6 @@ export default class Skupiny extends Component{
     async vytvoreniSkupiny(data){
         try {
 
-        //console.log('email',this.state);
         const datas = {
             
               nazev: data.nazevSkup,
@@ -272,7 +266,6 @@ export default class Skupiny extends Component{
     async onSubmitVytvorUdalost(data){
         data.preventDefault();
         
-        //console.log('email',this.state);
         const datas = this.state;
         this.setState({
             nazev: '',
@@ -282,11 +275,7 @@ export default class Skupiny extends Component{
             datum:'',
             show:false
             });
-        //console.log('statedata',datas);
         await this.addUdalost(datas);
-        //console.log("ahoj")
-        
-        
     }
 
     async addUdalost(data) {
@@ -434,7 +423,7 @@ export default class Skupiny extends Component{
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Zadejte popis udalosti:</Form.Label>
-                        <Form.Control required 
+                        <Form.Control  
                                 name="popis"
                                 type="text"
                                 placeholder="Muj popis" value={ popis } onChange={ (e) => this.handleChange(e) }/>
@@ -448,14 +437,14 @@ export default class Skupiny extends Component{
                     </Form.Group>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Zadejte adresa:</Form.Label>
-                        <Form.Control required
+                        <Form.Control 
                                 name="adresa"
                                 type="text"
                                 placeholder="Mesto Ulice" value={ adresa } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Zadej PSC:</Form.Label>
-                        <Form.Control required
+                        <Form.Control 
                                 name="psc"
                                 type="number"
                                 placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>

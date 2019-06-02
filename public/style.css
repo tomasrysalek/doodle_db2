@@ -100,12 +100,12 @@
   
   
   .message:nth-child(even) {
-      background-color: #81DAF5;
+      background-color: lightgray;
       border-radius:25px;
   }
   
   .message:nth-child(odd) {
-      background-color: #81BEF7;
+      background-color: lightblue;
       border-radius:25px;
   }
   

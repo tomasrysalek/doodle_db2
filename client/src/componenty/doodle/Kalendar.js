@@ -178,6 +178,8 @@ render(){
 
                 events={udalostMount}
 
+                
+
                 ref={ this.calendarComponentRef }
                 eventClick={ (info) =>{
                     const eventtst = new Date(info.event._def.extendedProps.datum);
