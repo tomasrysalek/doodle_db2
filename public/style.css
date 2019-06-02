@@ -33,6 +33,7 @@
       border-bottom: 2px inset black;
   }
   #main{
+      overflow: auto;
       height:85%;
       border:2px inset black;
   }
@@ -41,12 +42,16 @@
       float:left;
       width:85%;
       overflow: auto;
-      border-right: 2px inset black;
+  }
+  div#right_panel{
+    width:15%;
+    height:100%;
+    float:right;
+    border-left: 2px inset black;
   }
   section#userList{
     text-align:center;
-    float:right;
-    width:15%;
+    width:100%;
     overflow: auto;
   }
   p#usersName{

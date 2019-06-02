@@ -17,14 +17,16 @@
       <section id="chatroom">
         <section id="feedback"></section>
       </section>
-      <section id="userList">
-        <h4>Uživatelé</h4>
-        <%  users.forEach(username =>{
-          %> <p id="usersName"><%=username%></p><%
-        })
-        
-        %>
-      </section>
+      <div id="right_panel">
+        <section id="userList">
+          <h4>Uživatelé</h4>
+          <%  users.forEach(username =>{
+            %> <p id="usersName"><%=username%></p><%
+          })
+          
+          %>
+        </section>
+      </div>
     </div>
       <section id="input_zone"> 
         <input id="message" class="vertical-align" type="text" placeholder="Vaše zpráva... "/>
