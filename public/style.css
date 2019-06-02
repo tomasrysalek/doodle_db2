@@ -91,21 +91,32 @@
   p.message {
       margin-left:5px;
       margin-top: 5px;
-      width: 95%;
-      height: 40px;
+      width: 75%;
+      height: 50px;
       font-size: 2vh;
       font-family: 'Comfortaa', sans-serif;
       padding: 1vh;
   }
+  p.message:nth-child(even){
+      text-align: left;
+  }
   
+  p.message:nth-child(odd){
+    text-align: right;
+}
   
   .message:nth-child(even) {
       background-color: lightgray;
       border-radius:25px;
+      float:left;
   }
   
   .message:nth-child(odd) {
       background-color: lightblue;
       border-radius:25px;
+      float:right;
+  }
+  #feedback{
+      overflow: auto;
   }
   

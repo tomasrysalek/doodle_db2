@@ -60,10 +60,13 @@ function getAll(req,res){
             skID.push(foundSP[i].SkupinaID)
         }
         sk.findAll({where:{SkupinaID: skID }, raw:true}).then(foundSK=>{
-            return res.json({skupiny:foundSK,prava:skPrava})
+            for(var i = 0; i < foundSK.length; i++){
+                foundSK[i].prava = foundSP[i].ID_Prava
+            }
+            console.log(foundSK)
+            return res.json({skupiny:foundSK})
         })
     })
-
 }
 
 function getUdalosti(req,res){

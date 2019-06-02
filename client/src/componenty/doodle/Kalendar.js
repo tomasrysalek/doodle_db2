@@ -135,7 +135,6 @@ export default class Kalendar extends Component{
               color:(data.SkupinaID) ? "blue" : "green"
             };
           });
-          
         this.setGlobal({
             isAuth:localStorage.getItem('isAuth'),
             udalosti : res.data.Udalosti,
