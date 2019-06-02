@@ -112,15 +112,12 @@ export default class Skupiny extends Component{
     // ziskani skupin
     async getSkupiny(){
         try{
-
-        
-            const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-            
-      
-            this.setGlobal({
+             const res = await axios.get('http://localhost:4433/skupina/getsk' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
+                this.setGlobal({
                 isAuth:localStorage.getItem('isAuth'),
                 token:localStorage.getItem('JWT_TOKEN'),
                 skupiny : res.data.skupiny})
+                console.log(res.data)
         }catch(err){
             console.log('err',err)
         }
@@ -129,11 +126,7 @@ export default class Skupiny extends Component{
     // ziskani udalosti skupin
     async getUdalosSkup(){
         try{
-
-        
             const res = await axios.get('http://localhost:4433/skupina/getAll' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-            
-      
             this.setGlobal({
                 isAuth:localStorage.getItem('isAuth'),
                 token:localStorage.getItem('JWT_TOKEN'),
@@ -231,7 +224,6 @@ export default class Skupiny extends Component{
             datum:'',
             });
         this.pridaniUzivatele(datas);
-                
     }
 
     

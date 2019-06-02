@@ -3,6 +3,25 @@ import Skupina from '../skupina/skupina.model'
 function add(req,res){
     Skupina.findOne({where: {Nazev:req.body.skupina}}).then(foundSK => {
         if(!foundSK){
+                if(req.body.psc){
+                    const udalost = Udalost.build({
+                        Nazev: req.body.nazev,
+                        Popis: req.body.popis,
+                        Datum: req.body.datum,
+                        UzivatelID: req.user.UzivatelID,
+                        PSC:req.body.psc,
+                        Adresa:req.body.adresa
+                    }).save()
+            }else{
+                const udalost = Udalost.build({
+                    Nazev: req.body.nazev,
+                    Popis: req.body.popis,
+                    Datum: req.body.datum,
+                    UzivatelID: req.user.UzivatelID,
+                }).save()
+            }
+        }else{
+            if(req.body.psc){
                 const udalost = Udalost.build({
                     Nazev: req.body.nazev,
                     Popis: req.body.popis,
@@ -12,16 +31,13 @@ function add(req,res){
                     Adresa:req.body.adresa
                 }).save()
         }else{
-            Skupina.findOne({where:{Nazev:req.body.skupina}}).then(foundSK => {
-                const udalost = Udalost.build({
-                    Nazev: req.body.nazev,
-                    Popis: req.body.popis,
-                    Datum: req.body.datum,
-                    UzivatelID: req.user.UzivatelID,
-                    PSC:req.body.psc,
-                    Adresa:req.body.adresa
-                }).save()
-                })
+            const udalost = Udalost.build({
+                Nazev: req.body.nazev,
+                Popis: req.body.popis,
+                Datum: req.body.datum,
+                UzivatelID: req.user.UzivatelID,
+            }).save()
+        }
         }
     })
 

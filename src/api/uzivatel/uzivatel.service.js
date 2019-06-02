@@ -82,8 +82,6 @@ function googleLogin(req,res){
             const token = signToken(newUser);
             //Generovani tokenu
             newUser.save()
-            console.log(token)
-            console.log(newUser)
             //Odeslani tokenu clientovi
             return res.status(200).json({token: token, email: req.body.profileObj.email,username:req.body.profileObj.name});
         }

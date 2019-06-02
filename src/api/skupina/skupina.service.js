@@ -2,13 +2,22 @@ import sk from './skupina.model';
 import SP from '../skupina_prava/sk_prava.model';
 import User from '../uzivatel/uzivatel.model';
 import Udalost from '../udalost/udalost.model'
- function addSP(nazev,user){
+ function addSP(nazev,user,admin){
      sk.findOne({where: {Nazev: nazev}}).then(foundSK => {
+         if(admin){
          SP.build({
              UzivatelID: user.UzivatelID,
              SkupinaID: foundSK.SkupinaID,
              ID_Prava: 1
          }).save()
+        }
+        else{
+            SP.build({
+                UzivatelID: user.UzivatelID,
+                SkupinaID: foundSK.SkupinaID,
+                ID_Prava: 2
+            }).save() 
+        }
      })
  }
 /**
@@ -24,7 +33,7 @@ function create(req,res){
            await sk.build({
                 Nazev: req.body.nazev
             }).save()
-            addSP(req.body.nazev,req.user);
+            addSP(req.body.nazev,req.user,true);
 
         }
     })
@@ -35,7 +44,7 @@ function create(req,res){
 function adduser(req,res){
     const user = User.findOne({where:{Email:req.body.email}}).then(foundUser => {
         if(foundUser){
-            addSP(req.body.skupina,foundUser)
+            addSP(req.body.skupina,foundUser,false);
         }else{
             res.json({mssg:'user does not exist'});
         }
@@ -44,12 +53,14 @@ function adduser(req,res){
 
 function getAll(req,res){
     const skID= [];
-    SP.findAll({where:{UzivatelID: req.user.UzivatelID}}).then(foundSP =>{
+    const skPrava = [];
+    SP.findAll({where:{UzivatelID: req.user.UzivatelID}, raw:true}).then(foundSP =>{
         for(var i = 0; i < foundSP.length; i++){
+            skPrava.push(foundSP[i].ID_Prava)
             skID.push(foundSP[i].SkupinaID)
         }
         sk.findAll({where:{SkupinaID: skID }, raw:true}).then(foundSK=>{
-            return res.json({skupiny:foundSK})
+            return res.json({skupiny:foundSK,prava:skPrava})
         })
     })
 

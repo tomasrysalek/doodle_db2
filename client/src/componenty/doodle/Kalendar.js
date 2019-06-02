@@ -123,6 +123,7 @@ export default class Kalendar extends Component{
     async getUdalosti(){
         try{
         const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
+        const resSK = await axios.get()
         const upData = res.data.Udalosti.map((data) => {
             return {
               id: data.UdalostID,
@@ -131,8 +132,10 @@ export default class Kalendar extends Component{
               datum:data.Datum,
               popis:data.Popis,
               psc:data.Adresa + " " + data.PSC,
+              color:(data.SkupinaID) ? "blue" : "green"
             };
           });
+          
         this.setGlobal({
             isAuth:localStorage.getItem('isAuth'),
             udalosti : res.data.Udalosti,
