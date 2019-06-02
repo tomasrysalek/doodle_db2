@@ -122,23 +122,7 @@ export default class Skupiny extends Component{
         }
     }
 
-    // ziskani udalosti skupin
-    async getUdalosSkup(){
-        try{
-            const res = await axios.get('http://localhost:4433/skupina/getAll' ,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})  
-            this.setGlobal({
-                isAuth:localStorage.getItem('isAuth'),
-                token:localStorage.getItem('JWT_TOKEN'),
-                skupiny : res.data.skupiny})
-        }catch(err){
-            console.log('err',err)
-        }
-    }
-
-    async componentDidMount(){
-        await this.getSkupiny();
-        
-    }
+    
 
     async componentDidUpdate(prevProps, prevState){
 
@@ -317,16 +301,17 @@ export default class Skupiny extends Component{
                         <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
                         Pridej udalost
                         </Button>
-                        </td><td>
+                        </td>
+                        {item.prava===1  ?[<td>
                         <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
                         Přidej Uživatele
                         </Button>
-                        </td>
-                        <td>
+                        </td>]: null }
+                        {item.prava===1  ?[<td>
                         <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
                         Smaž Skupinu
                         </Button>
-                        </td>
+                        </td>]: null }
                         <td>
                         <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
                         Skupinový chat
