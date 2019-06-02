@@ -117,8 +117,7 @@ export default class Skupiny extends Component{
                 isAuth:localStorage.getItem('isAuth'),
                 token:localStorage.getItem('JWT_TOKEN'),
                 skupiny : res.data.skupiny})
-                console.log(res.data)
-        }catch(err){
+            }catch(err){
             console.log('err',err)
         }
     }
