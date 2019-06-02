@@ -117,23 +117,21 @@ export default class Skupiny extends Component{
                 isAuth:localStorage.getItem('isAuth'),
                 token:localStorage.getItem('JWT_TOKEN'),
                 skupiny : res.data.skupiny})
-                console.log(res.data)
             }catch(err){
             console.log('err',err)
         }
     }
 
-    
+    async componentDidMount(){
+        await this.getSkupiny();
+    }
 
     async componentDidUpdate(prevProps, prevState){
-
         if (prevState.showVySkup !==this.state.showVySkup
              || prevState.showPriUdalosti !==this.state.showPriUdalosti
              || prevState.showPriUzivatele !==this.state.showPriUzivatele
              || prevState.showClenySkup !==this.state.showClenySkup){
-            
                 await this.getSkupiny();
-            
         }
        
     }
@@ -153,7 +151,7 @@ export default class Skupiny extends Component{
     async onSubmitVytSkup(data){
         data.preventDefault();
         
-        
+
         const datas = this.state;
 
         this.setState({
@@ -307,12 +305,20 @@ export default class Skupiny extends Component{
                         <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
                         Přidej Uživatele
                         </Button>
-                        </td>]: null }
+                        </td>]:<td>
+                        <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev} disabled>
+                        Přidej Uživatele
+                        </Button>
+                        </td>}
                         {item.prava===1  ?[<td>
                         <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
                         Smaž Skupinu
                         </Button>
-                        </td>]: null }
+                        </td>]:<td>
+                        <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev} disabled>
+                        Smaž Skupinu
+                        </Button>
+                        </td>}
                         <td>
                         <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
                         Skupinový chat

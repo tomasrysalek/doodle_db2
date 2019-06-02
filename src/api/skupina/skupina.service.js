@@ -63,8 +63,7 @@ function getAll(req,res){
             for(var i = 0; i < foundSK.length; i++){
                 foundSK[i].prava = foundSP[i].ID_Prava
             }
-            console.log(foundSK)
-            return res.json({skupiny:foundSK})
+           return res.json({skupiny:foundSK})
         })
     })
 }
