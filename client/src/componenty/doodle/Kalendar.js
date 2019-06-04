@@ -33,38 +33,15 @@ export default class Kalendar extends Component{
         super(props)
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-
-        this.state={
-            showUdalost:false,
-            show: false,
-            infoTitle: '',
-            infoPopis:'',
-            infoPsc:'',
-            infoCas:'',
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-        }
+        this.state=defState()
      
     }
 
     //zavřeni vyskakovaciho okna a nastaveni state do vychozi hodnoty
     handleClose() {
-        this.setState({
-            showUdalost:false,
-            show: false,
-            infoTitle: '',
-            infoPopis:'',
-            infoPsc:'',
-            infoCas:'',
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-            });
+        
+        this.setState(defState());
+        
     }
     
     //zobrazeni vyskakovaciho okna
@@ -76,19 +53,13 @@ export default class Kalendar extends Component{
     async addUdalost(data) {
         
         try {
-            const datas = {
-                nazev: data.nazev,
-                popis: data.popis,
-                datum: data.datum,
-                adresa: data.adresa,
-                psc: data.psc,
-                skupina :null,
-            }
+            const datas = transformDataToAdd(data);
             const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})            
         } catch(err){
             
             console.log('err', err)
         }
+       
     }
     
     //nastaveni statu z formulare
@@ -105,42 +76,24 @@ export default class Kalendar extends Component{
     async onSubmit(data){
         data.preventDefault();
         const datas = this.state;
-        this.setState({
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-            show:false
-            });
+        this.setState(defState());
 
         await this.addUdalost(datas);
-        await this.getUdalosti();
         
     }
 
     //ziskani udalosti
     async getUdalosti(){
         try{
-        const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
-        const upData = res.data.Udalosti.map((data) => {
-            return {
-              id: data.UdalostID,
-              title: data.Nazev,
-              start:data.Datum,
-              datum:data.Datum,
-              popis:data.Popis,
-              psc:(data.Adresa) ? data.Adresa + " " + data.PSC : "",
-              color:(data.SkupinaID) ? "blue" : "green"
-            };
-          });
+        const res = await axios.get('http://localhost:4433/udalost/all',{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}});
+       
         this.setGlobal({
             isAuth:localStorage.getItem('isAuth'),
             udalosti : res.data.Udalosti,
-            upUdalosti: upData,
-            token:localStorage.getItem('JWT_TOKEN')})
+            upUdalosti: transformDataFromGet(res),
+            token:localStorage.getItem('JWT_TOKEN')});
         }catch(err){
-            console.log('err',err)
+            console.log('err',err);
         }
     }
 
@@ -151,13 +104,15 @@ export default class Kalendar extends Component{
     }
 
     componentDidUpdate(prevProps, prevState){
+        
 
-        if (prevState.show !==this.state.show){
+        if (prevState.show !==this.state.show ){
             this.getUdalosti();
             
         }
        
     }
+    
     
 
 render(){
@@ -292,7 +247,52 @@ render(){
     
 
 
+
 };
+
+
+function defState() {
+    return {
+        showUdalost:false,
+        show: false,
+        infoTitle: '',
+        infoPopis:'',
+        infoPsc:'',
+        infoCas:'',
+        nazev: '',
+        popis: '',
+        adresa: '',
+        psc: '',
+        datum:'',
+    };
+}
+
+function transformDataToAdd(data) {
+    return {
+        nazev: data.nazev,
+        popis: data.popis,
+        datum: data.datum,
+        adresa: data.adresa,
+        psc: data.psc,
+        skupina :null,
+    };
+}
+
+function transformDataFromGet(res) {
+    const sss = res.data.Udalosti.map((data) => {
+        return {
+          id: data.UdalostID,
+          title: data.Nazev,
+          start:data.Datum,
+          datum:data.Datum,
+          popis:data.Popis,
+          psc:(data.Adresa) ? data.Adresa + " " + data.PSC : "",
+          color:(data.SkupinaID) ? "blue" : "green"
+        };
+      });
+    return sss;
+}
+
 
 
 
