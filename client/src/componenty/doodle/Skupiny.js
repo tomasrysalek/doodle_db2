@@ -3,10 +3,6 @@ import axios from 'axios';
 import { Form,Modal,Button,Table } from 'react-bootstrap';
 
 
-
-
-
-
 export default class Skupiny extends Component{
 
     
@@ -19,39 +15,13 @@ export default class Skupiny extends Component{
         this.handleSmazSkup = this.handleSmazSkup.bind(this);
         this.handleChat = this.handleChat.bind(this);
 
-        this.state={
-            showVySkup: false,
-            showPriUdalosti: false,
-            showPriUzivatele: false,
-            showClenySkup:false,
-            nazevSkup: '',
-            smazPls:'',
-            email: '',
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-        }
+        this.state=defState()
         
             
     }
 
     handleClose() {
-        this.setState({
-            nazevSkup: '',
-            smazPls:'',
-            email: '',
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-            showClenySkup:false,
-            showVySkup: false,
-            showPriUdalosti: false,
-            showPriUzivatele: false,
-            });
+        this.setState(defState());
     }
     
     //otevreni oken
@@ -81,11 +51,7 @@ export default class Skupiny extends Component{
         }
         //Zatim jediny reseni, ktery funguje
         window.open("http://www.localhost:4433?name="+data.name+"&room="+data.room)
-        
-        
-
-        
-        
+    
     }
 
     // smazani skupin
@@ -154,19 +120,8 @@ export default class Skupiny extends Component{
 
         const datas = this.state;
 
-        this.setState({
-            showVySkup: false,
-            showPriUdalosti: false,
-            showPriUzivatele: false,
-            nazevSkup: '',
-            email: '',
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-            });
-        this.vytvoreniSkupiny(datas);
+        this.setState(defState());
+        await this.vytvoreniSkupiny(datas);
     }
 
     
@@ -194,18 +149,8 @@ export default class Skupiny extends Component{
         
         const datas = this.state;
 
-        this.setState({
-            showVySkup: false,
-            showPriUdalosti: false,
-            showPriUzivatele: false,
-            nazevSkup: '',
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-            });
-        this.pridaniUzivatele(datas);
+        this.setState(defState());
+        await this.pridaniUzivatele(datas);
     }
 
     
@@ -235,14 +180,7 @@ export default class Skupiny extends Component{
         data.preventDefault();
         
         const datas = this.state;
-        this.setState({
-            nazev: '',
-            popis: '',
-            adresa: '',
-            psc: '',
-            datum:'',
-            show:false
-            });
+        this.setState(defState());
         await this.addUdalost(datas);
     }
 
@@ -250,14 +188,7 @@ export default class Skupiny extends Component{
     async addUdalost(data) {
         
         try {
-            const datas = {
-                nazev: data.nazev,
-                popis: data.popis,
-                datum: data.datum,
-                adresa: data.adresa,
-                psc: data.psc,
-                skupina : data.nazevSkup,
-            }
+            const datas = transformDataToAddUalost(data)
             
             const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
             
@@ -301,24 +232,28 @@ export default class Skupiny extends Component{
                         Pridej udalost
                         </Button>
                         </td>
-                        {item.prava===1  ?[<td>
-                        <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev}>
-                        Přidej Uživatele
-                        </Button>
-                        </td>]:<td>
-                        <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev} disabled>
-                        Přidej Uživatele
-                        </Button>
-                        </td>}
-                        {item.prava===1  ?[<td>
-                        <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev}>
-                        Smaž Skupinu
-                        </Button>
-                        </td>]:<td>
-                        <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev} disabled>
-                        Smaž Skupinu
-                        </Button>
-                        </td>}
+                        {item.prava===1  
+                            ?[<td key="1">
+                            <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev} >
+                            Přidej Uživatele
+                            </Button>
+                            </td>]
+                            :[<td key="2">
+                            <Button variant="secondary" disabled>
+                            Přidej Uživatele
+                            </Button>
+                            </td>]}
+                        {item.prava===1  
+                            ?[<td key="1">
+                            <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev} >
+                            Smaž Skupinu
+                            </Button>
+                            </td>]
+                            :[<td key="2">
+                            <Button variant="secondary" disabled>
+                            Smaž Skupinu
+                            </Button>
+                            </td>]}
                         <td>
                         <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
                         Skupinový chat
@@ -451,4 +386,30 @@ export default class Skupiny extends Component{
 };
 
 
+function defState() {
+    return {
+        showVySkup: false,
+        showPriUdalosti: false,
+        showPriUzivatele: false,
+        showClenySkup:false,
+        nazevSkup: '',
+        smazPls:'',
+        email: '',
+        nazev: '',
+        popis: '',
+        adresa: '',
+        psc: '',
+        datum:'',
+    };
+}
 
+function transformDataToAddUalost(data) {
+    return {
+        nazev: data.nazev,
+        popis: data.popis,
+        datum: data.datum,
+        adresa: data.adresa,
+        psc: data.psc,
+        skupina : data.nazevSkup,
+    };
+}
