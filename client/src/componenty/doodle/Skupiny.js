@@ -39,6 +39,7 @@ export default class Skupiny extends Component{
     }
     handleSmazSkup= async (event) => {
         await this.setState({ smazPls:event.target.name });
+
         this.smazaniSkupiny(this.state)
 
     }
@@ -66,7 +67,7 @@ export default class Skupiny extends Component{
             
           };
         
-        
+        //console.log('smaz',datas)
         await axios.delete('http://localhost:4433/skupina/delete' , datas)
         
     } catch(err){
@@ -203,7 +204,7 @@ export default class Skupiny extends Component{
 
     render(){
         
-        const {nazevSkup,email,psc,nazev,adresa,datum,popis}=this.state;
+        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file}=this.state;
         
         return(
             <div>
@@ -365,6 +366,13 @@ export default class Skupiny extends Component{
                                 type="number"
                                 placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
+                    <Form.Group controlId="formFile">
+                        <Form.Label>Vlož soubor (Ve formátu PDF, Doc, Img): </Form.Label>
+                        <Form.Control 
+                                name="file"
+                                type="file"
+                                accept="image/*,.pdf,.doc" value={ file } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
                     
                     
                 </Modal.Body>
@@ -400,6 +408,7 @@ function defState() {
         adresa: '',
         psc: '',
         datum:'',
+        file:[],
     };
 }
 
@@ -411,5 +420,6 @@ function transformDataToAddUalost(data) {
         adresa: data.adresa,
         psc: data.psc,
         skupina : data.nazevSkup,
+        file:data.file
     };
 }

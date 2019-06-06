@@ -118,7 +118,7 @@ export default class Kalendar extends Component{
 render(){
     
     const udalostMount= this.global.upUdalosti ;
-    const {popis,psc,nazev,adresa,datum,infoCas,infoPopis,infoPsc,infoTitle}=this.state;
+    const {popis,psc,nazev,adresa,datum,infoCas,infoPopis,infoPsc,infoTitle,file}=this.state;
     return(
         <div>
 
@@ -202,7 +202,13 @@ render(){
                                 type="number"
                                 placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
-                    
+                    <Form.Group controlId="formFile">
+                        <Form.Label>Vlož soubor (Ve formátu PDF, Doc, Img): </Form.Label>
+                        <Form.Control 
+                                name="file"
+                                type="file"
+                                accept="image/*,.pdf,.doc" value={ file } onChange={ (e) => this.handleChange(e) }/>
+                    </Form.Group>
                     
                 </Modal.Body>
             <Modal.Footer>
@@ -264,6 +270,7 @@ function defState() {
         adresa: '',
         psc: '',
         datum:'',
+        file:[],
     };
 }
 
@@ -275,6 +282,7 @@ function transformDataToAdd(data) {
         adresa: data.adresa,
         psc: data.psc,
         skupina :null,
+        file:data.file,
     };
 }
 
