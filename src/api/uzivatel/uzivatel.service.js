@@ -96,7 +96,7 @@ function changeEmail(req,res){
     User.findOne({where:{UzivatelID: req.user.UzivatelID}}).then(foundUser => {
         foundUser.Email = req.body.newEmail;
         foundUser.save({fields:['Email']})
-        return res.sendStatus(200)
+        return res.sendStatus(200).json({token:token})
     })
 }
 
@@ -109,7 +109,8 @@ function changePsswd(req,res){
         else{
             foundUser.Heslo = req.body.newPsswd;
             foundUser.save({fields:['Heslo']})
-            return res.sendStatus(200)
+            const token = signToken(foundUser)
+            return res.sendStatus(200).json({token:token})
         }
     })
 }
