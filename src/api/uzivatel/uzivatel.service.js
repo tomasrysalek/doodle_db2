@@ -44,7 +44,7 @@ function signup (req,res){
             //Generovani tokenu
             newUser.save()
             //Odeslani tokenu clientovi
-            return res.status(200).json({token: token, message: 'user created',username:foundUser.Username});
+            return res.sendStatus(200).json({token: token, message: 'user created',username:foundUser.Username});
         }
     })}
 /**
@@ -62,7 +62,7 @@ function login (req,res){
             else{
                 const token = signToken(foundUser);
                 console.log(foundUser)
-                return res.status(200).json({token:token,username:foundUser.Username});
+                return res.sendStatus(200).json({token:token,username:foundUser.Username});
             }   
         }
         catch(err){
@@ -83,15 +83,39 @@ function googleLogin(req,res){
             //Generovani tokenu
             newUser.save()
             //Odeslani tokenu clientovi
-            return res.status(200).json({token: token, email: req.body.profileObj.email,username:req.body.profileObj.name});
+            return res.sendStatus(200).json({token: token, email: req.body.profileObj.email,username:req.body.profileObj.name});
         }
         else{
             const token = signToken(foundUser);
-            return res.status(200).json({token:token,email: foundUser.Email,username:foundUser.Username});
+            return res.sendStatus(200).json({token:token,email: foundUser.Email,username:foundUser.Username});
+        }
+    })
+}
+
+function changeEmail(req,res){
+    User.findOne({where:{UzivatelID: req.user.UzivatelID}}).then(foundUser => {
+        foundUser.Email = req.body.newEmail;
+        foundUser.save({fields:['Email']})
+        return res.sendStatus(200)
+    })
+}
+
+function changePsswd(req,res){
+    User.findOne({where:{UzivatelID:req.user.UzivatelID}}).then(foundUser =>{
+        const psswdMatch = validPass(foundUser,req.body.oldPsswd) 
+        if(!psswdMatch){
+            return res.sendStatus(409)
+        }
+        else{
+            foundUser.Heslo = req.body.newPsswd;
+            foundUser.save({fields:['Heslo']})
+            return res.sendStatus(200)
         }
     })
 }
 
 export default {signup,
                 login,
-                googleLogin};
+                googleLogin,
+                changeEmail,
+                changePsswd};

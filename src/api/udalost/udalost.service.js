@@ -1,7 +1,13 @@
 import Udalost from './udalost.model';
 import Skupina from '../skupina/skupina.model'
+const multer = require('multer');
+const upload = multer({dest:'./uploads/'});
+
+
+
 function add(req,res){
     Skupina.findOne({where: {Nazev:req.body.skupina}}).then(foundSK => {
+        console.log(req.file)
         if(!foundSK){
                 if(req.body.psc){
                     const udalost = Udalost.build({

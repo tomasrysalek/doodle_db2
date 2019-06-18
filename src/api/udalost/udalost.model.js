@@ -66,6 +66,11 @@ const udalost = connect.define('udalost',{
         type:Sequelize.STRING(250),
         allowNull: true,
         defaultValue:null
+    },
+    Soubor:{
+        type: Sequelize.BLOB(),
+        allowNull: true,
+        defaultValue:null
     }
 },{
     freezeTableName:true,

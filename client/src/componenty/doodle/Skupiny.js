@@ -4,8 +4,6 @@ import { Form,Modal,Button,Table } from 'react-bootstrap';
 
 
 export default class Skupiny extends Component{
-
-    
     constructor(props){
         super(props)
         this.handleShowPriUdal = this.handleShowPriUdal.bind(this);
@@ -58,17 +56,12 @@ export default class Skupiny extends Component{
     // smazani skupin
     async smazaniSkupiny(data){
         try {
-
-        
         const datas = {
-            
               skupina: data.smazPls,
-              
-            
           };
         
-        //console.log('smaz',datas)
-        await axios.delete('http://localhost:4433/skupina/delete' , datas)
+        console.log('smaz',datas)
+        await axios.post('http://localhost:4433/skupina/delete' , datas)
         
     } catch(err){
             
@@ -189,12 +182,9 @@ export default class Skupiny extends Component{
     async addUdalost(data) {
         
         try {
-            const datas = transformDataToAddUalost(data)
-            
+            const datas = transformDataToAddUalost(data)     
             const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})
-            
-            
-            
+
         } catch(err){
             
             console.log('err', err)

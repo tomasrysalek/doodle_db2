@@ -88,4 +88,31 @@ function deleteSk(req,res){
     })
 }
 
-export default {create,adduser,getAll,getUdalosti,deleteSk};
+function deleteUser(req,res){
+    User.findOne({where:{Email:req.body.user}}).then(foundUser => {
+        SP.destroy({where:{UzivatelID:foundUser.UzivatelID}})
+        return res.status(200)
+    }).catch(err).res.status(409)
+}
+
+function allUser(req,res){
+    let userID = []
+    sk.findOne({where:{Nazev: req.body.skupina}}).then(foundSK => {
+        SP.findAll({where:{SkupinaID: foundSK.SkupinaID},raw:true}).then(foundUsers =>{
+            foundUsers.forEach(user => {
+                userID.push(user.UzivatelID)
+            });
+        User.findAll({where:{UzivatelID:userID},raw:true}).then(found =>{
+            return res.json({uzivatel:found})
+        })
+        })
+    })
+}
+
+export default {create,
+                adduser,
+                getAll,
+                getUdalosti,
+                deleteSk,
+                allUser,
+                deleteUser};

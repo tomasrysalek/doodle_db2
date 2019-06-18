@@ -12,6 +12,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import Linkify from 'react-linkify';
+import Iframe from 'react-iframe';
 
 
 import '../../../node_modules/@fullcalendar/core/main.css';
@@ -74,6 +75,8 @@ export default class Kalendar extends Component{
 
     //nastaveni a odeslani dat pri potvrzeni formulare
     async onSubmit(data){
+        console.log(data.file)
+
         data.preventDefault();
         const datas = this.state;
         this.setState(defState());
@@ -164,10 +167,10 @@ render(){
             <Modal.Header closeButton>
                 <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
-            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)}>
+            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)} encType="multipart/form-data">
             <Modal.Body>
             
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group controlId="formBasicEmail" >
                         <Form.Label>Zadejte nazev udalosti:</Form.Label>
                         <Form.Control required
                                 name="nazev"
@@ -202,7 +205,7 @@ render(){
                                 type="number"
                                 placeholder="12345" value={ psc } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
-                    <Form.Group controlId="formFile">
+                    <Form.Group controlId="formFile" >
                         <Form.Label>Vlož soubor (Ve formátu PDF, Doc, Img): </Form.Label>
                         <Form.Control 
                                 name="file"
@@ -232,7 +235,7 @@ render(){
                   <p>Název události: {infoTitle}</p>
                   <p><Linkify>Popis události: {infoPopis}</Linkify></p>
                   <p>Cas události: {infoCas}</p>
-                  <p>Místo události:<a href="" onClick={()=>{
+                  <p>Místo události:<a href="#" onClick={()=>{
                      openMaps(infoPsc)
                   }}>{infoPsc}</a></p>
                 </Modal.Body>
