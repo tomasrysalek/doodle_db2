@@ -12,7 +12,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import Linkify from 'react-linkify';
-import Iframe from 'react-iframe';
 
 
 import '../../../node_modules/@fullcalendar/core/main.css';
