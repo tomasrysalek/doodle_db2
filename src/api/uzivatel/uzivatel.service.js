@@ -62,7 +62,7 @@ function login (req,res){
             else{
                 const token = signToken(foundUser);
                 console.log(foundUser)
-                return res.sendStatus(200).json({token:token,username:foundUser.Username});
+                return res.json({token:token,username:foundUser.Username});
             }   
         }
         catch(err){
@@ -87,7 +87,7 @@ function googleLogin(req,res){
         }
         else{
             const token = signToken(foundUser);
-            return res.sendStatus(200).json({token:token,email: foundUser.Email,username:foundUser.Username});
+            return res.json({token:token,email: foundUser.Email,username:foundUser.Username});
         }
     })
 }
@@ -96,7 +96,7 @@ function changeEmail(req,res){
     User.findOne({where:{UzivatelID: req.user.UzivatelID}}).then(foundUser => {
         foundUser.Email = req.body.newEmail;
         foundUser.save({fields:['Email']})
-        return res.sendStatus(200).json({token:token})
+        return res.json({token:token})
     })
 }
 
@@ -110,7 +110,7 @@ function changePsswd(req,res){
             foundUser.Heslo = req.body.newPsswd;
             foundUser.save({fields:['Heslo']})
             const token = signToken(foundUser)
-            return res.sendStatus(200).json({token:token})
+            return res.json({token:token})
         }
     })
 }

@@ -97,13 +97,18 @@ function deleteUser(req,res){
 
 function allUser(req,res){
     let userID = []
+    let users = []
     sk.findOne({where:{Nazev: req.body.skupina}}).then(foundSK => {
         SP.findAll({where:{SkupinaID: foundSK.SkupinaID},raw:true}).then(foundUsers =>{
             foundUsers.forEach(user => {
                 userID.push(user.UzivatelID)
             });
         User.findAll({where:{UzivatelID:userID},raw:true}).then(found =>{
-            return res.json({uzivatel:found})
+            found.forEach(foundUser =>{
+                users.push(foundUser.Email)
+            })
+            console.log(users)
+            return res.json({uzivatele:users})
         })
         })
     })

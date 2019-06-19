@@ -16,8 +16,7 @@ export default class Skupiny extends Component{
         this.handleSmazUzivatele = this.handleSmazUzivatele.bind(this);
 
         this.state=defState()
-        
-            
+
     }
 
     handleClose() {
@@ -46,16 +45,17 @@ export default class Skupiny extends Component{
 
     //delano na slepo!!!!
     handleUzivatele= async (event) => {
-        const res = await axios.post('http://localhost:4433/skupina/allUser' , event.target.name)
+        console.log(event.target.name)
+        const datas = {
+            skupina: event.target.name,
+        }; 
+        const res = await axios.post('http://localhost:4433/skupina/allUser' , datas)
         
         await this.setState({
              nazevSkup:event.target.name,
              uzivatele:res.data.uzivatele,
              showUzivatele:true,
             });
-
-        
-
     }
 
     handleSmazUzivatele= async (event) => {
@@ -101,9 +101,6 @@ export default class Skupiny extends Component{
     // smazani uzivatele ve skupinach
     async smazaniUzivatele(data){
         try {
-        
-        
-        
         await axios.post('http://localhost:4433/skupina/deleteUser' , data)
         
     } catch(err){
@@ -238,7 +235,6 @@ export default class Skupiny extends Component{
     render(){
         
         const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele}=this.state;
-        console.log('log',localStorage.getItem('JWT_TOKEN'))
         return(
             <div>
             <Button variant="primary" onClick={this.handleShowVyt} >

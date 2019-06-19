@@ -11,6 +11,6 @@ router.post('/adduser',skupinaService.adduser);
 router.get('/getsk',passport.authenticate('jwt',{session:false}),skupinaService.getAll);
 router.get('/getAll',skupinaService.getUdalosti);
 router.post('/delete',skupinaService.deleteSk);
-router.get('/allUser',skupinaService.allUser);
+router.post('/allUser',skupinaService.allUser);
 router.post('/deleteUser',skupinaService.deleteUser);
 export default router;
