@@ -50,12 +50,13 @@ export default class Skupiny extends Component{
             skupina: event.target.name,
         }; 
         const res = await axios.post('http://localhost:4433/skupina/allUser' , datas)
-        
+        console.log('uziv',res.data)
         await this.setState({
-             nazevSkup:event.target.name,
+             nazevSkup:datas.skupina,
              uzivatele:res.data.uzivatele,
              showUzivatele:true,
             });
+            
     }
 
     handleSmazUzivatele= async (event) => {
@@ -64,7 +65,7 @@ export default class Skupiny extends Component{
             skupina:this.state.nazevSkup,
         }
         this.setState(defState());
-        
+        console.log('ssssda',data)
         this.smazaniUzivatele(data)
 
         
@@ -429,6 +430,7 @@ export default class Skupiny extends Component{
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue">
                 <Modal.Body>
+                <Table striped bordered hover variant="light">
                 <thead>
                         <tr>
                         <th>Jmeno uzivatele</th>
@@ -436,17 +438,18 @@ export default class Skupiny extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                {this.state.uzivatele.map(item=>
+                {uzivatele.map((item,index)=>
                 ( 
-                    <tr>
-                        <th>{item.uzivatel}</th>
-                        <th>
-                            <Button variant="primary" onClick={this.handleSmazUzivatele} name={item.uzivatel}>
+                    <tr key={index}>{console.log('item',item)}
+                        <th key='21'>{item}</th>
+                        <th key='52'>
+                            <Button variant="primary" onClick={this.handleSmazUzivatele} name={item}>
                                 X
                             </Button>
                         </th>
                     </tr>))}
                     </tbody>
+                </Table>
                 </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary"  onClick={this.handleClose}>

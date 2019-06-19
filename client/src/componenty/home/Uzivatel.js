@@ -99,6 +99,8 @@ export default class Uzivatel extends Component{
     }
 
     render(){
+        console.log('state',this.state)
+        const {oldPass,newPass,scndNewPass,newEmail}=this.state;
         return(
             <div>
               <Container>
@@ -109,21 +111,21 @@ export default class Uzivatel extends Component{
                                     <Form.Group controlId="formBasicPassword">
                                         <Form.Label>Zadejte staré heslo:</Form.Label>
                                         <Form.Control required
-                                                name="stareHeslo"
+                                                name="oldPass"
                                                 type="password"
                                                 placeholder="Staré heslo"  value={ oldPass } onChange={ (e) => this.handleChange(e) }/>
                                     </Form.Group>
                                     <Form.Group controlId="formNewPassword">
                                         <Form.Label>Zadejte nové heslo:</Form.Label>
                                         <Form.Control  
-                                                name="noveHeslo"
+                                                name="newPass"
                                                 type="password"
                                                 placeholder="Nové heslo" value={ newPass } onChange={ (e) => this.handleChange(e) }/>
                                     </Form.Group>
                                     <Form.Group controlId="formNewScndPassword">
                                         <Form.Label>Zadejte znovu nové heslo:</Form.Label>
                                         <Form.Control required
-                                                name="noveKontrolniHeslo"
+                                                name="scndNewPass"
                                                 type="password"
                                                 placeholder="Nové heslo" value={ scndNewPass } onChange={ (e) => this.handleChange(e) }/>
                                     </Form.Group>
@@ -139,9 +141,9 @@ export default class Uzivatel extends Component{
                                     <Form.Group controlId="formBasicPassword">
                                         <Form.Label>Zadejte nový email:</Form.Label>
                                         <Form.Control required
-                                                name="email"
+                                                name="newEmail"
                                                 type="email"
-                                                placeholder="Staré heslo"  value={ oldPass } onChange={ (e) => this.handleChange(e) }/>
+                                                placeholder="Staré heslo"  value={ newEmail } onChange={ (e) => this.handleChange(e) }/>
                                     </Form.Group>
                                 <Button variant="primary" type="submit">
                                 Změň email
