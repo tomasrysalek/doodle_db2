@@ -78,7 +78,7 @@ export default class Head extends Component {
                     <Nav.Item key="registrace"><Nav.Link href="/registrace">Registrace</Nav.Link></Nav.Item>
                         ]: null    }
                     {globalIsAuth ?[
-                    <Nav.Item key="uzivatel"><Nav.Link >{uzivatel}</Nav.Link></Nav.Item>,
+                    <Nav.Item key="uzivatel"><Nav.Link href="/uzivatel">{uzivatel}</Nav.Link></Nav.Item>,
                     <Nav.Item key="odhlaseni"><Nav.Link href="/odhlaseni" onClick={this.signOut}>Odhlášení</Nav.Link></Nav.Item>
                         ]: null    }
                     </Nav>
