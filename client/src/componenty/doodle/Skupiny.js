@@ -14,9 +14,9 @@ export default class Skupiny extends Component{
         this.handleChat = this.handleChat.bind(this);
         this.handleUzivatele = this.handleUzivatele.bind(this);
         this.handleSmazUzivatele = this.handleSmazUzivatele.bind(this);
-
+        this.handleSmazPotvrzUzivatele = this.handleSmazPotvrzUzivatele.bind(this);
         this.state=defState()
-
+        
     }
 
     handleClose() {
@@ -60,8 +60,15 @@ export default class Skupiny extends Component{
     }
 
     handleSmazUzivatele= async (event) => {
+        
+        this.setState({showSmazUzivatele:true,showUzivatele:false,uzivatel:event.target.name,});
+        
+        
+    }
+
+    handleSmazPotvrzUzivatele= async (event) => {
         const data = {
-            user:event.target.name,
+            user:this.state.uzivatel,
             skupina:this.state.nazevSkup,
         }
         this.setState(defState());
@@ -232,7 +239,7 @@ export default class Skupiny extends Component{
 
     render(){
         
-        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele}=this.state;
+        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele,uzivatel}=this.state;
         return(
             <div>
             <Button variant="primary" onClick={this.handleShowVyt} >
@@ -463,6 +470,27 @@ export default class Skupiny extends Component{
             </Form>
             </Modal>
 
+            {/*vyskakovaci okno pro potvrzeni smazani uzivatele*/} 
+            <Modal show={this.state.showSmazUzivatele} onHide={this.handleClose} onSubmit={this.handleSmazPotvrzUzivatele}>
+            <Modal.Header closeButton>
+                <Modal.Title>Zmazani uzivatele ze skupiny </Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue">
+                <Modal.Body>
+                Přejete si odstranit uzivatele {uzivatel} ze skupiny {nazevSkup}
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" type="submit">
+                Vymaž uživatele
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
+
             </div>
         
         );
@@ -477,6 +505,7 @@ function defState() {
         showPriUzivatele: false,
         showClenySkup:false,
         showUzivatele:false,
+        showSmazUzivatele:false,
         nazevSkup: '',
         smazPls:'',
         email: '',
@@ -487,6 +516,7 @@ function defState() {
         datum:'',
         file:[],
         uzivatele:[],
+        uzivatel:'',
     };
 }
 
