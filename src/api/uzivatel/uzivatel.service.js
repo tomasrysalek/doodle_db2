@@ -95,6 +95,7 @@ function googleLogin(req,res){
 function changeEmail(req,res){
     User.findOne({where:{UzivatelID: req.user.UzivatelID}}).then(foundUser => {
         foundUser.Email = req.body.newEmail;
+        const token = signToken(foundUser)
         foundUser.save({fields:['Email']})
         return res.json({token:token})
     })
@@ -108,8 +109,8 @@ function changePsswd(req,res){
         }
         else{
             foundUser.Heslo = req.body.newPsswd;
-            foundUser.save({fields:['Heslo']})
             const token = signToken(foundUser)
+            foundUser.save({fields:['Heslo']})
             return res.json({token:token})
         }
     })

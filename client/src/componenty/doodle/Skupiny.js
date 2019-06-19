@@ -67,9 +67,6 @@ export default class Skupiny extends Component{
         this.setState(defState());
         console.log('ssssda',data)
         this.smazaniUzivatele(data)
-
-        
-
     }
 
     handleChat= async (event) => {
@@ -286,11 +283,18 @@ export default class Skupiny extends Component{
                                     Smaž Skupinu
                                 </Button>
                             </td>]}
-                        <td>
-                            <Button variant="primary" onClick={this.handleUzivatele} name={item.Nazev}>
-                                Seznam Uživatelnů
-                            </Button>
-                        </td>
+                        {item.prava ===1
+                            ?[<td key="1">
+                                <Button variant="primary" onClick={this.handleUzivatele} name={item.Nazev}>
+                                    Seznam Uživatelnů
+                                </Button>
+                            </td>]:
+                            [<td key="2">
+                                    <Button variant="secondary" disabled>
+                                    Seznam Uživatelů
+                                </Button>
+                            </td>]
+                        }
                         <td>
                             <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
                                 Skupinový chat

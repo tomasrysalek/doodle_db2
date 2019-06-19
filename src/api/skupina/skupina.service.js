@@ -90,9 +90,11 @@ function deleteSk(req,res){
 
 function deleteUser(req,res){
     User.findOne({where:{Email:req.body.user}}).then(foundUser => {
-        SP.destroy({where:{UzivatelID:foundUser.UzivatelID}})
-        return res.status(200)
-    }).catch(err).res.status(409)
+        sk.findOne({where:{Nazev:req.body.skupina}}).then(foundSK=>{
+            SP.destroy({where:{UzivatelID:foundUser.UzivatelID,SkupinaID:foundSK.SkupinaID}})
+            return res.status(200)
+        })
+    })
 }
 
 function allUser(req,res){

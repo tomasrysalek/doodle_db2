@@ -66,14 +66,10 @@ export default class Uzivatel extends Component{
     //zmena hesla
     async onSubmitZmenEmail(data){
         data.preventDefault();
-        
-        
         const datas = transformDataToChangeEmail(this.state) ;
         this.setState(defState());
         
         await this.zmenaEmailu(datas);
-        
-        
     }
 
     async zmenaEmailu(data) {
@@ -88,9 +84,6 @@ export default class Uzivatel extends Component{
                    token:serverToken.token,});
                localStorage.setItem('isAuth',true);
                localStorage.setItem('JWT_TOKEN',serverToken.token);
-               
-            
-            
         } catch(err){
             
             console.log('err', err)
@@ -99,7 +92,6 @@ export default class Uzivatel extends Component{
     }
 
     render(){
-        console.log('state',this.state)
         const {oldPass,newPass,scndNewPass,newEmail}=this.state;
         return(
             <div>
@@ -143,7 +135,7 @@ export default class Uzivatel extends Component{
                                         <Form.Control required
                                                 name="newEmail"
                                                 type="email"
-                                                placeholder="Staré heslo"  value={ newEmail } onChange={ (e) => this.handleChange(e) }/>
+                                                placeholder="Nový email"  value={ newEmail } onChange={ (e) => this.handleChange(e) }/>
                                     </Form.Group>
                                 <Button variant="primary" type="submit">
                                 Změň email
