@@ -95,10 +95,11 @@ export default class Uzivatel extends Component{
         const {oldPass,newPass,scndNewPass,newEmail}=this.state;
         return(
             <div>
-              <Container>
-                <Row>
-                    <Col>
-                        <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitZmenHeslo(e)}>
+              <Container className="mx-auto" >
+
+                    <h2> Stavající email je: {localStorage.getItem('EmailUzivatele')}</h2>
+
+                    <Form className="border border-dark p-5 m-2 bg-blue" onSubmit={(e) => this.onSubmitZmenHeslo(e)}>
                            
                                     <Form.Group controlId="formBasicPassword">
                                         <Form.Label>Zadejte staré heslo:</Form.Label>
@@ -125,10 +126,9 @@ export default class Uzivatel extends Component{
                                 <Button variant="primary" type="submit">
                                 Změň heslo
                                 </Button>
-                        </Form>
-                    </Col>
-                    <Col>
-                    <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmitZmenEmail(e)}>
+                    </Form>
+                       
+                    <Form className="border border-dark p-5 m-2 bg-blue" onSubmit={(e) => this.onSubmitZmenEmail(e)}>
                            
                                     <Form.Group controlId="formBasicPassword">
                                         <Form.Label>Zadejte nový email:</Form.Label>
@@ -140,9 +140,8 @@ export default class Uzivatel extends Component{
                                 <Button variant="primary" type="submit">
                                 Změň email
                                 </Button>
-                        </Form>
-                    </Col>
-                </Row>
+                    </Form>
+                   
               </Container>
             </div>
         )}
