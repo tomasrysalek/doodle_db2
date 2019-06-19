@@ -12,6 +12,8 @@ export default class Skupiny extends Component{
         this.handleShowVyt = this.handleShowVyt.bind(this);
         this.handleSmazSkup = this.handleSmazSkup.bind(this);
         this.handleChat = this.handleChat.bind(this);
+        this.handleUzivatele = this.handleUzivatele.bind(this);
+        this.handleSmazUzivatele = this.handleSmazUzivatele.bind(this);
 
         this.state=defState()
         
@@ -42,6 +44,33 @@ export default class Skupiny extends Component{
 
     }
 
+    //delano na slepo!!!!
+    handleUzivatele= async (event) => {
+        const res = await axios.post('http://localhost:4433/skupina/allUser' , event.target.name)
+        
+        await this.setState({
+             nazevSkup:event.target.name,
+             uzivatele:res.data.uzivatele,
+             showUzivatele:true,
+            });
+
+        
+
+    }
+
+    handleSmazUzivatele= async (event) => {
+        const data = {
+            user:event.target.name,
+            skupina:this.state.nazevSkup,
+        }
+        this.setState(defState());
+        
+        this.smazaniUzivatele(data)
+
+        
+
+    }
+
     handleChat= async (event) => {
         const data = {
             name:localStorage.getItem('EmailUzivatele') ,
@@ -60,8 +89,22 @@ export default class Skupiny extends Component{
               skupina: data.smazPls,
           };
         
-        console.log('smaz',datas)
+        
         await axios.post('http://localhost:4433/skupina/delete' , datas)
+        
+    } catch(err){
+            
+        console.log('err', err)
+    }
+    }
+
+    // smazani uzivatele ve skupinach
+    async smazaniUzivatele(data){
+        try {
+        
+        
+        
+        await axios.post('http://localhost:4433/skupina/deleteUser' , data)
         
     } catch(err){
             
@@ -194,8 +237,8 @@ export default class Skupiny extends Component{
 
     render(){
         
-        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file}=this.state;
-        
+        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele}=this.state;
+        console.log('log',localStorage.getItem('JWT_TOKEN'))
         return(
             <div>
             <Button variant="primary" onClick={this.handleShowVyt} >
@@ -210,6 +253,7 @@ export default class Skupiny extends Component{
                         <th>Pridej Udalost</th>
                         <th>Pridej Uzivatele</th>
                         <th>Smaž Skupinu</th>
+                        <th>Uživatelé skupiny</th>
                         <th>Chat skupiny</th>
                         </tr>
                     </thead>
@@ -219,36 +263,41 @@ export default class Skupiny extends Component{
                         <td>
                         <p>{item.Nazev}</p>
                         </td><td>
-                        <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
-                        Pridej udalost
-                        </Button>
+                            <Button variant="primary" onClick={this.handleShowPriUdal} name={item.Nazev}>
+                                Pridej udalost
+                            </Button>
                         </td>
                         {item.prava===1  
                             ?[<td key="1">
-                            <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev} >
-                            Přidej Uživatele
-                            </Button>
+                                <Button variant="primary" onClick={this.handleShowPriUziv} name={item.Nazev} >
+                                    Přidej Uživatele
+                                </Button>
                             </td>]
                             :[<td key="2">
-                            <Button variant="secondary" disabled>
-                            Přidej Uživatele
-                            </Button>
+                                <Button variant="secondary" disabled>
+                                    Přidej Uživatele
+                                </Button>
                             </td>]}
                         {item.prava===1  
                             ?[<td key="1">
-                            <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev} >
-                            Smaž Skupinu
-                            </Button>
+                                <Button variant="primary" onClick={this.handleSmazSkup} name={item.Nazev} >
+                                    Smaž Skupinu
+                                </Button>
                             </td>]
                             :[<td key="2">
-                            <Button variant="secondary" disabled>
-                            Smaž Skupinu
-                            </Button>
+                                <Button variant="secondary" disabled>
+                                    Smaž Skupinu
+                                </Button>
                             </td>]}
                         <td>
-                        <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
-                        Skupinový chat
-                        </Button>
+                            <Button variant="primary" onClick={this.handleUzivatele} name={item.Nazev}>
+                                Seznam Uživatelnů
+                            </Button>
+                        </td>
+                        <td>
+                            <Button variant="primary" onClick={this.handleChat} name={item.Nazev}>
+                                Skupinový chat
+                            </Button>
                         </td>
                         </tr>))}
                     </tbody>
@@ -377,6 +426,40 @@ export default class Skupiny extends Component{
             </Form>
             </Modal>
 
+            {/*vyskakovaci okno pro seznam clenu skupiny*/} 
+            <Modal show={this.state.showUzivatele} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Seznam členů skupiny</Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue">
+                <Modal.Body>
+                <thead>
+                        <tr>
+                        <th>Jmeno uzivatele</th>
+                        <th>Smaz uzivatele</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {this.state.uzivatele.map(item=>
+                ( 
+                    <tr>
+                        <th>{item.uzivatel}</th>
+                        <th>
+                            <Button variant="primary" onClick={this.handleSmazUzivatele} name={item.uzivatel}>
+                                X
+                            </Button>
+                        </th>
+                    </tr>))}
+                    </tbody>
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
             </div>
         
         );
@@ -390,6 +473,7 @@ function defState() {
         showPriUdalosti: false,
         showPriUzivatele: false,
         showClenySkup:false,
+        showUzivatele:false,
         nazevSkup: '',
         smazPls:'',
         email: '',
@@ -399,6 +483,7 @@ function defState() {
         psc: '',
         datum:'',
         file:[],
+        uzivatele:[],
     };
 }
 
