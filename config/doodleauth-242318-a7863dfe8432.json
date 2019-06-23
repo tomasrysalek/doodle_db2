@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "doodleauth-242318",
+  "private_key_id": "a7863dfe84323fecd7707f993555aa432c321abc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCxaZahe9Axo7AA\n4rtolQE8wMNSVhjh8zgyLo921FCd2Zxvfjovn1brHpoC3lNvnp9/G5svBDfFyrRR\nZ1roSi7b6Plt5t5coL9kuqfamo3efxhJwHpIRKRv94gS8TckPlbxOXPS3R2c8Qf2\n9jWUJxvLSSkHhui+61QPsQVi76Mpd06n+4t6c7sUIm8qzX9RDUmZkmtVOv5d5E1T\nw1AbkACJZwgs8XWN9l8k+NOYVehLGI09yGVQjMX4iSnNAxu2ZLJYcMxc3UfKak0d\nJnWMuXXhT3UbHHfd/ia1zEM5PVQu8rM1s+EGrUddOoxTWndDTtTS6EnMt6xdBXCb\nlUc+yk5pAgMBAAECggEAEGBCF5QTjL9yn7RODvphD7vt05fvqkyecXBfjP0OV3G2\nqUp2Ib70IZYUqoLd4gHa8FtKnOGHaeYa9KAlEafGUUV9H55FxHhQjmJV2910Drd9\n1RHzn5/Za13mhTQXjkyETzYpySsgoIPVo7/IhI1DGSW+yCt1aKkVfHDPQdmDnrA1\nk4ptrLY/bAr/72OWGpOL3UbHOHw+vvEKZrZZC5Nsh8tGK4OtlygCvpif1oMi69dt\nXGnQ9RGAg0TKe1YsfZfkwxSdkleIBWwiQet16DhsgQpSMhWNEYRmMBuDTv2qeBlI\nNf1+DhAVtp7EgAQcHr2S1puDojFWGR5OBFvbr4tDwQKBgQDfIRV5sx3DiUYSMnqb\n02dY6UPHXo2OjqDBO+uvL1rwUG6+XE1+kQnbJk3xICRLyrc+TScnZ3g1GgAe24kz\nFMA22ysMDADdrk6tDhtcTPnM/Pw92tfJRIvXmfV423VWgx/Dhiz9kGkSEv24dS65\nvErcF8WJ3QTwJBDnzLJv6p0KKQKBgQDLjGD1VFa6cuKrZr4B59RQJ+4XVAybPH3P\nfC9CWCA3kGyDGhiIIELCa6dRGvDiAVCcR0DiCsR8RRjXOYmzZ5o3OGIdL3kCT1lV\ncEQXzs17qmSsOnyWupq4P6MfjZt+qZNkg+oaJqIUc+qxa1MYk5d9g2SLcTBEDPgl\nm1pTR0AqQQKBgQC5nfUWi6nr+2t+Qd37eW8U6OBIn2DVQdN7TJSw5I0bM14dH/4b\nlx6C36ehOqLXJikwO9ChmBLI4ftNsEW/Z7jLKaHy4J1rzNCIaB7ctvBr1d0ku8Qd\nG9fVoK8zPiWrtWMcLaeJvLObpI7K/zjCrF/+HgxntqSf/PDPVFrwfVTsmQKBgHcr\n7zBzenua+77iXmh7NMDhP/KEkQTqO7aYvIqZUfN2KTHwu2Anky6FHObNYS7RGkMF\nLKWrLDKdudd4pnhVNeMSrc7slmqVznXJTvSpbYDz2BFGBN+yzRcGmxjELb/QxKza\n1tsMt2RGIahSb8o5zz37CYjiciHFfht2g0Gyu4yBAoGAfSNNHBlXaKr67Aq8+nNA\n/zoNA0wX7Zll0nWPGVM2sFNxBv0aBk/GDqPyvXfus3yfi8llf4eBaT26swV6Iq3v\nIaNSI34Fxw4wHAM0JDGpvhuH8zUavYBNvnSQAalB2TIazUkXLT4pj9HhQLuZPknZ\nHcHhxwVoyOvFqqfLK3nPPVg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "doodleauth-242318@appspot.gserviceaccount.com",
+  "client_id": "107463772683883439989",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/doodleauth-242318%40appspot.gserviceaccount.com"
+}

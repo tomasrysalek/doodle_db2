@@ -72,7 +72,6 @@ export default class Skupiny extends Component{
             skupina:this.state.nazevSkup,
         }
         this.setState(defState());
-        console.log('ssssda',data)
         this.smazaniUzivatele(data)
     }
 

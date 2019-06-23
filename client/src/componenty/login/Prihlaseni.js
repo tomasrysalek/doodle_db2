@@ -58,6 +58,7 @@ export default class Prihlaseni extends Component{
             localStorage.setItem('isAuth',true);
             localStorage.setItem('JWT_TOKEN',serverToken.token);
             localStorage.setItem('EmailUzivatele',serverToken.username);
+            localStorage.setItem('Email',serverToken.email)
             if(this.global.isAuth){
                 this.props.history.push(`/kalendar`)
             }    
@@ -73,11 +74,9 @@ export default class Prihlaseni extends Component{
                 const res = await axios.post('http://localhost:4433/user/login' , data)
                 
                 const serverToken = res.data;
-                
+                console.log(res.data)
                 if(serverToken.mssg=== "Email or Password"){
                     alert('Spatne heslo nebo mail')
-                    
-                    
                 }else{   
                    this.setGlobal({
                        isAuth: true,
@@ -86,6 +85,7 @@ export default class Prihlaseni extends Component{
                    localStorage.setItem('isAuth',true);
                    localStorage.setItem('JWT_TOKEN',serverToken.token);
                    localStorage.setItem('EmailUzivatele',serverToken.username);
+                   localStorage.setItem('Email',serverToken.email);
                 }
                 
             } catch(err){

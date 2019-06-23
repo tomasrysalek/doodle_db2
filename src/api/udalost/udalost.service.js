@@ -1,8 +1,16 @@
 import Udalost from './udalost.model';
 import Skupina from '../skupina/skupina.model'
-const multer = require('multer');
-const upload = multer({dest:'./uploads/'});
+import user from '../uzivatel/uzivatel.model'
+const incomingForm = require('formidable').IncomingForm;
+const CONFIG = require('../../../config/cal_setting');
+const CalendarAPI = require('node-google-calendar');
+let cal = new CalendarAPI(CONFIG);  
 
+function allUdalosti (req,res){
+    Udalost.findAll({where:{UzivatelID: req.user.UzivatelID},raw:true}).then(found =>{
+        return found;
+    })
+}
 
 
 function add(req,res){
@@ -46,7 +54,6 @@ function add(req,res){
         }
         }
     })
-
 }
 
 function getAll(req,res){
@@ -55,4 +62,33 @@ function getAll(req,res){
     })
 }
 
-export default {add,getAll};
+function expotToGoogle(req,res){
+    user.findOne({where:{Email: req.body.Email}}).then(foundUser =>{
+        Udalost.findAll({where:{UzivatelID:foundUser.UzivatelID },raw:true}).then(found =>{
+            found.forEach(udalost =>{
+                const params = {
+                    'start': {'dateTime':new Date(udalost.Datum)},
+                    'end': { 'dateTime': new Date(udalost.Datum) },
+                    'location': `${udalost.Adresa}`,
+                    'summary': `${udalost.Nazev}`,
+                    'status': 'confirmed',
+                    'description': `${udalost.Popis}`,
+                    'colorId': 1
+                }
+                cal.Events.insert(req.body.Email,params).
+                then(resp => {
+                    console.log('inserted event:');
+                    console.log(resp);
+                  })
+                  .catch(err => {
+                    console.log('Error: insertEvent-' + err.message);
+                });        
+            })
+        })
+    
+    })
+
+
+}
+
+export default {add,getAll,expotToGoogle};

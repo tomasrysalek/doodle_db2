@@ -62,6 +62,8 @@ export default class Registrace extends Component{
                 localStorage.setItem('isAuth',true);
                 localStorage.setItem('JWT_TOKEN',serverToken.token);
                 localStorage.setItem('EmailUzivatele',serverToken.username);
+                localStorage.setItem('Email',serverToken.email)
+
                 
             }
       } catch(err){
@@ -82,6 +84,8 @@ export default class Registrace extends Component{
             localStorage.setItem('isAuth',true);
             localStorage.setItem('JWT_TOKEN',serverToken.token);
             localStorage.setItem('EmailUzivatele',serverToken.username);  
+            localStorage.setItem('Email',serverToken.email)
+
             if(this.global.isAuth){
                 this.props.history.push(`/kalendar`)
             }

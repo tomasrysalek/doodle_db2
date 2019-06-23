@@ -1,7 +1,23 @@
+import nodemailer from 'nodemailer';
+
 import sk from './skupina.model';
 import SP from '../skupina_prava/sk_prava.model';
 import User from '../uzivatel/uzivatel.model';
-import Udalost from '../udalost/udalost.model'
+import Udalost from '../udalost/udalost.model';
+
+import mailer_config from '../../../config/nodemailer.json'
+const transporter = nodemailer.createTransport({
+    service: `${mailer_config.service}`,
+    auth:{
+        user:`${mailer_config.user}`,
+        pass:`${mailer_config.pass}`
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
+
  function addSP(nazev,user,admin){
      sk.findOne({where: {Nazev: nazev}}).then(foundSK => {
          if(admin){
@@ -43,7 +59,14 @@ function create(req,res){
  */
 function adduser(req,res){
     const user = User.findOne({where:{Email:req.body.email}}).then(foundUser => {
-        if(foundUser){
+        if(foundUser){   
+            const mailOption = {
+                from: 'doodle.noreply.notification@gmail.com',
+                to: foundUser.Email,
+                subject: 'Skupina',
+                html: '<h3>Dobrý den '+foundUser.Username+',</h3>'+ '<p>byl jste přidán do skupiny <b>'+ req.body.skupina + '</b>.</p>'
+            }
+            transporter.sendMail(mailOption)
             addSP(req.body.skupina,foundUser,false);
         }else{
             res.json({mssg:'user does not exist'});
@@ -109,7 +132,6 @@ function allUser(req,res){
             found.forEach(foundUser =>{
                 users.push(foundUser.Email)
             })
-            console.log(users)
             return res.json({uzivatele:users})
         })
         })

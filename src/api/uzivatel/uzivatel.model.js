@@ -7,9 +7,6 @@ const User = connect.define('user',{
         type: Sequelize.STRING(50),
         allowNull:false
     },
-    /**
-     * Vyresit hashovani hesla!!!!!
-     */
     Heslo:{
         type: Sequelize.STRING(250),
         allowNull:false

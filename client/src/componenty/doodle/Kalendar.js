@@ -1,11 +1,10 @@
 
 import React, {Component} from 'reactn';
+import ReactDOM from 'react-dom'
 
 import { Form,Modal,Button } from 'react-bootstrap';
-
-
+import Iframe from 'react-iframe'
 import axios from 'axios';
-
 
 
 import FullCalendar from '@fullcalendar/react';
@@ -23,7 +22,19 @@ import '../../../node_modules/@fullcalendar/list/main.css';
 
 
 function openMaps(Adresa){
-    window.open("https://www.google.cz/maps/place/"+Adresa)
+    const add = "https://www.google.com/maps/embed/v1/place?key=AIzaSyA84oBfGeoMJXBDB85tdcNE3XOfpywuc6k&q="+Adresa;
+    const element = <Iframe 
+    url="https://www.google.com/maps/embed/v1/place?key=AIzaSyA84oBfGeoMJXBDB85tdcNE3XOfpywuc6k
+    &q=Space+Needle,Seattle+WA" allowfullscreen
+    width="100%"
+    height="450px"
+    id="myId"
+    className="myClassname"
+    display="initial"
+    position="relative"/>
+    ReactDOM.render(element,document.getElementById('map'))
+    document.getElementById('myId').setAttribute("src",add)
+
 }
 
 export default class Kalendar extends Component{
@@ -53,8 +64,10 @@ export default class Kalendar extends Component{
     async addUdalost(data) {
         
         try {
-            const datas = transformDataToAdd(data);
-            const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 'Bearer ' + localStorage.getItem('JWT_TOKEN')}})            
+            let datas = transformDataToAdd(data);
+            datas.email = localStorage.getItem('Email')
+            const res = await axios.post('http://localhost:4433/udalost/add' , datas,{headers: {"Authorization": 
+                    'Bearer ' + localStorage.getItem('JWT_TOKEN')}})            
         } catch(err){
             
             console.log('err', err)
@@ -74,8 +87,6 @@ export default class Kalendar extends Component{
 
     //nastaveni a odeslani dat pri potvrzeni formulare
     async onSubmit(data){
-        console.log(data.file)
-
         data.preventDefault();
         const datas = this.state;
         this.setState(defState());
@@ -166,9 +177,9 @@ render(){
             <Modal.Header closeButton>
                 <Modal.Title>Přidej událost</Modal.Title>
             </Modal.Header>
-            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)} encType="multipart/form-data">
+
+            <Form className="border border-dark p-5 bg-blue" onSubmit={(e) => this.onSubmit(e)} >
             <Modal.Body>
-            
                     <Form.Group controlId="formBasicEmail" >
                         <Form.Label>Zadejte nazev udalosti:</Form.Label>
                         <Form.Control required
@@ -209,6 +220,7 @@ render(){
                         <Form.Control 
                                 name="file"
                                 type="file"
+                                id="fileInput"
                                 accept="image/*,.pdf,.doc" value={ file } onChange={ (e) => this.handleChange(e) }/>
                     </Form.Group>
                     
@@ -237,6 +249,7 @@ render(){
                   <p>Místo události:<a href="#" onClick={()=>{
                      openMaps(infoPsc)
                   }}>{infoPsc}</a></p>
+                  <div id="map" width="100%"></div>
                 </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary"  onClick={this.handleClose}>
