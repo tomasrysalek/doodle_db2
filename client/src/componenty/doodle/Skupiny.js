@@ -1,6 +1,6 @@
 import React, {Component} from 'reactn';
 import axios from 'axios';
-import { Form,Modal,Button,Table } from 'react-bootstrap';
+import { Form,Modal,Button,Table,Container,Row,Col } from 'react-bootstrap';
 
 
 export default class Skupiny extends Component{
@@ -248,9 +248,20 @@ export default class Skupiny extends Component{
         const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele,uzivatel,smazPls}=this.state;
         return(
             <div>
-            <Button variant="primary" onClick={this.handleShowVyt} >
+
+            <Container  >
+            
+            <Row className='m-1'>
+                <Col></Col>
+                <Col md="auto">
+                <Button variant="primary" onClick={this.handleShowVyt} >
                      Vytvoř Skupinu
-            </Button>
+                </Button>
+                </Col>
+                <Col></Col>
+            </Row>
+            </Container>
+            
 
             <div>
                 <Table striped bordered hover variant="dark">
