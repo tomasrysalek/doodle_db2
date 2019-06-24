@@ -1,6 +1,8 @@
 import React, {Component} from 'reactn';
 import { Form,Modal,Button,Table,Container ,Row,Col} from 'react-bootstrap';
 import axios from 'axios'
+import ReactDOM from 'react-dom'
+import { Alert } from "react-bs-notifier";
 
 export default class Uzivatel extends Component{
     constructor(props){
@@ -44,7 +46,20 @@ export default class Uzivatel extends Component{
     }
 
     async exporToGoogle(data){
-         await axios.post('http://localhost:4433/udalost/export',data) 
+        const element = <Alert type="success" headline="Úspěch">
+            Export úspéšně dokončen
+        </Alert>
+        const elementBad = <Alert type="danger" headline="Ooops">
+            Něco se pokazilo
+        </Alert>
+        try{
+            const res = axios.post('http://localhost:4433/udalost/export',data)
+            console.log(res)
+            ReactDOM.render(element,document.getElementById('response'))
+        }
+        catch(err){
+            ReactDOM.render(elementBad,document.getElementById('response'))
+        }
     }
 
     async zmenaHesla(data) {
@@ -101,7 +116,6 @@ export default class Uzivatel extends Component{
               <Container className="mx-auto" >
 
                     <h2> Stavající email je: {localStorage.getItem('Email')}</h2>
-
                 <Form className="border border-dark p-5 m-2 bg-blue" onSubmit={(e) => this.onSubmitZmenHeslo(e)}>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Zadejte staré heslo:</Form.Label>
@@ -151,7 +165,7 @@ export default class Uzivatel extends Component{
                 </Form>    
                 
                 <Form className="border border-dark p-5 m-2 bg-blue" onSubmit={(e) => this.onSubmitExport(e)}>
-                    
+                <div id="response" margin="auto"></div>
                     <ol>
                         <li>Nastavení</li>
                         <li>Hlavní kalendář</li>

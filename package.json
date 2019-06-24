@@ -29,6 +29,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "react-bs-notifier": "^5.0.0",
     "sequelize": "^5.7.1",
     "socket.io": "^2.2.0",
     "web-push": "^3.3.5"

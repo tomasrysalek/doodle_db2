@@ -77,11 +77,10 @@ function expotToGoogle(req,res){
                 }
                 cal.Events.insert(req.body.Email,params).
                 then(resp => {
-                    console.log('inserted event:');
-                    console.log(resp);
-                  })
-                  .catch(err => {
-                    console.log('Error: insertEvent-' + err.message);
+                    return res.status(200).json({mssg: Hotovo})
+                })
+                .catch(err => {
+                    return res.status(409)
                 });        
             })
         })
