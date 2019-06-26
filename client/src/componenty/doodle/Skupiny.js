@@ -1,6 +1,6 @@
 import React, {Component} from 'reactn';
 import axios from 'axios';
-import { Form,Modal,Button,Table } from 'react-bootstrap';
+import { Form,Modal,Button,Table,Container,Row,Col } from 'react-bootstrap';
 
 
 export default class Skupiny extends Component{
@@ -37,10 +37,18 @@ export default class Skupiny extends Component{
         
     }
     handleSmazSkup= async (event) => {
-        await this.setState({ smazPls:event.target.name });
+        await this.setState({ smazPls:event.target.name, showSmazSkupinu:true});
 
-        this.smazaniSkupiny(this.state)
+        
 
+    }
+
+    handleSmazPotvrzSkupinu= async (event) => {
+        const datas = {
+            skupina: this.state.smazPls,
+        };
+        this.setState(defState());
+        this.smazaniSkupiny(datas)
     }
 
     //delano na slepo!!!!
@@ -85,16 +93,15 @@ export default class Skupiny extends Component{
         window.open("http://www.localhost:4433?name="+data.name+"&room="+data.room)
     
     }
+    
 
     // smazani skupin
     async smazaniSkupiny(data){
         try {
-        const datas = {
-              skupina: data.smazPls,
-          };
         
         
-        await axios.post('http://localhost:4433/skupina/delete' , datas)
+        
+        await axios.post('http://localhost:4433/skupina/delete' , data)
         
     } catch(err){
             
@@ -238,12 +245,23 @@ export default class Skupiny extends Component{
 
     render(){
         
-        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele,uzivatel}=this.state;
+        const {nazevSkup,email,psc,nazev,adresa,datum,popis,file,uzivatele,uzivatel,smazPls}=this.state;
         return(
             <div>
-            <Button variant="primary" onClick={this.handleShowVyt} >
+
+            <Container  >
+            
+            <Row className='m-1'>
+                <Col></Col>
+                <Col md="auto">
+                <Button variant="primary" onClick={this.handleShowVyt} >
                      Vytvoř Skupinu
-            </Button>
+                </Button>
+                </Col>
+                <Col></Col>
+            </Row>
+            </Container>
+            
 
             <div>
                 <Table striped bordered hover variant="dark">
@@ -472,7 +490,7 @@ export default class Skupiny extends Component{
             {/*vyskakovaci okno pro potvrzeni smazani uzivatele*/} 
             <Modal show={this.state.showSmazUzivatele} onHide={this.handleClose} onSubmit={this.handleSmazPotvrzUzivatele}>
             <Modal.Header closeButton>
-                <Modal.Title>Zmazani uzivatele ze skupiny </Modal.Title>
+                <Modal.Title>Smazani uzivatele ze skupiny </Modal.Title>
             </Modal.Header>
             <Form className="border border-dark p-5 bg-blue">
                 <Modal.Body>
@@ -484,6 +502,26 @@ export default class Skupiny extends Component{
                 </Button>
                 <Button variant="primary" type="submit">
                 Vymaž uživatele
+                </Button>
+            </Modal.Footer>
+            </Form>
+            </Modal>
+
+            {/*vyskakovaci okno pro potvrzeni smazani skupiny*/} 
+            <Modal show={this.state.showSmazSkupinu} onHide={this.handleClose} onSubmit={this.handleSmazPotvrzSkupinu}>
+            <Modal.Header closeButton>
+                <Modal.Title>Smazani skupiny </Modal.Title>
+            </Modal.Header>
+            <Form className="border border-dark p-5 bg-blue">
+                <Modal.Body>
+                Přejete si odstranit skupinu {smazPls}
+                </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary"  onClick={this.handleClose}>
+                Close
+                </Button>
+                <Button variant="primary" type="submit">
+                Vymaž skupinu
                 </Button>
             </Modal.Footer>
             </Form>
@@ -505,6 +543,7 @@ function defState() {
         showClenySkup:false,
         showUzivatele:false,
         showSmazUzivatele:false,
+        showSmazSkupinu:false,
         nazevSkup: '',
         smazPls:'',
         email: '',

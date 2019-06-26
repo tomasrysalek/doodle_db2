@@ -2,7 +2,7 @@
 import React, {Component} from 'reactn';
 import ReactDOM from 'react-dom'
 
-import { Form,Modal,Button } from 'react-bootstrap';
+import { Form,Modal,Button,Container,Row,Col } from 'react-bootstrap';
 import Iframe from 'react-iframe'
 import axios from 'axios';
 
@@ -135,9 +135,20 @@ render(){
     return(
         <div>
 
-            <Button variant="primary" onClick={this.handleShow}>
-            Pridej udalost
-            </Button>
+            <Container>
+            
+            <Row className='m-1'>
+                <Col></Col>
+                <Col md="auto">
+                <Button variant="dark" onClick={this.handleShow}>
+                        Pridej udalost
+                    </Button>
+                </Col>
+                <Col></Col>
+            </Row>
+            </Container>
+
+            
             
             <FullCalendar 
                 defaultView="dayGridMonth"
@@ -146,9 +157,9 @@ render(){
                 center: 'title',
                 right: 'next'
                 }}
-                plugins={[ dayGridPlugin, bootstrapPlugin ]}
-                themeSystem='bootstrap'
-
+                //plugins={[ dayGridPlugin, bootstrapPlugin ]}
+                //themeSystem='bootstrap'
+                plugins={[ dayGridPlugin]}
                 events={udalostMount}
 
                 
