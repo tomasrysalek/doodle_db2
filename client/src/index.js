@@ -8,7 +8,7 @@ import Test from './Test';
 
 import { setGlobal } from 'reactn';
 // Just testing things
-
+// teststs
 
 
 setGlobal({
